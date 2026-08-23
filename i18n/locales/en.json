@@ -1,0 +1,232 @@
+{
+  "components": {
+    "languageSwitcher": {
+      "ariaLabel": "Change language"
+    },
+    "header": {
+      "openMenu": "Open menu"
+    },
+    "sidebar": {
+      "collapseSidebar": "Collapse sidebar",
+      "expandSidebar": "Expand sidebar",
+      "settings": "Settings",
+      "nav": {
+        "dashboard": "Dashboard",
+        "main" : "Main Menu",
+        "menu": "Menu",
+        "subMenu1" : "Sub Menu 1",
+        "subMenu2" : "Sub Menu 2",
+        "contact": "Contact",
+        "users": "Users",
+        "feedback": "Feedback"
+      }
+    },
+    "dashboardLayout": {
+      "closeSidebar": "Close sidebar"
+    },
+    "userPopover": {
+      "theme": "Theme",
+      "language": "Language",
+      "logout": "Logout",
+      "logoutSuccess": "Logout success"
+    },
+    "deleteModal": {
+      "defaultTitle": "Delete Confirmation",
+      "defaultDescription": "Are you sure you want to delete {item}? This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "dataTable": {
+      "searchPlaceholder": "Search...",
+      "showing": "Showing {from} to {to} of {total} results"
+    },
+    "contact": {
+      "addModal": {
+        "title": "Add Contact",
+        "description": "Fill in the details to create a new contact.",
+        "salutationLabel": "Salutation",
+        "salutationPlaceholder": "Select salutation",
+        "salutationMr": "Mr.",
+        "salutationMrs": "Mrs.",
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "Enter email",
+        "phoneLabel": "Phone",
+        "phonePlaceholder": "Enter phone number",
+        "typeLabel": "Type",
+        "typeCustomer": "Customer",
+        "typeVendor": "Vendor",
+        "typeSupplier": "Supplier",
+        "typeOther": "Other",
+        "statusLabel": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "cancel": "Cancel",
+        "save": "Save",
+        "nameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "phoneRequired": "Phone is required",
+        "createdSuccess": "Contact created successfully!"
+      },
+      "updateModal": {
+        "title": "Edit Contact",
+        "description": "Update the contact information below.",
+        "salutationLabel": "Salutation",
+        "salutationPlaceholder": "Select salutation",
+        "salutationMr": "Mr.",
+        "salutationMrs": "Mrs.",
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "Enter email",
+        "phoneLabel": "Phone",
+        "phonePlaceholder": "Enter phone number",
+        "typeLabel": "Type",
+        "typeCustomer": "Customer",
+        "typeVendor": "Vendor",
+        "typeSupplier": "Supplier",
+        "typeOther": "Other",
+        "statusLabel": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "cancel": "Cancel",
+        "save": "Save",
+        "nameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "phoneRequired": "Phone is required",
+        "updatedSuccess": "Contact updated successfully!"
+      },
+      "deleteModal": {
+        "title": "Delete Contact",
+        "description": "Are you sure you want to delete {name}? This action cannot be undone.",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "close": "Close",
+        "deletedSuccess": "Contact deleted successfully!",
+        "deleteFailed": "Failed to delete contact",
+        "genericError": "An error occurred"
+      }
+    },
+    "user": {
+      "addModal": {
+        "title": "Add User",
+        "description": "Fill in the details to create a new user account.",
+        "choosePhoto": "Choose Photo",
+        "remove": "Remove",
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter full name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "Enter email address",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Enter password",
+        "statusLabel": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "cancel": "Cancel",
+        "save": "Save",
+        "nameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "passwordMin": "Password must be at least 6 characters",
+        "photoUploadSuccess": "Photo uploaded successfully!",
+        "photoUploadFailed": "Failed to upload photo",
+        "createdSuccess": "User created successfully!"
+      },
+      "updateModal": {
+        "title": "Edit User",
+        "description": "Update the user's information below.",
+        "choosePhoto": "Choose Photo",
+        "remove": "Remove",
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter full name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "Enter email address",
+        "passwordLabel": "New Password (optional)",
+        "passwordPlaceholder": "Leave empty to keep unchanged",
+        "statusLabel": "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "cancel": "Cancel",
+        "save": "Save",
+        "nameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email address",
+        "passwordMin": "Password must be at least 6 characters",
+        "photoUploadSuccess": "Photo uploaded successfully!",
+        "photoUploadFailed": "Failed to upload photo",
+        "updatedSuccess": "User updated successfully!"
+      }
+    }
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Welcome to the admin dashboard"
+    },
+    "contact": {
+      "title": "Contact Customer",
+      "description": "Customer contact list and management",
+      "searchPlaceholder": "Search...",
+      "addContact": "Add Contact",
+      "columnId": "#",
+      "columnName": "Name",
+      "columnEmail": "Email",
+      "columnPhone": "Phone",
+      "columnType": "Type",
+      "columnStatus": "Status",
+      "columnCreatedAt": "Created At",
+      "columnAction": "Action",
+      "actionsDropdown": "Actions dropdown",
+      "editContact": "Edit contact",
+      "deleteContact": "Delete contact",
+      "deleteTitle": "Delete Contact",
+      "deletedSuccess": "Contact deleted successfully!",
+      "typeCustomer": "Customer",
+      "typeVendor": "Vendor",
+      "typeSupplier": "Supplier",
+      "typeOther": "Other",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "user": {
+      "title": "User Management",
+      "description": "Manage system users and their profiles",
+      "searchPlaceholder": "Search...",
+      "addUser": "Add User",
+      "columnProfile": "User Profile",
+      "columnStatus": "Status",
+      "columnJoinedDate": "Joined Date",
+      "columnAction": "Action",
+      "actionsDropdown": "Actions dropdown",
+      "active": "Active",
+      "inactive": "Inactive",
+      "editUser": "Edit User",
+      "deleteUser": "Delete User",
+      "deleteTitle": "Delete User",
+      "deletedSuccess": "User deleted successfully!"
+    },
+    "auth": {
+      "signIn": {
+        "title": "NusaCall",
+        "description": "Sign in using NusaContact account",
+        "emailLabel": "Email",
+        "emailPlaceholder": "E-mail",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Password",
+        "login": "Sign In",
+        "or": "OR",
+        "continueWithGoogle": "Continue with Google",
+        "continueWithMicrosoft": "Continue with Microsoft",
+        "emailRequired": "Email is required",
+        "passwordRequired": "Password is required",
+        "loginSuccess": "Login success! Welcome.",
+        "loginFailed": "Login failed. Please try again.",
+        "togglePasswordVisibility": "Toggle Password Visibility"
+      }
+    }
+  }
+}
+

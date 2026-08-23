@@ -1,0 +1,92 @@
+<template>
+  <div class="space-y-5">
+    <!-- Controls -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+        <div class="flex flex-row items-center gap-2">
+          <!-- Search -->
+          <UInput
+            v-model="search"
+            icon="i-lucide-search"
+            variant="outline"
+            :placeholder="searchPlaceholder ?? $t('components.dataTable.searchPlaceholder')"
+            class="w-full sm:w-64"
+          />
+
+          <!-- Items per page -->
+          <USelect
+            v-model="perPage"
+            :items="limitOptions"
+            class="w-20"
+          />
+        </div>
+
+        <!-- Extra filter controls -->
+        <div class="w-full sm:w-auto">
+          <slot name="filters" />
+        </div>
+      </div>
+
+      <!-- Custom Top-Right Actions Slot -->
+      <div class="w-full lg:w-auto">
+        <slot name="actions" />
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <UTable
+        v-model:expanded="expanded"
+        :expanded-options="{ getRowCanExpand: () => true }"
+        :data="data"
+        :columns="columns"
+        :loading="loading"
+        :ui="{
+          th: 'bg-muted py-2.5',
+          td: 'text-highlighted py-3'
+        }"
+        :class="['border border-default rounded-md', tableClass]"
+      >
+        <template #expanded="{ row }">
+          <slot name="expanded" :row="row" />
+        </template>
+      </UTable>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span class="text-sm text-muted">
+        {{ $t('components.dataTable.showing', { from: from || 0, to: to || 0, total }) }}
+      </span>
+      <UPagination v-model:page="page" size="md" :total="total" :items-per-page="perPage" />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts" generic="T">
+import type { TableColumn } from '@nuxt/ui'
+
+const search = defineModel<string>('search', { default: '' })
+const page = defineModel<number>('page', { default: 1 })
+const perPage = defineModel<number>('perPage', { default: 10 })
+const expanded = defineModel<Record<string, boolean>>('expanded', { default: () => ({}) })
+
+withDefaults(defineProps<{
+  columns: TableColumn<T>[]
+  data: T[]
+  loading?: boolean
+  total?: number
+  from?: number
+  to?: number
+  searchPlaceholder?: string
+  limitOptions?: number[]
+  tableClass?: string
+}>(), {
+  loading: false,
+  total: 0,
+  from: 0,
+  to: 0,
+  limitOptions: () => [10, 25, 50, 100],
+  tableClass: ''
+})
+</script>
