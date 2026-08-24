@@ -1,20 +1,17 @@
-import axios from 'axios'
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
 import type { AuthResponse, User } from '../types/auth'
 
 export class AuthService {
   private readonly ACCESS_TOKEN_KEY = 'accessToken'
-  private readonly REFRESH_TOKEN_KEY = 'refreshToken'
   private readonly USER_KEY = 'user'
 
   public user = ref<User | null>(null)
   public token = ref<string | null>(null)
 
   constructor() {
-    this.restoreSession() // Sync restore
-    this.validateSession() // Async validation in background
-    apiService.setRefreshHandler(this.refreshToken.bind(this))
+    this.restoreSession()
+    this.validateSession()
   }
 
   private restoreSession() {
@@ -41,37 +38,17 @@ export class AuthService {
 
     try {
       const response = await apiService.client.get<{ success: boolean, data: User }>('/auth/me', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+        headers: { Authorization: `Bearer ${accessToken}` }
       })
       this.user.value = response.data.data
       localStorage.setItem(this.USER_KEY, JSON.stringify(this.user.value))
     } catch {
-      // Validation failed, let interceptor handle it
+      // Token is invalid/expired — the axios interceptor in api-service
+      // handles the 401 and redirect; nothing to do here.
     }
   }
 
-  async refreshToken(): Promise<string | null> {
-    if (typeof window === 'undefined') return null
-
-    const refreshToken = localStorage.getItem(this.REFRESH_TOKEN_KEY)
-    if (!refreshToken) return null
-
-    try {
-      const config = useRuntimeConfig()
-      const response = await axios.post<AuthResponse>(`${config.public.apiUrl}/auth/refresh`, {
-        refreshToken
-      })
-
-      this.setSession(response.data)
-      return response.data.data.accessToken
-    } catch {
-      this.logout()
-      return null
-    }
-  }
-
+  /** Never calls nusawa directly — the backend relays credentials server-side. */
   async login(email: string, password: string): Promise<AuthResponse> {
     try {
       const response = await apiService.client.post<AuthResponse>('/auth/login', { email, password })
@@ -82,9 +59,10 @@ export class AuthService {
     }
   }
 
-  async google(code: string): Promise<AuthResponse> {
+  /** Same relay pattern as `login` — nusawa verifies the Google ID token itself. */
+  async loginWithGoogle(idToken: string): Promise<AuthResponse> {
     try {
-      const response = await apiService.client.post<AuthResponse>('/auth/google', { code })
+      const response = await apiService.client.post<AuthResponse>('/auth/login/google', { idToken })
       this.setSession(response.data)
       return response.data
     } catch (error) {
@@ -94,28 +72,23 @@ export class AuthService {
 
   async logout() {
     if (typeof window === 'undefined') return
-    const accessToken = localStorage.getItem(this.ACCESS_TOKEN_KEY)
+    const accessToken = this.token.value
 
     try {
-      if (this.token.value) {
-        this.token.value = accessToken
-        await apiService.client.post('/auth/logout', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
+      if (accessToken) {
+        await apiService.client.post('/auth/logout', null, {
+          headers: { Authorization: `Bearer ${accessToken}` }
         })
       }
     } catch (error) {
       console.error('Logout failed:', error)
     } finally {
       localStorage.removeItem(this.ACCESS_TOKEN_KEY)
-      localStorage.removeItem(this.REFRESH_TOKEN_KEY)
       localStorage.removeItem(this.USER_KEY)
 
       this.token.value = null
       this.user.value = null
 
-      // Ensure redirect happens
       if (window.location.pathname !== '/auth/sign-in') {
         navigateTo('/auth/sign-in')
       }
@@ -125,10 +98,9 @@ export class AuthService {
   private setSession(response: AuthResponse) {
     if (typeof window === 'undefined') return
 
-    const { user, accessToken, refreshToken } = response.data
+    const { user, accessToken } = response.data
 
     localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken)
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken)
     localStorage.setItem(this.USER_KEY, JSON.stringify(user))
 
     this.token.value = accessToken

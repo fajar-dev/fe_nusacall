@@ -1,23 +1,22 @@
 export interface User {
-    id: number
-    name: string
-    email: string
-    photo: string
-    isActive: boolean
-    hasPassword?: boolean
+  username: string
+  displayName: string | null
+  role: string | null
+  canReceiveCalls: boolean
 }
 
 export interface AuthData {
-    user: User
-    accessToken: string
-    refreshToken: string
+  accessToken: string
+  expiresIn: number
+  tokenType: 'Bearer'
+  user: User
 }
 
-export interface ApiResponse<T = any> {
-    success: boolean
-    statusCode: number
-    message: string
-    data: T
+export interface ApiResponse<T = unknown> {
+  success: boolean
+  statusCode: number
+  message: string
+  data: T
 }
 
 export type AuthResponse = ApiResponse<AuthData>

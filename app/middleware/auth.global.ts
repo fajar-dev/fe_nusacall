@@ -5,10 +5,8 @@ export default defineNuxtRouteMiddleware((to) => {
 
   const publicPaths = ['/auth/sign-in']
 
-  // Allow public pages
   if (publicPaths.includes(to.path)) return
 
-  // Require authentication
   if (!state.token) {
     return navigateTo('/auth/sign-in')
   }

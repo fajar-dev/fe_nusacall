@@ -31,7 +31,10 @@
     <div class="relative z-50 flex flex-1 lg:w-2/5 lg:flex-none items-center justify-center bg-default px-6 py-12 lg:shadow-[-12px_0_40px_-16px_rgba(0,0,0,0.18)]">
       <!-- Dark Mode Toggle + Language Switcher (top-right) -->
       <div class="absolute top-6 right-6 z-30 flex items-center gap-2">
-        <UColorModeButton color="neutral" variant="ghost" />
+        <UColorModeButton
+          color="neutral"
+          variant="ghost"
+        />
         <LanguageSwitcher variant="ghost" />
       </div>
 
