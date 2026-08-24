@@ -32,6 +32,14 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
 
   watch([page, perPage, sortBy, order], onQueryChange)
 
+  // Fires the first fetch. NOT `watch(..., { immediate: true })` above —
+  // that would run synchronously while this composable's own return value
+  // is still being destructured by the caller, so `onQueryChange` (defined
+  // in the caller's scope, closing over that destructured `page` etc.)
+  // would read those bindings before they exist. onMounted defers until
+  // after setup finishes, when they're safely assigned.
+  onMounted(() => onQueryChange())
+
   let searchTimeout: ReturnType<typeof setTimeout>
   watch(search, () => {
     clearTimeout(searchTimeout)
@@ -48,10 +56,10 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
    */
   const chevron = (direction: 'up' | 'down', colorClass: string) =>
     h('svg', {
-      viewBox: '0 0 24 24',
-      class: `w-3 h-3 ${colorClass}`,
-      fill: 'none',
-      stroke: 'currentColor',
+      'viewBox': '0 0 24 24',
+      'class': `w-3 h-3 ${colorClass}`,
+      'fill': 'none',
+      'stroke': 'currentColor',
       'stroke-width': 2,
       'stroke-linecap': 'round',
       'stroke-linejoin': 'round'
@@ -59,12 +67,7 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
       h('path', { d: direction === 'up' ? 'm18 15-6-6-6 6' : 'm6 9 6 6 6-6' })
     ])
 
-  /**
-   * Render function for a clickable UTable column header — pass as a column's `header`.
-   * `label` is a function (e.g. `() => t('...')`) so it re-evaluates on every render
-   * instead of being frozen to the locale active when `columns` was built.
-   * Toggles sort on click and highlights the active up/down chevron.
-   */
+  /** Clickable, sortable UTable column header. `label` is a fn so it re-evaluates per locale. */
   const sortHeader = (label: () => string, column: string, align: 'start' | 'center' | 'end' = 'start') => {
     return () => {
       const isActive = sortBy.value === column

@@ -8,11 +8,11 @@
       </div>
 
       <USeparator
-        class="px-5 mt-1"
+        class="px-4 mt-1"
         size="sm"
       />
       <!-- Navigation Menus (Scrollable middle area) -->
-      <nav class="flex-1 overflow-y-auto min-h-0 py-2.5 space-y-1 pt-6 scrollbar-thin flex flex-col items-center">
+      <nav class="flex-1 overflow-y-auto min-h-0 py-2.5 space-y-0.5 pt-6 scrollbar-thin flex flex-col items-center">
         <template
           v-for="group in navGroups"
           :key="group.id || group.title"
@@ -147,6 +147,9 @@
             </span>
           </NuxtLink>
         </template>
+
+        <!-- Agent Availability -->
+        <SoftphonePresenceToggle />
 
         <!-- Settings Popover -->
         <UserPopover :popover-props="{ content: { side: 'right', sideOffset: 12, align: 'end' } }">

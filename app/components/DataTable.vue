@@ -48,7 +48,10 @@
         :class="['border border-default rounded-md', tableClass]"
       >
         <template #expanded="{ row }">
-          <slot name="expanded" :row="row" />
+          <slot
+            name="expanded"
+            :row="row"
+          />
         </template>
       </UTable>
     </div>
@@ -58,7 +61,12 @@
       <span class="text-sm text-muted">
         {{ $t('components.dataTable.showing', { from: from || 0, to: to || 0, total }) }}
       </span>
-      <UPagination v-model:page="page" size="md" :total="total" :items-per-page="perPage" />
+      <UPagination
+        v-model:page="page"
+        size="md"
+        :total="total"
+        :items-per-page="perPage"
+      />
     </div>
   </div>
 </template>

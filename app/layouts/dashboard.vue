@@ -60,6 +60,8 @@
         <slot />
       </main>
     </div>
+
+    <SoftphoneCallWidget />
   </div>
 </template>
 

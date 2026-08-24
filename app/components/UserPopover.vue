@@ -3,8 +3,7 @@
     <!-- Trigger: use slot or default avatar -->
     <slot>
       <UAvatar
-        :src="authState.user?.photo"
-        :alt="authState.user?.name"
+        :alt="authState.user?.displayName || authState.user?.username"
         size="lg"
         class="cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all"
       />
@@ -15,16 +14,15 @@
         <!-- User Info -->
         <div class="flex items-center gap-3 p-1.5">
           <UAvatar
-            :src="authState.user?.photo"
-            :alt="authState.user?.name"
+            :alt="authState.user?.displayName || authState.user?.username"
             size="lg"
           />
           <div class="min-w-0 flex-1">
             <h2 class="text-sm font-semibold truncate text-highlighted">
-              {{ authState.user?.name }}
+              {{ authState.user?.displayName || authState.user?.username }}
             </h2>
             <p class="text-xs text-muted truncate">
-              {{ authState.user?.email }}
+              {{ authState.user?.username }}
             </p>
           </div>
         </div>

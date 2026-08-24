@@ -1,5 +1,8 @@
 <template>
-  <UDropdownMenu :items="langMenuItems" :content="{ align: 'end' }">
+  <UDropdownMenu
+    :items="langMenuItems"
+    :content="{ align: 'end' }"
+  >
     <UButton
       color="neutral"
       :variant="variant"
@@ -30,7 +33,7 @@ withDefaults(defineProps<Props>(), {
 
 const { locale, setLocale } = useI18n()
 
-const localeOptions: { label: string; value: 'en' | 'id'; flag: string }[] = [
+const localeOptions: { label: string, value: 'en' | 'id', flag: string }[] = [
   { label: 'English', value: 'en', flag: 'circle-flags:us' },
   { label: 'Bahasa Indonesia', value: 'id', flag: 'circle-flags:id' }
 ]

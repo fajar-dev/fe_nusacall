@@ -36,27 +36,29 @@ export const useNavigation = () => {
       title: t('components.sidebar.nav.main'),
       items: [
         {
-          id: 'menu',
-          label: t('components.sidebar.nav.menu'),
-          to: '#',
-          icon: 'i-lucide-list',
-          children: [
-            { id: 'sub menu 1', label: t('components.sidebar.nav.subMenu1'), to: '#' },
-            { id: 'sub Menu 2', label: t('components.sidebar.nav.subMenu2'), to: '#' }
-          ]
+          id: 'agent',
+          label: t('components.sidebar.nav.agent'),
+          to: '/agent',
+          icon: 'i-lucide-users'
         },
         {
           id: 'contact',
           label: t('components.sidebar.nav.contact'),
           to: '/contact',
-          icon: 'i-lucide-notebook-text'
+          icon: 'i-lucide-contact'
         },
         {
-          id: 'users',
-          label: t('components.sidebar.nav.users'),
-          to: '/user',
-          icon: 'i-lucide-user'
+          id: 'call',
+          label: t('components.sidebar.nav.call'),
+          to: '/call',
+          icon: 'i-lucide-phone-call'
         },
+        {
+          id: 'phone-number',
+          label: t('components.sidebar.nav.phoneNumber'),
+          to: '/phone-number',
+          icon: 'i-lucide-radio-tower'
+        }
       ]
     }
   ])
