@@ -1,80 +1,30 @@
-import { apiService } from "./api-service"
-import { handleServiceError } from "../composables/error-helper"
-import type { Contact, ContactPayload, ApiResponse } from "../types/contact"
-import type { SortOrder } from "../composables/useTableQuery"
+import { apiService } from './api-service'
+import { handleServiceError } from '../composables/error-helper'
+import type { ApiResponse } from '../types/agent'
+import type { Contact } from '../types/contact'
 
+/**
+ * NusaCall owns no contact data of its own — this calls NusaCall's own
+ * /api/contact, which relays to nusawa server-side. The browser never talks
+ * to nusawa directly. See docs/INTEGRATION-NUSAWA.md §3.6.
+ */
 export class ContactService {
+  private get authHeaders() {
+    return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
+  }
 
-    private get authHeaders() {
-        return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
+  async getAll(page = 1, perPage = 10, search = ''): Promise<ApiResponse<Contact[]>> {
+    try {
+      const params = new URLSearchParams({ page: String(page), limit: String(perPage), search })
+      const response = await apiService.client.get<ApiResponse<Contact[]>>(
+        `/contact?${params.toString()}`,
+        this.authHeaders
+      )
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
     }
-
-    async getAll(page = 1, perPage = 10, q = '', sortBy = '', order: SortOrder = 'DESC'): Promise<ApiResponse<Contact[]>> {
-        try {
-            const params = new URLSearchParams({ page: String(page), limit: String(perPage), q })
-            if (sortBy) {
-                params.set('sortBy', sortBy)
-                params.set('order', order)
-            }
-            const response = await apiService.client.get<ApiResponse<Contact[]>>(
-                `/contact?${params.toString()}`,
-                this.authHeaders
-            )
-            return response.data
-        } catch (error: any) {
-            return handleServiceError(error)
-        }
-    }
-
-    async getById(id: number): Promise<ApiResponse<Contact>> {
-        try {
-            const response = await apiService.client.get<ApiResponse<Contact>>(
-                `/contact/${id}`,
-                this.authHeaders
-            )
-            return response.data
-        } catch (error: any) {
-            return handleServiceError(error)
-        }
-    }
-
-    async create(payload: ContactPayload): Promise<ApiResponse<Contact>> {
-        try {
-            const response = await apiService.client.post<ApiResponse<Contact>>(
-                `/contact`,
-                payload,
-                this.authHeaders
-            )
-            return response.data
-        } catch (error: any) {
-            return handleServiceError(error)
-        }
-    }
-
-    async update(id: number, payload: ContactPayload): Promise<ApiResponse<Contact>> {
-        try {
-            const response = await apiService.client.put<ApiResponse<Contact>>(
-                `/contact/${id}`,
-                payload,
-                this.authHeaders
-            )
-            return response.data
-        } catch (error: any) {
-            return handleServiceError(error)
-        }
-    }
-
-    async delete(id: number): Promise<ApiResponse<null>> {
-        try {
-            const response = await apiService.client.delete<ApiResponse<null>>(
-                `/contact/${id}`,
-                this.authHeaders
-            )
-            return response.data
-        } catch (error: any) {
-            return handleServiceError(error)
-        }
-    }
+  }
 }
 
 export const contactService = new ContactService()
