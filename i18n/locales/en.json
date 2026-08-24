@@ -71,6 +71,16 @@
       "corrupted": "Failed to load transcript",
       "speakerBusiness": "Agent",
       "speakerCustomer": "Customer"
+    },
+    "callOutbound": {
+      "checking": "Checking call permission...",
+      "call": "Call",
+      "noPermission": "No call permission yet",
+      "requestPermission": "Request Permission",
+      "requested": "Sent",
+      "requestSentTitle": "Permission request sent",
+      "requestSentDescription": "The customer will receive a WhatsApp message asking for call permission.",
+      "quota": "{used}/{max} calls today"
     }
   },
   "pages": {

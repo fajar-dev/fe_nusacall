@@ -34,7 +34,7 @@ export default defineAppConfig({
     modal: {
       slots: {
         content: 'sm:max-w-lg',
-        overlay: '!backdrop-blur-xs !bg-white/10',
+        overlay: '!backdrop-blur-xs !bg-white/10 dark:!bg-black/40',
         body: 'border-0 !py-0',
         header: 'border-0'
       }

@@ -59,6 +59,14 @@
           </div>
         </div>
 
+        <template v-if="call.phoneNumberId && call.waId">
+          <USeparator />
+          <CallOutboundAction
+            :phone-number-id="call.phoneNumberId"
+            :wa-id="call.waId"
+          />
+        </template>
+
         <USeparator />
 
         <!-- Linimasa -->

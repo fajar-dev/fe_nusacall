@@ -71,6 +71,16 @@
       "corrupted": "Gagal memuat transkrip",
       "speakerBusiness": "Agent",
       "speakerCustomer": "Pelanggan"
+    },
+    "callOutbound": {
+      "checking": "Memeriksa izin panggilan...",
+      "call": "Telepon",
+      "noPermission": "Belum ada izin menelepon",
+      "requestPermission": "Minta Izin",
+      "requested": "Terkirim",
+      "requestSentTitle": "Permintaan izin terkirim",
+      "requestSentDescription": "Pelanggan akan menerima pesan WhatsApp meminta izin panggilan.",
+      "quota": "{used}/{max} panggilan hari ini"
     }
   },
   "pages": {

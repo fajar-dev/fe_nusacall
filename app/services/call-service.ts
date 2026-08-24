@@ -84,6 +84,18 @@ export class CallService {
     }
   }
 
+  /** Fase 3 — places a business-initiated call. `offerSdp` is the agent's own browser SDP offer, generated up front. */
+  async placeOutboundCall(phoneNumberId: string, waId: string, offerSdp: string): Promise<ApiResponse<{ wacid: string, answerSdp: string }>> {
+    try {
+      const response = await apiService.client.post<ApiResponse<{ wacid: string, answerSdp: string }>>(
+        '/call/outbound', { phoneNumberId, waId, offerSdp }, this.authHeaders
+      )
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
+
   async getStats(params: { from?: string, to?: string } = {}): Promise<ApiResponse<CallStats>> {
     try {
       const query = new URLSearchParams()

@@ -1,4 +1,5 @@
 import type { AgentAvailability } from '~/types/agent'
+import { callService } from '~/services/call-service'
 
 export type SoftphoneState
   = | 'disconnected' // WebSocket not yet connected
@@ -164,6 +165,33 @@ export function useSoftphone() {
     }
   }
 
+  /**
+   * Fase 3 (BIC) — places an outbound call. Permission is assumed already
+   * checked by the caller (the "Telepon" button only renders once
+   * permission-checking UI confirms it) — the backend re-checks anyway and
+   * this surfaces that as a normal toast on failure (unlike answer(), a
+   * failure here has no waiting caller to silently strand, so
+   * handleServiceError's toast is exactly the right amount of noise).
+   */
+  async function callOutbound(phoneNumberId: string, waId: string): Promise<boolean> {
+    if (state.value !== 'idle') return false
+    state.value = 'connecting'
+
+    try {
+      const offerSdp = await webrtc.start()
+      const { data } = await callService.placeOutboundCall(phoneNumberId, waId, offerSdp)
+      activeWacid.value = data.wacid
+      await webrtc.applyAnswer(data.answerSdp)
+      return true
+    } catch (err) {
+      console.error('Failed to place outbound call', err)
+      webrtc.close()
+      activeWacid.value = null
+      state.value = 'idle'
+      return false
+    }
+  }
+
   function reject(reason?: string) {
     if (!incomingCall.value) return
     audio.stopRinging()
@@ -201,6 +229,7 @@ export function useSoftphone() {
     init,
     setAvailability,
     answer,
+    callOutbound,
     reject,
     hangup,
     setMuted
