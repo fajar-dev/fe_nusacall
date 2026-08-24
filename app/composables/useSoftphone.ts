@@ -44,6 +44,7 @@ export function useSoftphone() {
   const signaling = useSignaling()
   const webrtc = useWebRTC()
   const audio = useCallAudio()
+  const { t } = useI18n()
 
   const initialized = useState<boolean>('softphone-initialized', () => false)
 
@@ -126,8 +127,31 @@ export function useSoftphone() {
     activeWacid.value = wacid
     incomingCall.value = null
 
-    const offerSdp = await webrtc.start()
-    signaling.send({ type: 'answer_call', wacid, data: { sdp: offerSdp } })
+    try {
+      const offerSdp = await webrtc.start()
+      if (!signaling.connected.value) throw new Error('Signaling socket is not connected')
+      signaling.send({ type: 'answer_call', wacid, data: { sdp: offerSdp } })
+    } catch (err) {
+      // getUserMedia/ICE can fail for reasons with zero server-side signal
+      // (mic permission revoked, device busy, insecure context), and
+      // signaling.send() silently no-ops on a closed socket instead of
+      // throwing — without this, the agent sees the modal vanish and
+      // nothing else, and the call just sits there until the backend's own
+      // answer-timeout closes it. We never sent answer_call, so there's
+      // nothing to undo server-side: another ringing agent (if any) can
+      // still pick it up, and the existing timeout naturally releases this
+      // one.
+      console.error('Failed to answer call', err)
+      useToast().add({
+        title: t('components.softphone.answerFailedTitle'),
+        description: t('components.softphone.answerFailedDescription'),
+        color: 'error',
+        icon: 'i-lucide-phone-off'
+      })
+      webrtc.close()
+      activeWacid.value = null
+      state.value = 'idle'
+    }
   }
 
   function reject(reason?: string) {

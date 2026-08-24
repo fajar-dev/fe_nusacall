@@ -48,6 +48,8 @@
       },
       "micDeniedTitle": "Akses mikrofon diperlukan",
       "micDeniedDescription": "Izinkan akses mikrofon untuk menjadi tersedia dan menerima panggilan.",
+      "answerFailedTitle": "Gagal menjawab panggilan",
+      "answerFailedDescription": "Periksa izin mikrofon dan koneksi Anda, lalu coba lagi.",
       "incoming": {
         "to": "Ke {label}",
         "picMatch": "Tiket Anda",
@@ -89,7 +91,8 @@
         "loginFailed": "Gagal masuk. Silakan coba lagi.",
         "togglePasswordVisibility": "Tampilkan/Sembunyikan Kata Sandi",
         "or": "ATAU",
-        "orContinueWith": "Atau lanjutkan dengan"
+        "orContinueWith": "Atau lanjutkan dengan",
+        "loginWithGoogle": "Masuk dengan Google"
       }
     },
     "agent": {

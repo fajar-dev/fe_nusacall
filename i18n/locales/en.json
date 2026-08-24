@@ -48,6 +48,8 @@
       },
       "micDeniedTitle": "Microphone access needed",
       "micDeniedDescription": "Allow microphone access to go available and receive calls.",
+      "answerFailedTitle": "Failed to answer call",
+      "answerFailedDescription": "Check your microphone permission and connection, then try again.",
       "incoming": {
         "to": "To {label}",
         "picMatch": "Your ticket",
@@ -89,7 +91,8 @@
         "loginFailed": "Login failed. Please try again.",
         "togglePasswordVisibility": "Toggle Password Visibility",
         "or": "OR",
-        "orContinueWith": "Or continue with"
+        "orContinueWith": "Or continue with",
+        "loginWithGoogle": "Sign in with Google"
       }
     },
     "agent": {
