@@ -88,6 +88,26 @@
           />
         </template>
 
+        <template v-if="call.recordingEnabled">
+          <USeparator />
+          <div>
+            <p class="text-xs text-muted mb-2">
+              {{ $t('pages.call.detail.recording') }}
+            </p>
+            <CallRecordingPlayer :call-id="call.id" />
+          </div>
+        </template>
+
+        <template v-if="call.transcriptionEnabled">
+          <USeparator />
+          <div>
+            <p class="text-xs text-muted mb-2">
+              {{ $t('pages.call.detail.transcript') }}
+            </p>
+            <CallTranscriptViewer :call-id="call.id" />
+          </div>
+        </template>
+
         <USeparator />
 
         <!-- Teknis -->

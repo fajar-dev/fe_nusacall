@@ -1,7 +1,8 @@
+import axios from 'axios'
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
 import type { ApiResponse } from '../types/agent'
-import type { Call, CallStats } from '../types/call'
+import type { Call, CallStats, ArtifactAvailability, TranscriptAvailability, TranscriptDocument } from '../types/call'
 
 export interface CallListParams {
   page?: number
@@ -48,6 +49,38 @@ export class CallService {
       return response.data
     } catch (error) {
       return handleServiceError(error)
+    }
+  }
+
+  /**
+   * 404 (not requested / still downloading) and 410 (Meta's 7-day window
+   * expired) are expected, routine states here — NOT error-toast-worthy —
+   * so this deliberately does not go through handleServiceError.
+   */
+  async getRecordingAvailability(id: number): Promise<ArtifactAvailability> {
+    try {
+      const response = await apiService.client.get<ApiResponse<{ url: string }>>(`/call/${id}/recording`, this.authHeaders)
+      return { state: 'ready', url: response.data.data.url }
+    } catch (error) {
+      const status = axios.isAxiosError(error) ? error.response?.status : undefined
+      if (status === 410) return { state: 'expired' }
+      // 404 is the expected/routine case (not requested, or still
+      // downloading) — anything else (500, network error) still resolves
+      // to the same quiet UI state, but logged so it doesn't vanish silently.
+      if (status !== 404) console.error('Unexpected error fetching recording availability', error)
+      return { state: 'not_ready' }
+    }
+  }
+
+  async getTranscriptAvailability(id: number): Promise<TranscriptAvailability> {
+    try {
+      const response = await apiService.client.get<ApiResponse<TranscriptDocument>>(`/call/${id}/transcript`, this.authHeaders)
+      return { state: 'ready', content: response.data.data }
+    } catch (error) {
+      const status = axios.isAxiosError(error) ? error.response?.status : undefined
+      if (status === 410) return { state: 'expired' }
+      if (status !== 404) console.error('Unexpected error fetching transcript availability', error)
+      return { state: 'not_ready' }
     }
   }
 
