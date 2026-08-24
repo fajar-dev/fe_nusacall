@@ -69,7 +69,17 @@ export function useSoftphone() {
 
     signaling.on('incoming_call', (packet) => {
       if (state.value !== 'idle') return // already ringing/on a call
-      const data = packet.data as unknown as IncomingCall
+      // wacid rides on the packet envelope (packet.wacid), not inside
+      // packet.data — the backend never puts it in data. Reading
+      // incomingCall.value.wacid without this merge is always undefined,
+      // so answer()/reject() silently send answer_call with no wacid at
+      // all (JSON.stringify drops the undefined key), which the server
+      // can't match to any call or session.
+      if (!packet.wacid) {
+        console.error('incoming_call packet missing wacid, dropping', packet)
+        return
+      }
+      const data = { ...(packet.data as unknown as IncomingCall), wacid: packet.wacid }
       incomingCall.value = data
       state.value = 'ringing'
       audio.startRinging()
