@@ -1,13 +1,51 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false,
 
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
-    '@nuxtjs/i18n',
-    'nuxt-vue3-google-signin'
+    '@nuxtjs/i18n'
   ],
+  ssr: false,
+
+  devtools: {
+    enabled: true
+  },
+
+  css: ['~/assets/css/main.css'],
+
+  colorMode: {
+    preference: 'light',
+    fallback: 'light',
+    componentName: 'ColorScheme',
+    classSuffix: ''
+  },
+
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.API_BASE_URL,
+      wsUrl: process.env.WS_BASE_URL,
+      // nusawa's own origin is never exposed to the browser — the frontend
+      // only ever calls NusaCall's own /api/auth/login, which relays
+      // credentials to nusawa server-side. See docs/INTEGRATION-NUSAWA.md §2.2.
+      googleClientId: process.env.GOOGLE_CLIENT_ID
+    }
+  },
+
+  routeRules: {
+    '/': { prerender: true }
+  },
+
+  compatibilityDate: '2025-01-15',
+
+  eslint: {
+    config: {
+      stylistic: {
+        commaDangle: 'never',
+        braceStyle: '1tbs'
+      }
+    }
+  },
 
   i18n: {
     locales: [
@@ -22,44 +60,6 @@ export default defineNuxtConfig({
       cookieKey: 'i18n_redirected',
       alwaysRedirect: true,
       fallbackLocale: 'id'
-    }
-  },
-
-  devtools: {
-    enabled: true
-  },
-
-  colorMode: {
-    preference: 'light',
-    fallback: 'light',
-    componentName: 'ColorScheme',
-    classSuffix: ''
-  },
-
-  css: ['~/assets/css/main.css'],
-
-  routeRules: {
-    '/': { prerender: true }
-  },
-
-  compatibilityDate: '2025-01-15',
-
-  runtimeConfig: {
-    public: {
-      apiUrl: process.env.API_BASE_URL,
-    }
-  },
-
-  googleSignIn: {
-    clientId: process.env.GOOGLE_CLIENT_ID
-  },
-
-  eslint: {
-    config: {
-      stylistic: {
-        commaDangle: 'never',
-        braceStyle: '1tbs'
-      }
     }
   }
 })
