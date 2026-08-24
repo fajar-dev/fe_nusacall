@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <div class="w-full max-w-md sm:max-w-md mx-auto">
+    <div class="w-full max-w-sm mx-auto">
       <div class="flex flex-col gap-5 mb-6">
         <BrandLogo />
         <div class="space-y-1">
@@ -80,13 +80,10 @@
         color="neutral"
       />
 
-      <div
-        v-if="googleClientId"
-        class="w-full"
-      >
+      <div v-if="googleClientId">
         <div
           ref="googleButtonEl"
-          class="mt-4 w-full flex justify-center google-btn-wrapper"
+          class="mt-4 flex justify-center w-full"
         />
       </div>
     </div>
@@ -196,21 +193,15 @@ onMounted(async () => {
       hd: 'nusa.id',
       callback: handleGoogleCredential
     })
+    const width = googleButtonEl.value.clientWidth || 384
     window.google!.accounts.id.renderButton(googleButtonEl.value, {
       type: 'standard',
       theme: 'outline',
       size: 'large',
-      width: Math.min(googleButtonEl.value.clientWidth || 384, 400)
+      width: Math.min(width, 400)
     })
   } catch (err) {
     console.error('Failed to initialize Google sign-in', err)
   }
 })
 </script>
-
-<style scoped>
-.google-btn-wrapper :deep(> div),
-.google-btn-wrapper :deep(iframe) {
-  width: 100% !important;
-}
-</style>
