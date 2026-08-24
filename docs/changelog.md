@@ -23,6 +23,40 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.2.0] — 2026-08-24
+
+### Changed
+
+- **Rebuilt as the NusaCall product frontend.** The boilerplate's sample features (user
+  CRUD, contact CRUD, Google OAuth) are gone — they were pattern references only, per the
+  original project instruction. Auth now does a two-hop login through NusaCall's own
+  backend (never calls nusawa directly from the browser).
+
+### Added
+
+- `/agent` — roster with presence, `canReceiveCalls` toggle.
+- `/contact` — read-only proxy over nusawa's contact list.
+- Softphone: `useSoftphone`/`useSignaling`/`useWebRTC`/`useCallAudio` composables,
+  `CallWidget`/`IncomingCallModal`/`ActiveCallPanel`/`PresenceToggle`/`CallTimer` — mounted
+  globally in the dashboard layout, connects over WebSocket, rings on `incoming_call`.
+- `/call` — history with DataTable filters (status, direction) and a `DetailModal`.
+- `/phone-number` — per-number cards, `UpdateModal` with `CallHoursForm` (one operating-hour
+  range per day — a deliberate v1 simplification, not the two-range spec) and the two
+  mandatory Meta warnings (7-day propagation, icon visibility doesn't block calling).
+- Dashboard: Calls Today / Answer Rate (red below 85%, Meta's low-pickup-rate threshold) /
+  Missed Today cards, alongside the existing agent counts.
+- 157 i18n keys across `en`/`id`, kept in sync on every addition.
+
+### Fixed
+
+- `useTableQuery`'s fetch watcher never fired on first load — every DataTable page
+  (`/agent`, `/contact`, `/call`) rendered empty until something changed page/sort/filter.
+  Fixed with an `onMounted` inside the composable itself.
+- `CallHoursForm`'s enable-toggle wrote to its `defineModel()` twice in one handler; the
+  second write spread the pre-update value (`defineModel` doesn't reflect synchronously
+  like a plain ref) and silently dropped `weekly_operating_hours`, crashing the form on
+  the very next render. Fixed to a single assignment.
+
 ## Template untuk Entry Baru
 
 ```markdown
