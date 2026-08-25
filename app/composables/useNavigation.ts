@@ -36,9 +36,9 @@ export const useNavigation = () => {
       title: t('components.sidebar.nav.main'),
       items: [
         {
-          id: 'agent',
-          label: t('components.sidebar.nav.agent'),
-          to: '/agent',
+          id: 'user',
+          label: t('components.sidebar.nav.user'),
+          to: '/user',
           icon: 'i-lucide-users'
         },
         {

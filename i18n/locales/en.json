@@ -14,7 +14,7 @@
         "dashboard": "Dashboard",
         "main": "Main Menu",
         "feedback": "Feedback",
-        "agent": "Agent",
+        "user": "Users",
         "contact": "Contact",
         "call": "Calls",
         "phoneNumber": "Phone Numbers"
@@ -29,6 +29,23 @@
       "logout": "Logout",
       "logoutSuccess": "Logout success"
     },
+    "auth": {
+      "nusawork": {
+        "title": "Login with Nusawork",
+        "description": "Scan QR Code with NusaWork app",
+        "waiting": "Waiting for scan...",
+        "success": "Scan successful!",
+        "redirecting": "Logging you in...",
+        "expired": "QR Code has expired. Please try again.",
+        "generateFailed": "Failed to generate QR Code. Please try again.",
+        "loginFailed": "Login failed. User may not be registered.",
+        "step1": "Open the Nusawork app on your phone",
+        "step2": "Select the Scan QR menu at the top right of the home screen",
+        "waitingApproval": "Waiting for approval...",
+        "confirmed": "Confirmed",
+        "confirmInstruction": "Please complete the configuration in the app on your phone"
+      }
+    },
     "deleteModal": {
       "defaultTitle": "Delete Confirmation",
       "defaultDescription": "Are you sure you want to delete {item}? This action cannot be undone.",
@@ -42,12 +59,10 @@
     "softphone": {
       "availability": {
         "available": "Available",
-        "busy": "Busy",
-        "away": "Away",
         "offline": "Offline"
       },
       "micDeniedTitle": "Microphone access needed",
-      "micDeniedDescription": "Allow microphone access to go available and receive calls.",
+      "micDeniedDescription": "Allow microphone access to receive calls.",
       "answerFailedTitle": "Failed to answer call",
       "answerFailedDescription": "Check your microphone permission and connection, then try again.",
       "incoming": {
@@ -87,8 +102,8 @@
     "dashboard": {
       "title": "Dashboard",
       "description": "Welcome to the admin dashboard",
-      "totalAgents": "Total Agents",
-      "eligibleAgents": "Call-Eligible Agents",
+      "totalUsers": "Total Users",
+      "onlineUsers": "Users Online Now",
       "callsToday": "Today's Calls",
       "answerRate": "Answer Rate",
       "answerRateWarning": "Below Meta's low-pickup-rate threshold",
@@ -110,25 +125,21 @@
         "togglePasswordVisibility": "Toggle Password Visibility",
         "or": "OR",
         "orContinueWith": "Or continue with",
-        "loginWithGoogle": "Sign in with Google"
+        "loginWithGoogle": "Sign in with Google",
+        "loginWithNusawork": "Sign in with Nusawork"
       }
     },
-    "agent": {
-      "title": "Agents",
-      "description": "Manage agents and their call eligibility",
-      "searchPlaceholder": "Search agents...",
-      "columnAgent": "Agent",
+    "user": {
+      "title": "Users",
+      "description": "Manage users and their roles",
+      "searchPlaceholder": "Search users...",
+      "columnUser": "User",
       "columnRole": "Role",
-      "columnAvailability": "Status",
-      "columnCallsHandled": "Calls Handled",
-      "columnCanReceiveCalls": "Can Receive Calls",
-      "availability": {
-        "available": "Available",
-        "busy": "Busy",
-        "away": "Away",
+      "columnStatus": "Status",
+      "status": {
+        "available": "Online",
         "offline": "Offline"
-      },
-      "updatedSuccess": "Agent updated successfully"
+      }
     },
     "contact": {
       "title": "Contacts",

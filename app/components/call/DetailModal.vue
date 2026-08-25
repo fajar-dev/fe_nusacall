@@ -46,7 +46,7 @@
               {{ $t('pages.call.detail.agent') }}
             </p>
             <p class="text-highlighted">
-              {{ call.agentUsername || '—' }}
+              {{ call.agentEmail || '—' }}
             </p>
           </div>
           <div>

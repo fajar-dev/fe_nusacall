@@ -1,4 +1,3 @@
-import type { AgentAvailability } from '~/types/agent'
 import { callService } from '~/services/call-service'
 
 export type SoftphoneState
@@ -35,7 +34,6 @@ export interface IncomingCall {
  */
 export function useSoftphone() {
   const state = useState<SoftphoneState>('softphone-state', () => 'disconnected')
-  const availability = useState<AgentAvailability>('softphone-availability', () => 'offline')
   const incomingCall = useState<IncomingCall | null>('softphone-incoming-call', () => null)
   const activeWacid = useState<string | null>('softphone-active-wacid', () => null)
   const answeredAt = useState<number | null>('softphone-answered-at', () => null)
@@ -57,15 +55,16 @@ export function useSoftphone() {
 
     signaling.connect(authState.token)
 
-    signaling.on('connected', () => {
+    signaling.on('connected', async () => {
       if (state.value === 'disconnected') state.value = 'idle'
-      // Backend's presence registry is wiped on disconnect and re-created
-      // with a hardcoded "available" default (signaling.gateway.ts) — resend
-      // whatever this tab currently holds so a fresh page load (availability
-      // defaults to "offline") and a mid-session reconnect (availability
-      // already "available"/"busy"/etc.) both land on the correct value
-      // instead of silently drifting to the backend's default.
-      signaling.send({ type: 'set_availability', data: { availability: availability.value } })
+      // The backend marks this connection "available" automatically on
+      // connect — there's no manual toggle to resend. What used to gate
+      // behind clicking "available" in PresenceToggle now happens right
+      // here instead: ask for mic/notification permission as soon as the
+      // socket comes up, since being connected IS being available now.
+      const granted = await audio.requestMicPermission()
+      micDenied.value = !granted
+      if (granted) await audio.requestNotificationPermission()
     })
 
     signaling.on('incoming_call', (packet) => {
@@ -93,7 +92,7 @@ export function useSoftphone() {
     signaling.on('call_taken', (packet) => {
       if (incomingCall.value?.wacid === packet.wacid) {
         audio.stopRinging()
-        lastTakenBy.value = (packet.data?.byUsername as string) ?? null
+        lastTakenBy.value = (packet.data?.byEmail as string) ?? null
         incomingCall.value = null
         state.value = 'idle'
       }
@@ -116,18 +115,6 @@ export function useSoftphone() {
       if (packet.wacid !== activeWacid.value) return
       teardownActiveCall()
     })
-  }
-
-  async function setAvailability(next: AgentAvailability): Promise<boolean> {
-    if (next === 'available' && availability.value !== 'available') {
-      const granted = await audio.requestMicPermission()
-      micDenied.value = !granted
-      if (!granted) return false
-      await audio.requestNotificationPermission()
-    }
-    availability.value = next
-    signaling.send({ type: 'set_availability', data: { availability: next } })
-    return true
   }
 
   async function answer() {
@@ -219,7 +206,6 @@ export function useSoftphone() {
 
   return {
     state,
-    availability,
     incomingCall,
     activeWacid,
     answeredAt,
@@ -227,7 +213,6 @@ export function useSoftphone() {
     micDenied,
     wsConnected: signaling.connected,
     init,
-    setAvailability,
     answer,
     callOutbound,
     reject,

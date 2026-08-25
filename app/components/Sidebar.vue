@@ -148,9 +148,6 @@
           </NuxtLink>
         </template>
 
-        <!-- Agent Availability -->
-        <SoftphonePresenceToggle />
-
         <!-- Settings Popover -->
         <UserPopover :popover-props="{ content: { side: 'right', sideOffset: 12, align: 'end' } }">
           <button

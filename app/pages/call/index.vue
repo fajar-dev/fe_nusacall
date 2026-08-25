@@ -166,9 +166,9 @@ const columns: TableColumn<Call>[] = [
     cell: ({ row }) => row.original.displayPhoneNumber || row.original.phoneNumberId
   },
   {
-    accessorKey: 'agentUsername',
+    accessorKey: 'agentEmail',
     header: t('pages.call.columnAgent'),
-    cell: ({ row }) => row.original.agentUsername || '—'
+    cell: ({ row }) => row.original.agentEmail || '—'
   },
   {
     accessorKey: 'durationSeconds',

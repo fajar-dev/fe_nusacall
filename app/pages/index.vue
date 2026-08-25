@@ -8,14 +8,14 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
       <UCard>
         <div class="flex flex-col gap-1">
-          <span class="text-sm text-muted">{{ $t('pages.dashboard.totalAgents') }}</span>
-          <span class="text-2xl font-semibold text-highlighted">{{ isLoading ? '—' : totalAgents }}</span>
+          <span class="text-sm text-muted">{{ $t('pages.dashboard.totalUsers') }}</span>
+          <span class="text-2xl font-semibold text-highlighted">{{ isLoading ? '—' : totalUsers }}</span>
         </div>
       </UCard>
       <UCard>
         <div class="flex flex-col gap-1">
-          <span class="text-sm text-muted">{{ $t('pages.dashboard.eligibleAgents') }}</span>
-          <span class="text-2xl font-semibold text-highlighted">{{ isLoading ? '—' : eligibleAgents }}</span>
+          <span class="text-sm text-muted">{{ $t('pages.dashboard.onlineUsers') }}</span>
+          <span class="text-2xl font-semibold text-highlighted">{{ isLoading ? '—' : onlineUsers }}</span>
         </div>
       </UCard>
       <UCard>
@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { agentService } from '~/services/agent-service'
+import { userService } from '~/services/user-service'
 import { callService } from '~/services/call-service'
 import type { CallStats } from '~/types/call'
 
@@ -59,8 +59,8 @@ definePageMeta({
 })
 
 const isLoading = ref(true)
-const totalAgents = ref(0)
-const eligibleAgents = ref(0)
+const totalUsers = ref(0)
+const onlineUsers = ref(0)
 const stats = ref<CallStats | null>(null)
 
 const answerRateWarning = computed(() => stats.value?.answerRate != null && stats.value.answerRate < 0.85)
@@ -70,16 +70,18 @@ onMounted(async () => {
     const startOfDay = new Date()
     startOfDay.setHours(0, 0, 0, 0)
 
-    const [agentsResponse, statsResponse] = await Promise.all([
-      // limit=100: this dashboard card only needs a headline count; a
-      // dedicated stats endpoint can replace this once the roster grows
-      // past a page. See docs/API-SPEC.md — /api/agent has no count-only mode yet.
-      agentService.getAll(1, 100),
+    const [usersResponse, availableResponse, statsResponse] = await Promise.all([
+      // limit=1: this dashboard card only needs the total count from
+      // meta, not the rows themselves.
+      userService.getAll(1, 1),
+      userService.getAvailable(),
       callService.getStats({ from: startOfDay.toISOString() })
     ])
-    if (agentsResponse.success) {
-      totalAgents.value = agentsResponse.meta?.total ?? agentsResponse.data.length
-      eligibleAgents.value = agentsResponse.data.filter(a => a.canReceiveCalls).length
+    if (usersResponse.success) {
+      totalUsers.value = usersResponse.meta?.total ?? usersResponse.data.length
+    }
+    if (availableResponse.success) {
+      onlineUsers.value = availableResponse.data.length
     }
     if (statsResponse.success) {
       stats.value = statsResponse.data

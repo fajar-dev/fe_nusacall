@@ -1,22 +1,23 @@
+import type { ApiResponse } from './api'
+
 export interface User {
-  username: string
-  displayName: string | null
-  role: string | null
-  canReceiveCalls: boolean
+    id: number
+    employeeId: string 
+    name: string
+    photo: string | null
+    email: string
+    isActive: boolean
+    organization?: {
+        id: number
+        name: string
+    } | null
+    role: string
 }
 
 export interface AuthData {
-  accessToken: string
-  expiresIn: number
-  tokenType: 'Bearer'
-  user: User
-}
-
-export interface ApiResponse<T = unknown> {
-  success: boolean
-  statusCode: number
-  message: string
-  data: T
+    user: User
+    accessToken: string
+    refreshToken: string
 }
 
 export type AuthResponse = ApiResponse<AuthData>

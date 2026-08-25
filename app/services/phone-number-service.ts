@@ -1,6 +1,6 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
-import type { ApiResponse } from '../types/agent'
+import type { ApiResponse } from '../types/api'
 import type { PhoneNumber, CallHours, HealthStatus } from '../types/phone-number'
 
 export interface UpdatePhoneNumberPayload {

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
-import type { ApiResponse } from '../types/agent'
+import type { ApiResponse } from '../types/api'
 import type { Call, CallStats, ArtifactAvailability, TranscriptAvailability, TranscriptDocument } from '../types/call'
 
 export interface CallListParams {
@@ -10,7 +10,7 @@ export interface CallListParams {
   q?: string
   status?: string[]
   direction?: string
-  agentUsername?: string
+  agentEmail?: string
   from?: string
   to?: string
   sortBy?: string
@@ -30,7 +30,7 @@ export class CallService {
       if (params.q) query.set('q', params.q)
       if (params.status?.length) query.set('status', params.status.join(','))
       if (params.direction) query.set('direction', params.direction)
-      if (params.agentUsername) query.set('agentUsername', params.agentUsername)
+      if (params.agentEmail) query.set('agentEmail', params.agentEmail)
       if (params.from) query.set('from', params.from)
       if (params.to) query.set('to', params.to)
       if (params.sortBy) query.set('sortBy', params.sortBy)

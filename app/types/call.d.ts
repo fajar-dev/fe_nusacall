@@ -13,7 +13,7 @@ export interface Call {
   profileName: string | null
   contactName: string | null
   inboxId: string | null
-  agentUsername: string | null
+  agentEmail: string | null
   direction: CallDirection
   status: CallStatus
   endReason: string | null

@@ -1,6 +1,6 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
-import type { ApiResponse } from '../types/agent'
+import type { ApiResponse } from '../types/api'
 import type { PermissionCheckResult } from '../types/permission'
 
 export class PermissionService {

@@ -14,7 +14,7 @@
         "dashboard": "Dasbor",
         "main": "Menu Utama",
         "feedback": "Feedback",
-        "agent": "Agent",
+        "user": "Pengguna",
         "contact": "Kontak",
         "call": "Panggilan",
         "phoneNumber": "Nomor"
@@ -29,6 +29,23 @@
       "logout": "Keluar",
       "logoutSuccess": "Berhasil keluar"
     },
+    "auth": {
+      "nusawork": {
+        "title": "Masuk dengan Nusawork",
+        "description": "Pindai Kode QR dengan aplikasi Nusawork",
+        "waiting": "Menunggu pemindaian...",
+        "success": "Pemindaian berhasil!",
+        "redirecting": "Sedang masuk...",
+        "expired": "QR Code sudah kedaluwarsa. Silakan coba lagi.",
+        "generateFailed": "Gagal membuat QR Code. Silakan coba lagi.",
+        "loginFailed": "Gagal masuk. Pengguna mungkin belum terdaftar.",
+        "step1": "Buka aplikasi Nusawork di ponsel Anda",
+        "step2": "Pilih menu Pindai QR di pojok kanan atas layar beranda",
+        "waitingApproval": "Menunggu persetujuan...",
+        "confirmed": "Terkonfirmasi",
+        "confirmInstruction": "Silakan selesaikan konfigurasi di aplikasi ponsel Anda"
+      }
+    },
     "deleteModal": {
       "defaultTitle": "Konfirmasi Hapus",
       "defaultDescription": "Apakah Anda yakin ingin menghapus {item}? Tindakan ini tidak dapat dibatalkan.",
@@ -42,12 +59,10 @@
     "softphone": {
       "availability": {
         "available": "Tersedia",
-        "busy": "Sibuk",
-        "away": "Pergi",
         "offline": "Offline"
       },
       "micDeniedTitle": "Akses mikrofon diperlukan",
-      "micDeniedDescription": "Izinkan akses mikrofon untuk menjadi tersedia dan menerima panggilan.",
+      "micDeniedDescription": "Izinkan akses mikrofon untuk menerima panggilan.",
       "answerFailedTitle": "Gagal menjawab panggilan",
       "answerFailedDescription": "Periksa izin mikrofon dan koneksi Anda, lalu coba lagi.",
       "incoming": {
@@ -87,8 +102,8 @@
     "dashboard": {
       "title": "Dasbor",
       "description": "Selamat datang di admin dashboard",
-      "totalAgents": "Total Agent",
-      "eligibleAgents": "Agent Siap Menerima Panggilan",
+      "totalUsers": "Total Pengguna",
+      "onlineUsers": "Pengguna Online Sekarang",
       "callsToday": "Panggilan Hari Ini",
       "answerRate": "Tingkat Terjawab",
       "answerRateWarning": "Di bawah ambang batas low-pickup-rate Meta",
@@ -110,25 +125,21 @@
         "togglePasswordVisibility": "Tampilkan/Sembunyikan Kata Sandi",
         "or": "ATAU",
         "orContinueWith": "Atau lanjutkan dengan",
-        "loginWithGoogle": "Masuk dengan Google"
+        "loginWithGoogle": "Masuk dengan Google",
+        "loginWithNusawork": "Masuk dengan Nusawork"
       }
     },
-    "agent": {
-      "title": "Agent",
-      "description": "Kelola agent dan kelayakan menerima panggilan",
-      "searchPlaceholder": "Cari agent...",
-      "columnAgent": "Agent",
+    "user": {
+      "title": "Pengguna",
+      "description": "Kelola pengguna dan perannya",
+      "searchPlaceholder": "Cari pengguna...",
+      "columnUser": "Pengguna",
       "columnRole": "Peran",
-      "columnAvailability": "Status",
-      "columnCallsHandled": "Panggilan Ditangani",
-      "columnCanReceiveCalls": "Boleh Menerima Panggilan",
-      "availability": {
-        "available": "Tersedia",
-        "busy": "Sibuk",
-        "away": "Tidak di Tempat",
+      "columnStatus": "Status",
+      "status": {
+        "available": "Online",
         "offline": "Luring"
-      },
-      "updatedSuccess": "Agent berhasil diperbarui"
+      }
     },
     "contact": {
       "title": "Kontak",
