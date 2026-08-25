@@ -2,7 +2,7 @@
   <div class="w-full">
     <div class="w-full max-w-sm mx-auto">
       <div class="flex flex-col gap-5 mb-6">
-        <BrandLogo />
+        <BrandLogo size="lg" />
         <div class="space-y-1">
           <h1 class="text-3xl font-bold text-highlighted">
             {{ $t('pages.auth.signIn.title') }}

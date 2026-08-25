@@ -32,37 +32,6 @@
             </p>
           </div>
 
-          <UBadge
-            v-if="call.isPicMatch"
-            color="primary"
-            variant="subtle"
-            icon="i-lucide-star"
-          >
-            {{ $t('components.softphone.incoming.picMatch') }}
-          </UBadge>
-
-          <p
-            v-if="call.lastMessage"
-            class="text-sm text-muted line-clamp-2"
-          >
-            {{ call.lastMessage }}
-          </p>
-
-          <div
-            v-if="call.tags?.length"
-            class="flex flex-wrap gap-1 justify-center"
-          >
-            <UBadge
-              v-for="tag in call.tags"
-              :key="tag"
-              color="neutral"
-              variant="soft"
-              size="sm"
-            >
-              {{ tag }}
-            </UBadge>
-          </div>
-
           <p
             class="text-sm font-mono"
             :class="secondsLeft <= 5 ? 'text-error' : 'text-dimmed'"
@@ -89,16 +58,6 @@
             {{ $t('components.softphone.incoming.answer') }}
           </UButton>
         </div>
-
-        <a
-          v-if="call.nusawaThreadUrl"
-          :href="call.nusawaThreadUrl"
-          target="_blank"
-          rel="noopener"
-          class="text-xs text-center text-primary hover:underline"
-        >
-          {{ $t('components.softphone.incoming.openThread') }}
-        </a>
       </UCard>
     </template>
   </UModal>

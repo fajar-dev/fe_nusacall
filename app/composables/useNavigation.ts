@@ -42,12 +42,6 @@ export const useNavigation = () => {
           icon: 'i-lucide-users'
         },
         {
-          id: 'contact',
-          label: t('components.sidebar.nav.contact'),
-          to: '/contact',
-          icon: 'i-lucide-contact'
-        },
-        {
           id: 'call',
           label: t('components.sidebar.nav.call'),
           to: '/call',

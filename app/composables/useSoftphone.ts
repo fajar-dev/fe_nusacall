@@ -13,16 +13,11 @@ export interface IncomingCall {
   callId: number
   waId: string
   displayWaId?: string
-  contactName: string | null // null = nusawa unreachable, a normal degradation
+  contactName: string | null
   profileName: string | null
   phoneNumberLabel?: string
   phoneNumberId?: string
   displayPhoneNumber?: string | null
-  inboxId?: string | null
-  lastMessage?: string | null
-  tags?: string[]
-  nusawaThreadUrl?: string | null
-  isPicMatch?: boolean
   expiresAt?: number
 }
 

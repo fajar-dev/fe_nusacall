@@ -3,7 +3,7 @@ import { handleServiceError } from '../composables/error-helper'
 import type { ApiResponse } from '../types/api'
 import type { PermissionCheckResult } from '../types/permission'
 
-export class PermissionService {
+class PermissionService {
   private get authHeaders() {
     return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
   }

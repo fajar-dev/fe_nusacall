@@ -14,7 +14,7 @@ export interface User {
     role: string
 }
 
-export interface AuthData {
+interface AuthData {
     user: User
     accessToken: string
     refreshToken: string

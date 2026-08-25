@@ -1,4 +1,4 @@
-export interface PaginationMeta {
+interface PaginationMeta {
   total: number
   perPage: number
   currentPage: number

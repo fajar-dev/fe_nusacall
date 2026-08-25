@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
 
-export class ApiService {
+class ApiService {
     private refreshHandler: (() => Promise<string | null>) | null = null
 
     public setRefreshHandler(handler: () => Promise<string | null>) {

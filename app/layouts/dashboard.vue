@@ -18,7 +18,7 @@
         appear
       >
         <div
-          class="fixed inset-0 bg-black/40"
+          class="fixed inset-0 backdrop-blur-xs bg-white/10 dark:bg-black/40"
           @click="() => { isMobileMenuOpen = false }"
         />
       </Transition>
@@ -32,17 +32,7 @@
         leave-to-class="-translate-x-full"
         appear
       >
-        <div class="fixed inset-y-0 left-0 w-24 z-50 bg-default h-full shadow-xl">
-          <div class="absolute top-4 right-2 z-50">
-            <UButton
-              icon="i-lucide-x"
-              color="neutral"
-              variant="ghost"
-              class="text-toned hover:text-highlighted"
-              :aria-label="$t('components.dashboardLayout.closeSidebar')"
-              @click="() => { isMobileMenuOpen = false }"
-            />
-          </div>
+        <div class="fixed inset-y-0 left-0 w-64 z-50 bg-default h-full shadow-2xl">
           <Sidebar class="h-full" />
         </div>
       </Transition>

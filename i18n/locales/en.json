@@ -15,7 +15,6 @@
         "main": "Main Menu",
         "feedback": "Feedback",
         "user": "Users",
-        "contact": "Contact",
         "call": "Calls",
         "phoneNumber": "Phone Numbers"
       }
@@ -46,12 +45,6 @@
         "confirmInstruction": "Please complete the configuration in the app on your phone"
       }
     },
-    "deleteModal": {
-      "defaultTitle": "Delete Confirmation",
-      "defaultDescription": "Are you sure you want to delete {item}? This action cannot be undone.",
-      "cancel": "Cancel",
-      "delete": "Delete"
-    },
     "dataTable": {
       "searchPlaceholder": "Search...",
       "showing": "Showing {from} to {to} of {total} results"
@@ -67,10 +60,8 @@
       "answerFailedDescription": "Check your microphone permission and connection, then try again.",
       "incoming": {
         "to": "To {label}",
-        "picMatch": "Your ticket",
         "reject": "Decline",
-        "answer": "Answer",
-        "openThread": "Open in NusaContact"
+        "answer": "Answer"
       },
       "active": {
         "title": "On call",
@@ -141,17 +132,6 @@
         "offline": "Offline"
       }
     },
-    "contact": {
-      "title": "Contacts",
-      "description": "View your agent's contact directory from nusawa",
-      "searchPlaceholder": "Search contacts...",
-      "columnName": "Name",
-      "columnOwnedBy": "Owned By",
-      "columnType": "Type",
-      "unnamed": "Unnamed contact",
-      "group": "Group",
-      "individual": "Individual"
-    },
     "call": {
       "title": "Calls",
       "description": "Full call history and outcomes",
@@ -205,8 +185,6 @@
       "disabled": "Calling disabled",
       "testNumber": "Test number",
       "answerTimeout": "Answer timeout",
-      "whitelistCount": "Whitelisted callers",
-      "unlimited": "Unlimited",
       "lastSynced": "Last synced",
       "edit": "Edit",
       "sync": "Sync",
@@ -222,8 +200,6 @@
         "iconDisabled": "Hide everywhere",
         "answerTimeout": "Answer timeout (seconds)",
         "callHours": "Operating hours",
-        "whitelist": "Caller whitelist",
-        "whitelistHint": "One number per line. Empty = unlimited.",
         "cancel": "Cancel",
         "save": "Save",
         "savedSuccess": "Phone number updated successfully"

@@ -20,7 +20,6 @@ export interface PhoneNumber {
   callingEnabled: boolean
   callIconVisibility: 'DEFAULT' | 'DISABLE_ALL'
   callHours: CallHours | null
-  callerWhitelist: string[]
   answerTimeoutSeconds: number
   routingStrategy: string
   lastSyncedAt: string | null

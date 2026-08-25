@@ -10,9 +10,20 @@
           :aria-label="$t('components.header.openMenu')"
           @click="() => { isMobileMenuOpen = true }"
         />
+        <BrandLogo size="sm" />
       </div>
 
-      <div class="flex items-center gap-2">
+
+
+      <div class="flex items-center gap-3">
+        <NuxtLink to="/feedback">
+          <UButton
+            icon="i-lucide-message-square-warning"
+            color="neutral"
+            variant="ghost"
+            :aria-label="$t('components.sidebar.nav.feedback')"
+          />
+        </NuxtLink>
         <UserPopover />
       </div>
     </header>

@@ -3,7 +3,7 @@ import { handleServiceError } from '../composables/error-helper'
 import type { AuthResponse, User } from '../types/auth'
 import type { ApiResponse } from "../types/api"
 
-export class AuthService {
+class AuthService {
   private readonly ACCESS_TOKEN_KEY = 'accessToken'
   private readonly REFRESH_TOKEN_KEY = 'refreshToken'
   private readonly USER_KEY = 'user'

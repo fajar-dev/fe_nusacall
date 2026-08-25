@@ -49,7 +49,6 @@
 
           <div class="text-xs text-dimmed space-y-0.5">
             <p>{{ $t('pages.phoneNumber.answerTimeout') }}: {{ pn.answerTimeoutSeconds }}s</p>
-            <p>{{ $t('pages.phoneNumber.whitelistCount') }}: {{ pn.callerWhitelist.length || $t('pages.phoneNumber.unlimited') }}</p>
             <p>{{ $t('pages.phoneNumber.lastSynced') }}: {{ pn.lastSyncedAt ? formatRelative(pn.lastSyncedAt) : '—' }}</p>
           </div>
 

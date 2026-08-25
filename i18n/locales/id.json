@@ -15,7 +15,6 @@
         "main": "Menu Utama",
         "feedback": "Feedback",
         "user": "Pengguna",
-        "contact": "Kontak",
         "call": "Panggilan",
         "phoneNumber": "Nomor"
       }
@@ -46,12 +45,6 @@
         "confirmInstruction": "Silakan selesaikan konfigurasi di aplikasi ponsel Anda"
       }
     },
-    "deleteModal": {
-      "defaultTitle": "Konfirmasi Hapus",
-      "defaultDescription": "Apakah Anda yakin ingin menghapus {item}? Tindakan ini tidak dapat dibatalkan.",
-      "cancel": "Batal",
-      "delete": "Hapus"
-    },
     "dataTable": {
       "searchPlaceholder": "Cari...",
       "showing": "Menampilkan {from} sampai {to} dari {total} hasil"
@@ -67,10 +60,8 @@
       "answerFailedDescription": "Periksa izin mikrofon dan koneksi Anda, lalu coba lagi.",
       "incoming": {
         "to": "Ke {label}",
-        "picMatch": "Tiket Anda",
         "reject": "Tolak",
-        "answer": "Jawab",
-        "openThread": "Buka di NusaContact"
+        "answer": "Jawab"
       },
       "active": {
         "title": "Sedang menelepon",
@@ -141,17 +132,6 @@
         "offline": "Luring"
       }
     },
-    "contact": {
-      "title": "Kontak",
-      "description": "Lihat daftar kontak agent dari nusawa",
-      "searchPlaceholder": "Cari kontak...",
-      "columnName": "Nama",
-      "columnOwnedBy": "Dimiliki Oleh",
-      "columnType": "Tipe",
-      "unnamed": "Kontak tanpa nama",
-      "group": "Grup",
-      "individual": "Individu"
-    },
     "call": {
       "title": "Panggilan",
       "description": "Riwayat dan hasil seluruh panggilan",
@@ -205,8 +185,6 @@
       "disabled": "Panggilan nonaktif",
       "testNumber": "Nomor uji",
       "answerTimeout": "Timeout menjawab",
-      "whitelistCount": "Penelepon di-whitelist",
-      "unlimited": "Tanpa batas",
       "lastSynced": "Terakhir disinkron",
       "edit": "Ubah",
       "sync": "Sinkron",
@@ -222,8 +200,6 @@
         "iconDisabled": "Sembunyikan semua",
         "answerTimeout": "Timeout menjawab (detik)",
         "callHours": "Jam operasional",
-        "whitelist": "Whitelist penelepon",
-        "whitelistHint": "Satu nomor per baris. Kosong = tanpa batas.",
         "cancel": "Batal",
         "save": "Simpan",
         "savedSuccess": "Nomor telepon berhasil diperbarui"

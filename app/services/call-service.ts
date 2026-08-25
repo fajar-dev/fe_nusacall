@@ -4,7 +4,7 @@ import { handleServiceError } from '../composables/error-helper'
 import type { ApiResponse } from '../types/api'
 import type { Call, CallStats, ArtifactAvailability, TranscriptAvailability, TranscriptDocument } from '../types/call'
 
-export interface CallListParams {
+interface CallListParams {
   page?: number
   limit?: number
   q?: string
@@ -17,7 +17,7 @@ export interface CallListParams {
   order?: 'ASC' | 'DESC'
 }
 
-export class CallService {
+class CallService {
   private get authHeaders() {
     return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
   }

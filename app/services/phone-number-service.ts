@@ -9,10 +9,9 @@ export interface UpdatePhoneNumberPayload {
   callIconVisibility?: 'DEFAULT' | 'DISABLE_ALL'
   answerTimeoutSeconds?: number
   callHours?: CallHours | null
-  callerWhitelist?: string[]
 }
 
-export class PhoneNumberService {
+class PhoneNumberService {
   private get authHeaders() {
     return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
   }

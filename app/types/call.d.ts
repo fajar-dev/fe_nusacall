@@ -2,7 +2,7 @@ export type CallStatus
   = | 'pending' | 'ringing' | 'connecting' | 'active'
     | 'completed' | 'missed' | 'rejected' | 'failed' | 'abandoned'
 
-export type CallDirection = 'inbound' | 'outbound'
+type CallDirection = 'inbound' | 'outbound'
 
 export interface Call {
   id: number
@@ -12,7 +12,6 @@ export interface Call {
   waId: string
   profileName: string | null
   contactName: string | null
-  inboxId: string | null
   agentEmail: string | null
   direction: CallDirection
   status: CallStatus

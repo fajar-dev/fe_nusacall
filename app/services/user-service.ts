@@ -3,7 +3,7 @@ import { handleServiceError } from '../composables/error-helper'
 import type { ApiResponse } from '../types/api'
 import type { User } from '../types/user'
 
-export class UserService {
+class UserService {
   private get authHeaders() {
     return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
   }

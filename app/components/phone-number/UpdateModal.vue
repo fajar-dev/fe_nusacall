@@ -59,17 +59,6 @@
           />
         </UFormField>
 
-        <UFormField
-          :label="$t('pages.phoneNumber.updateModal.whitelist')"
-          :description="$t('pages.phoneNumber.updateModal.whitelistHint')"
-        >
-          <UTextarea
-            v-model="whitelistText"
-            :rows="3"
-            placeholder="628123456789"
-          />
-        </UFormField>
-
         <div class="flex items-center gap-3 pt-2">
           <UButton
             color="neutral"
@@ -105,7 +94,6 @@ const { t } = useI18n()
 const toast = useToast()
 
 const form = ref<UpdatePhoneNumberPayload | null>(null)
-const whitelistText = ref('')
 const saving = ref(false)
 const callHoursFormRef = ref<{ isValid: boolean } | null>(null)
 
@@ -123,7 +111,6 @@ watch(() => props.phoneNumber, (pn) => {
     answerTimeoutSeconds: pn.answerTimeoutSeconds,
     callHours: pn.callHours
   }
-  whitelistText.value = pn.callerWhitelist.join('\n')
 }, { immediate: true })
 
 async function save() {
@@ -132,8 +119,7 @@ async function save() {
 
   saving.value = true
   try {
-    const callerWhitelist = whitelistText.value.split('\n').map(s => s.trim()).filter(Boolean)
-    const response = await phoneNumberService.update(props.phoneNumber.id, { ...form.value, callerWhitelist })
+    const response = await phoneNumberService.update(props.phoneNumber.id, form.value)
     if (response.success) {
       toast.add({ title: t('pages.phoneNumber.updateModal.savedSuccess'), color: 'success', icon: 'i-lucide-circle-check' })
       emit('updated', response.data)
