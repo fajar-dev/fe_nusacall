@@ -27,7 +27,7 @@
       />
 
       <!-- Navigation Content -->
-      <nav class="flex-1 overflow-y-auto min-h-0 py-3 space-y-1 lg:space-y-1 scrollbar-thin">
+      <nav class="flex-1 overflow-y-auto min-h-0 py-3 space-y-1 lg:space-y-1.5 scrollbar-thin">
         <template
           v-for="group in navGroups"
           :key="group.id || group.title"

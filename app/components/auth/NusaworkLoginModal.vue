@@ -41,21 +41,21 @@
             :alt="`${profile.firstName} ${profile.lastName}`"
             icon="i-lucide-user"
             size="3xl"
-            class="border-2 border-neutral-200 shadow-sm"
+            class="border-2 border-neutral-200 dark:border-neutral-700 shadow-sm"
             loading="lazy"
           />
           <div class="text-center">
-            <p class="text-base font-bold text-neutral-900">{{ profile.firstName }} {{ profile.lastName }}</p>
-            <p class="text-xs text-neutral-600 mt-0.5">{{ profile.email }}</p>
+            <p class="text-base font-bold text-highlighted">{{ profile.firstName }} {{ profile.lastName }}</p>
+            <p class="text-xs text-muted mt-0.5">{{ profile.email }}</p>
           </div>
           <UBadge :label="$t('components.auth.nusawork.confirmed')" color="success" variant="subtle" size="sm" class="uppercase tracking-wide" />
-          <p class="text-xs text-neutral-400 text-center">
+          <p class="text-xs text-muted text-center">
             {{ $t('components.auth.nusawork.confirmInstruction') }}
           </p>
         </div>
 
         <div v-else class="relative">
-          <div class="w-52 h-52 rounded-xl bg-white border border-neutral-200 p-2 shadow-sm">
+          <div class="w-52 h-52 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-2 shadow-sm">
             <img
               v-if="qrCode"
               :src="qrCode"
@@ -77,13 +77,13 @@
         </div>
 
         <div v-if="status === 'waiting'" class="w-full space-y-2">
-          <div class="flex items-center gap-3 rounded-lg bg-neutral-50 px-3.5 py-3">
-            <UBadge label="1" color="success" variant="subtle" class="rounded-full w-6 h-6 justify-center" />
-            <span class="text-sm text-neutral-700">{{ $t('components.auth.nusawork.step1') }}</span>
+          <div class="flex items-center gap-3 rounded-lg bg-neutral-100/80 dark:bg-neutral-800/80 px-3.5 py-3 border border-neutral-200/50 dark:border-neutral-700/50">
+            <UBadge label="1" color="success" variant="subtle" class="rounded-full size-6 justify-center shrink-0" />
+            <span class="text-sm text-toned font-medium">{{ $t('components.auth.nusawork.step1') }}</span>
           </div>
-          <div class="flex items-center gap-3 rounded-lg bg-neutral-50 px-3.5 py-3">
-            <UBadge label="2" color="success" variant="subtle" class="rounded-full w-6 h-6 justify-center" />
-            <span class="text-sm text-neutral-700">{{ $t('components.auth.nusawork.step2') }}</span>
+          <div class="flex items-center gap-3 rounded-lg bg-neutral-100/80 dark:bg-neutral-800/80 px-3.5 py-3 border border-neutral-200/50 dark:border-neutral-700/50">
+            <UBadge label="2" color="success" variant="subtle" class="rounded-full size-6 justify-center shrink-0" />
+            <span class="text-sm text-toned font-medium">{{ $t('components.auth.nusawork.step2') }}</span>
           </div>
         </div>
       </div>

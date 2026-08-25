@@ -135,7 +135,7 @@
     </div>
 
     <p class="absolute bottom-6 left-0 right-0 text-center text-sm text-toned">
-      2026 &copy; PT. Media Antar Nusa
+     <strong>NusaCall</strong> by NusaContact <br> 2026 &copy; PT. Media Antar Nusa
     </p>
     <AuthNusaworkLoginModal v-model="showQrModal" @success="onQrSuccess" />
   </div>

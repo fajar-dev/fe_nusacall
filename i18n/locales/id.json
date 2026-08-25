@@ -103,7 +103,7 @@
     "auth": {
       "signIn": {
         "title": "NusaCall",
-        "description": "Masuk menggunakan akun NusaContact",
+        "description": "Masuk menggunakan akun Nusawork",
         "emailLabel": "Email",
         "emailPlaceholder": "E-mail",
         "passwordLabel": "Kata Sandi",

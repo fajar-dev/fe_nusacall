@@ -103,7 +103,7 @@
     "auth": {
       "signIn": {
         "title": "NusaCall",
-        "description": "Sign in using NusaContact account",
+        "description": "Sign in using Nusawork account",
         "emailLabel": "Email",
         "emailPlaceholder": "E-mail",
         "passwordLabel": "Password",
