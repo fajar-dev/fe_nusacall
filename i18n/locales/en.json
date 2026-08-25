@@ -14,7 +14,7 @@
         "dashboard": "Dashboard",
         "main": "Main Menu",
         "feedback": "Feedback",
-        "user": "Users",
+        "user": "Agents",
         "call": "Calls",
         "phoneNumber": "Phone Numbers"
       }
@@ -93,8 +93,8 @@
     "dashboard": {
       "title": "Dashboard",
       "description": "Welcome to the admin dashboard",
-      "totalUsers": "Total Users",
-      "onlineUsers": "Users Online Now",
+      "totalUsers": "Total Agents",
+      "onlineUsers": "Agents Online Now",
       "callsToday": "Today's Calls",
       "answerRate": "Answer Rate",
       "answerRateWarning": "Below Meta's low-pickup-rate threshold",
@@ -121,12 +121,14 @@
       }
     },
     "user": {
-      "title": "Users",
-      "description": "Manage users and their roles",
-      "searchPlaceholder": "Search users...",
-      "columnUser": "User",
+      "title": "Agents",
+      "description": "Manage agents and their roles",
+      "searchPlaceholder": "Search agents...",
+      "columnUser": "Agent",
       "columnRole": "Role",
+      "columnOrganization": "Organization",
       "columnStatus": "Status",
+      "allOrganizations": "All organizations",
       "status": {
         "available": "Online",
         "offline": "Offline"

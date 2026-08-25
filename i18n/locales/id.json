@@ -14,7 +14,7 @@
         "dashboard": "Dasbor",
         "main": "Menu Utama",
         "feedback": "Feedback",
-        "user": "Pengguna",
+        "user": "Agent",
         "call": "Panggilan",
         "phoneNumber": "Nomor"
       }
@@ -93,8 +93,8 @@
     "dashboard": {
       "title": "Dasbor",
       "description": "Selamat datang di admin dashboard",
-      "totalUsers": "Total Pengguna",
-      "onlineUsers": "Pengguna Online Sekarang",
+      "totalUsers": "Total Agent",
+      "onlineUsers": "Agent Online Sekarang",
       "callsToday": "Panggilan Hari Ini",
       "answerRate": "Tingkat Terjawab",
       "answerRateWarning": "Di bawah ambang batas low-pickup-rate Meta",
@@ -121,15 +121,17 @@
       }
     },
     "user": {
-      "title": "Pengguna",
-      "description": "Kelola pengguna dan perannya",
-      "searchPlaceholder": "Cari pengguna...",
-      "columnUser": "Pengguna",
+      "title": "Agent",
+      "description": "Kelola agent dan perannya",
+      "searchPlaceholder": "Cari agent...",
+      "columnUser": "Agent",
       "columnRole": "Peran",
+      "columnOrganization": "Organisasi",
       "columnStatus": "Status",
+      "allOrganizations": "Semua organisasi",
       "status": {
-        "available": "Online",
-        "offline": "Luring"
+        "available": "Aktif",
+        "offline": "Tidak Aktif"
       }
     },
     "call": {

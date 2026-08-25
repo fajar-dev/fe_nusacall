@@ -3,18 +3,31 @@ import { handleServiceError } from '../composables/error-helper'
 import type { ApiResponse } from '../types/api'
 import type { User } from '../types/user'
 
+export interface UserListParams {
+  page?: number
+  limit?: number
+  q?: string
+  organizationId?: number
+  sortBy?: string
+  order?: 'ASC' | 'DESC'
+}
+
 class UserService {
   private get authHeaders() {
     return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
   }
 
-  async getAll(page = 1, perPage = 10, q = ''): Promise<ApiResponse<User[]>> {
+  async getAll(params: UserListParams = {}): Promise<ApiResponse<User[]>> {
     try {
-      const params = new URLSearchParams({ page: String(page), limit: String(perPage), q })
-      const response = await apiService.client.get<ApiResponse<User[]>>(
-        `/user?${params.toString()}`,
-        this.authHeaders
-      )
+      const query = new URLSearchParams()
+      query.set('page', String(params.page ?? 1))
+      query.set('limit', String(params.limit ?? 10))
+      if (params.q) query.set('q', params.q)
+      if (params.organizationId) query.set('organizationId', String(params.organizationId))
+      if (params.sortBy) query.set('sortBy', params.sortBy)
+      if (params.order) query.set('order', params.order)
+
+      const response = await apiService.client.get<ApiResponse<User[]>>(`/user?${query.toString()}`, this.authHeaders)
       return response.data
     } catch (error) {
       return handleServiceError(error)
