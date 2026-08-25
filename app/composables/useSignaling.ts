@@ -10,9 +10,8 @@ export interface WsPacket {
 type WsHandler = (packet: WsPacket) => void
 
 /**
- * WebSocket transport for the softphone (docs/API-SPEC.md §8). Reconnects
- * with exponential backoff on unexpected close, but never on a call still
- * in progress — the caller (useSoftphone) owns call lifecycle decisions.
+ * WebSocket transport for the softphone. Reconnects with exponential backoff
+ * on unexpected close; useSoftphone owns call lifecycle decisions.
  */
 class SignalingClient {
   private ws: WebSocket | null = null

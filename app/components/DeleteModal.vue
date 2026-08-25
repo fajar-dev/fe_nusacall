@@ -5,7 +5,6 @@
   >
     <template #content>
       <UCard :ui="{ body: 'flex flex-col gap-4 relative' }">
-        <!-- Modal Header -->
         <div class="flex flex-col items-center text-center select-none space-y-3">
           <div class="w-12 h-12 rounded-full bg-error/10 flex items-center justify-center">
             <UIcon
@@ -25,7 +24,6 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
         <div class="flex items-center gap-3">
           <UButton
             color="neutral"

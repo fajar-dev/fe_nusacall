@@ -2,7 +2,6 @@
 <template>
   <div class="relative h-full shrink-0">
     <aside class="flex flex-col h-full bg-default border-r border-default shrink-0 justify-between select-none w-24 px-1 py-3">
-      <!-- Top Section: App/Brand Logo Header -->
       <div class="flex flex-col items-center pb-6 pt-1.5 shrink-0 gap-1">
         <BrandLogo :is-collapsed="true" />
       </div>
@@ -11,7 +10,6 @@
         class="px-4 mt-1"
         size="sm"
       />
-      <!-- Navigation Menus (Scrollable middle area) -->
       <nav class="flex-1 overflow-y-auto min-h-0 py-2.5 space-y-0.5 pt-6 scrollbar-thin flex flex-col items-center">
         <template
           v-for="group in navGroups"
@@ -21,7 +19,6 @@
             v-for="item in group.items"
             :key="item.id"
           >
-            <!-- Item WITH children (popover flyout submenu) -->
             <UPopover
               v-if="item.children && item.children.length"
               :content="{ side: 'right', sideOffset: 12, align: 'start' }"
@@ -82,7 +79,6 @@
               </template>
             </UPopover>
 
-            <!-- Item WITHOUT children (regular link) -->
             <NuxtLink
               v-else
               :to="item.to"
@@ -114,7 +110,6 @@
         </template>
       </nav>
 
-      <!-- Bottom Section (Fixed at bottom) -->
       <div class="shrink-0 pt-2.5 flex flex-col items-center space-y-1">
         <template
           v-for="item in bottomNavItems"
@@ -148,7 +143,6 @@
           </NuxtLink>
         </template>
 
-        <!-- Settings Popover -->
         <UserPopover :popover-props="{ content: { side: 'right', sideOffset: 12, align: 'end' } }">
           <button
             class="flex flex-col items-center justify-center w-full py-1 px-1 rounded-xl transition-colors cursor-pointer group text-muted hover:text-highlighted"

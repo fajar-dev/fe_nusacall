@@ -12,8 +12,8 @@ export class AuthService {
   public token = ref<string | null>(null)
 
     constructor() {
-        this.restoreSession() // Sync restore
-        this.validateSession() // Async validation in background
+        this.restoreSession()
+        this.validateSession()
         apiService.setRefreshHandler(this.refreshToken.bind(this))
     }
 
@@ -72,7 +72,6 @@ export class AuthService {
         }
     }
 
-  /** Never calls nusawa directly — the backend relays credentials server-side. */
   async login(email: string, password: string): Promise<AuthResponse> {
     try {
       const response = await apiService.client.post<AuthResponse>('/auth/login', { email, password })
@@ -83,13 +82,12 @@ export class AuthService {
     }
   }
 
-  /** Same relay pattern as `login` — nusawa verifies the Google ID token itself. */
-  async loginWithGoogle(idToken: string): Promise<AuthResponse> {
+  async google(code: string): Promise<AuthResponse> {
     try {
-      const response = await apiService.client.post<AuthResponse>('/auth/login/google', { idToken })
+      const response = await apiService.client.post<AuthResponse>('/auth/google', { code })
       this.setSession(response.data)
       return response.data
-    } catch (error) {
+    } catch (error: any) {
       return handleServiceError(error)
     }
   }
@@ -116,8 +114,7 @@ export class AuthService {
 
             this.token.value = null
             this.user.value = null
-        
-            // Ensure redirect happens
+
             if (window.location.pathname !== '/auth/sign-in') {
                 if (preserveRedirect) {
                     const currentPath = window.location.pathname + window.location.search
@@ -141,8 +138,6 @@ export class AuthService {
     this.token.value = accessToken
     this.user.value = user
   }
-
-  // ── Nusawork Login ────────────────────────────────────────────────────
 
     private getBaseUrl(): string {
         const config = useRuntimeConfig()

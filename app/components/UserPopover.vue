@@ -1,6 +1,5 @@
 <template>
   <UPopover v-bind="popoverProps">
-    <!-- Trigger: use slot or default avatar -->
     <slot>
       <UAvatar
         :alt="authState.user?.name || authState.user?.email"
@@ -11,7 +10,6 @@
 
     <template #content>
       <div class="p-2 w-56 space-y-1.5 select-none">
-        <!-- User Info -->
         <div class="flex items-center gap-3 p-1.5">
           <UAvatar
             :alt="authState.user?.name || authState.user?.email"
@@ -29,9 +27,7 @@
 
         <USeparator />
 
-        <!-- Settings Items -->
         <div class="space-y-0.5">
-          <!-- Theme Dropdown Menu -->
           <UDropdownMenu
             :items="themeMenuItems"
             :content="{ side: 'right', sideOffset: 15 }"
@@ -55,7 +51,6 @@
             </template>
           </UDropdownMenu>
 
-          <!-- Language Dropdown Menu -->
           <UDropdownMenu
             :items="langMenuItems"
             :content="{ side: 'right', sideOffset: 15 }"
@@ -82,7 +77,6 @@
 
         <USeparator />
 
-        <!-- Logout Action -->
         <div>
           <UButton
             color="error"

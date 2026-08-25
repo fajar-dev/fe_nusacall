@@ -47,7 +47,7 @@ export class ApiService {
                     return instance(originalRequest)
                 }
                 } catch (refreshError) {
-                // Refresh failed, proceed to logout
+                  // fall through to logout
                 }
             }
 

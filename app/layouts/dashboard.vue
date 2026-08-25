@@ -1,16 +1,13 @@
 <template>
   <div class="flex h-screen w-full font-sans text-highlighted overflow-hidden">
-    <!-- 1. Sidebar Left (Desktop) -->
     <div class="hidden lg:block h-full">
       <Sidebar />
     </div>
 
-    <!-- 2. Mobile Sidebar Overlay Drawer -->
     <div
       v-if="isMobileMenuOpen"
       class="fixed inset-0 z-40 lg:hidden"
     >
-      <!-- Backdrop with Fade Transition -->
       <Transition
         enter-active-class="transition-opacity duration-300 ease-out"
         enter-from-class="opacity-0"
@@ -26,7 +23,6 @@
         />
       </Transition>
 
-      <!-- Drawer Sidebar Panel with Slide-in Transition -->
       <Transition
         enter-active-class="transition-transform duration-300 ease-out"
         enter-from-class="-translate-x-full"
@@ -37,7 +33,6 @@
         appear
       >
         <div class="fixed inset-y-0 left-0 w-24 z-50 bg-default h-full shadow-xl">
-          <!-- Close overlay button inside sidebar header -->
           <div class="absolute top-4 right-2 z-50">
             <UButton
               icon="i-lucide-x"
@@ -53,9 +48,7 @@
       </Transition>
     </div>
 
-    <!-- 3. Main Dashboard Content (Right) -->
     <div class="flex-1 flex flex-col h-full overflow-hidden">
-      <!-- Scrollable content area -->
       <main class="flex-1 overflow-y-auto p-4 lg:p-6">
         <slot />
       </main>
@@ -71,7 +64,6 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const isMobileMenuOpen = useState('isMobileMenuOpen', () => false)
 
-// Close mobile sidebar when switching pages
 watch(() => route.path, () => {
   isMobileMenuOpen.value = false
 })

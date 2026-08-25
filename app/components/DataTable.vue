@@ -1,10 +1,8 @@
 <template>
   <div class="space-y-5">
-    <!-- Controls -->
     <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
       <div class="flex flex-col sm:flex-row sm:items-center gap-2">
         <div class="flex flex-row items-center gap-2">
-          <!-- Search -->
           <UInput
             v-model="search"
             icon="i-lucide-search"
@@ -13,7 +11,6 @@
             class="w-full sm:w-64"
           />
 
-          <!-- Items per page -->
           <USelect
             v-model="perPage"
             :items="limitOptions"
@@ -21,19 +18,16 @@
           />
         </div>
 
-        <!-- Extra filter controls -->
         <div class="w-full sm:w-auto">
           <slot name="filters" />
         </div>
       </div>
 
-      <!-- Custom Top-Right Actions Slot -->
       <div class="w-full lg:w-auto">
         <slot name="actions" />
       </div>
     </div>
 
-    <!-- Table -->
     <div class="overflow-x-auto">
       <UTable
         v-model:expanded="expanded"
@@ -56,7 +50,6 @@
       </UTable>
     </div>
 
-    <!-- Pagination -->
     <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
       <span class="text-sm text-muted">
         {{ $t('components.dataTable.showing', { from: from || 0, to: to || 0, total }) }}

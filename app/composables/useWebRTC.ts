@@ -1,7 +1,6 @@
 /**
  * Agent-leg RTCPeerConnection. Waits for full ICE gathering before sending
- * the offer — the backend's MediaSession does the same (docs/MEDIA-PLANE.md
- * §5), so both sides negotiate with complete SDP, no trickle exchange.
+ * the offer, matching the backend's MediaSession — no trickle exchange.
  */
 class WebRTCClient {
   private pc: RTCPeerConnection | null = null

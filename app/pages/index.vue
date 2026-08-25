@@ -71,8 +71,7 @@ onMounted(async () => {
     startOfDay.setHours(0, 0, 0, 0)
 
     const [usersResponse, availableResponse, statsResponse] = await Promise.all([
-      // limit=1: this dashboard card only needs the total count from
-      // meta, not the rows themselves.
+      // limit=1: this card only needs the total count from meta, not the rows.
       userService.getAll(1, 1),
       userService.getAvailable(),
       callService.getStats({ from: startOfDay.toISOString() })

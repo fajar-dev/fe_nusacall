@@ -20,7 +20,6 @@
           </UBadge>
         </div>
 
-        <!-- Ringkasan -->
         <div class="grid grid-cols-2 gap-3 text-sm">
           <div>
             <p class="text-xs text-muted">
@@ -69,7 +68,6 @@
 
         <USeparator />
 
-        <!-- Linimasa -->
         <div>
           <p class="text-xs text-muted mb-2">
             {{ $t('pages.call.detail.timeline') }}
@@ -118,7 +116,6 @@
 
         <USeparator />
 
-        <!-- Teknis -->
         <div class="space-y-1 text-xs text-dimmed">
           <p>WACID: {{ call.wacid }}</p>
           <p v-if="call.errorCode">

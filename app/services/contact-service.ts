@@ -4,9 +4,8 @@ import type { ApiResponse } from '../types/api'
 import type { Contact } from '../types/contact'
 
 /**
- * NusaCall owns no contact data of its own — this calls NusaCall's own
- * /api/contact, which relays to nusawa server-side. The browser never talks
- * to nusawa directly. See docs/INTEGRATION-NUSAWA.md §3.6.
+ * NusaCall owns no contact data — this calls NusaCall's /api/contact, which
+ * relays to nusawa server-side. The browser never talks to nusawa directly.
  */
 export class ContactService {
   private get authHeaders() {

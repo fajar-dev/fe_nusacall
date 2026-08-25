@@ -11,12 +11,10 @@
 
     <template #body>
       <div class="flex flex-col items-center gap-4 py-2">
-        <!-- Loading state -->
         <div v-if="isLoading" class="w-52 h-52 rounded-xl bg-neutral-100 flex items-center justify-center">
           <UIcon name="i-lucide-loader-2" class="w-8 h-8 text-neutral-600 animate-spin" />
         </div>
 
-        <!-- Error / Expired state -->
         <UAlert
           v-else-if="error"
           color="error"
@@ -37,7 +35,6 @@
           </template>
         </UAlert>
 
-        <!-- Confirmation state: scanned, waiting for approval -->
         <div v-else-if="status === 'confirmation' && profile" class="w-full flex flex-col items-center gap-4 py-2">
           <UAvatar
             :src="profile.photo"
@@ -57,7 +54,6 @@
           </p>
         </div>
 
-        <!-- QR Code display (waiting state) -->
         <div v-else class="relative">
           <div class="w-52 h-52 rounded-xl bg-white border border-neutral-200 p-2 shadow-sm">
             <img
@@ -67,7 +63,6 @@
               class="w-full h-full object-contain rounded-lg"
             />
           </div>
-          <!-- Countdown badge -->
           <div v-if="status === 'waiting'" class="absolute bottom-2 left-2 right-2 flex items-center justify-center">
             <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm">
               <span class="relative flex h-2 w-2">
@@ -81,7 +76,6 @@
           </div>
         </div>
 
-        <!-- Instructions (only in waiting state) -->
         <div v-if="status === 'waiting'" class="w-full space-y-2">
           <div class="flex items-center gap-3 rounded-lg bg-neutral-50 px-3.5 py-3">
             <UBadge label="1" color="success" variant="subtle" class="rounded-full w-6 h-6 justify-center" />

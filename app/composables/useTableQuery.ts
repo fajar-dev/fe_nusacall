@@ -32,12 +32,9 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
 
   watch([page, perPage, sortBy, order], onQueryChange)
 
-  // Fires the first fetch. NOT `watch(..., { immediate: true })` above —
-  // that would run synchronously while this composable's own return value
-  // is still being destructured by the caller, so `onQueryChange` (defined
-  // in the caller's scope, closing over that destructured `page` etc.)
-  // would read those bindings before they exist. onMounted defers until
-  // after setup finishes, when they're safely assigned.
+  // Fires the first fetch via onMounted, not `watch(..., { immediate: true })` —
+  // immediate would run before the caller finishes destructuring this
+  // composable's return value, so onQueryChange would close over undefined bindings.
   onMounted(() => onQueryChange())
 
   let searchTimeout: ReturnType<typeof setTimeout>
@@ -49,11 +46,8 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
     }, 300)
   })
 
-  /**
-   * Inline SVG chevrons (not `UIcon`) — `resolveComponent` only resolves Nuxt UI
-   * components when called inside a `.vue` `<script setup>` (build-time transform);
-   * called from this plain composable it silently falls back to a literal `<uicon>` tag.
-   */
+  /** Inline SVG, not `UIcon` — `resolveComponent` only works inside `.vue` `<script setup>`;
+   * from this plain composable it silently falls back to a literal `<uicon>` tag. */
   const chevron = (direction: 'up' | 'down', colorClass: string) =>
     h('svg', {
       'viewBox': '0 0 24 24',

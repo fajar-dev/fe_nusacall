@@ -29,7 +29,7 @@ export interface Call {
   createdAt: string
 }
 
-/** Meta's transcript document shape — docs: calling/call-transcription. */
+/** Meta's transcript document shape. */
 export interface TranscriptDocument {
   metadata?: {
     duration?: number

@@ -1,12 +1,12 @@
 import { callService } from '~/services/call-service'
 
 export type SoftphoneState
-  = | 'disconnected' // WebSocket not yet connected
-    | 'idle' // ready
-    | 'ringing' // an incoming call
-    | 'connecting' // answering, negotiating media
-    | 'active' // in a call
-    | 'ending' // hanging up
+  = | 'disconnected'
+    | 'idle'
+    | 'ringing'
+    | 'connecting'
+    | 'active'
+    | 'ending'
 
 export interface IncomingCall {
   wacid: string
@@ -27,10 +27,8 @@ export interface IncomingCall {
 }
 
 /**
- * Single source of truth for the softphone (docs/FRONTEND-SPEC.md §2.2-2.3).
- * Components only READ this state — only this composable may write it.
- * Layers underneath: useSignaling() (WebSocket), useWebRTC() (media),
- * useCallAudio() (ringtone/permissions). Components must not call those directly.
+ * Single source of truth for the softphone state: components only read it,
+ * only this composable writes it. Call useSignaling/useWebRTC/useCallAudio only from here.
  */
 export function useSoftphone() {
   const state = useState<SoftphoneState>('softphone-state', () => 'disconnected')
@@ -57,11 +55,8 @@ export function useSoftphone() {
 
     signaling.on('connected', async () => {
       if (state.value === 'disconnected') state.value = 'idle'
-      // The backend marks this connection "available" automatically on
-      // connect — there's no manual toggle to resend. What used to gate
-      // behind clicking "available" in PresenceToggle now happens right
-      // here instead: ask for mic/notification permission as soon as the
-      // socket comes up, since being connected IS being available now.
+      // Being connected IS being available now (no manual toggle), so
+      // request mic/notification permission as soon as the socket connects.
       const granted = await audio.requestMicPermission()
       micDenied.value = !granted
       if (granted) await audio.requestNotificationPermission()
@@ -69,12 +64,9 @@ export function useSoftphone() {
 
     signaling.on('incoming_call', (packet) => {
       if (state.value !== 'idle') return // already ringing/on a call
-      // wacid rides on the packet envelope (packet.wacid), not inside
-      // packet.data — the backend never puts it in data. Reading
-      // incomingCall.value.wacid without this merge is always undefined,
-      // so answer()/reject() silently send answer_call with no wacid at
-      // all (JSON.stringify drops the undefined key), which the server
-      // can't match to any call or session.
+      // wacid lives on the packet envelope, not packet.data — the backend
+      // never puts it there. Without this merge, answer()/reject() send
+      // no wacid and the server can't match the call.
       if (!packet.wacid) {
         console.error('incoming_call packet missing wacid, dropping', packet)
         return
@@ -130,15 +122,10 @@ export function useSoftphone() {
       if (!signaling.connected.value) throw new Error('Signaling socket is not connected')
       signaling.send({ type: 'answer_call', wacid, data: { sdp: offerSdp } })
     } catch (err) {
-      // getUserMedia/ICE can fail for reasons with zero server-side signal
-      // (mic permission revoked, device busy, insecure context), and
-      // signaling.send() silently no-ops on a closed socket instead of
-      // throwing — without this, the agent sees the modal vanish and
-      // nothing else, and the call just sits there until the backend's own
-      // answer-timeout closes it. We never sent answer_call, so there's
-      // nothing to undo server-side: another ringing agent (if any) can
-      // still pick it up, and the existing timeout naturally releases this
-      // one.
+      // getUserMedia/ICE failures have no server-side signal, and a closed
+      // socket send() silently no-ops — without this catch the call would
+      // hang until the backend's answer-timeout. No answer_call was sent,
+      // so there's nothing to undo server-side.
       console.error('Failed to answer call', err)
       useToast().add({
         title: t('components.softphone.answerFailedTitle'),
@@ -153,12 +140,9 @@ export function useSoftphone() {
   }
 
   /**
-   * Fase 3 (BIC) — places an outbound call. Permission is assumed already
-   * checked by the caller (the "Telepon" button only renders once
-   * permission-checking UI confirms it) — the backend re-checks anyway and
-   * this surfaces that as a normal toast on failure (unlike answer(), a
-   * failure here has no waiting caller to silently strand, so
-   * handleServiceError's toast is exactly the right amount of noise).
+   * Places an outbound call. Permission is pre-checked by the caller UI;
+   * the backend re-checks. Unlike answer(), a failure here doesn't strand
+   * a waiting caller, so a plain error toast is enough.
    */
   async function callOutbound(phoneNumberId: string, waId: string): Promise<boolean> {
     if (state.value !== 'idle') return false

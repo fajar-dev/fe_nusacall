@@ -1,11 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
-  modules: [
-    '@nuxt/eslint',
-    '@nuxt/ui',
-    '@nuxtjs/i18n'
-  ],
+  modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxtjs/i18n', 'nuxt-vue3-google-signin'],
   ssr: false,
 
   devtools: {
@@ -25,11 +21,12 @@ export default defineNuxtConfig({
     public: {
       apiUrl: process.env.API_BASE_URL,
       wsUrl: process.env.WS_BASE_URL,
-      // nusawa's own origin is never exposed to the browser — the frontend
-      // only ever calls NusaCall's own /api/auth/login, which relays
-      // credentials to nusawa server-side. See docs/INTEGRATION-NUSAWA.md §2.2.
       googleClientId: process.env.GOOGLE_CLIENT_ID
     }
+  },
+
+  googleSignIn: {
+    clientId: process.env.GOOGLE_CLIENT_ID
   },
 
   routeRules: {

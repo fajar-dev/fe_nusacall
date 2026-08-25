@@ -1,7 +1,6 @@
 /**
- * Ringtone (synthesized via Web Audio — no static asset to ship/host) and
- * the permission prompts that must fire when the agent goes "available",
- * not on page load (docs/FRONTEND-SPEC.md §2.6).
+ * Ringtone synthesized via Web Audio (no static asset to ship/host), plus the
+ * permission prompts that must fire when the agent goes "available", not on page load.
  */
 class CallAudio {
   private audioCtx: AudioContext | null = null

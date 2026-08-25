@@ -72,10 +72,8 @@ const enabled = computed({
   get: () => model.value?.status === 'ENABLED',
   set: (value: boolean) => {
     if (value) {
-      // One assignment, not two — defineModel() write-through doesn't
-      // reflect synchronously, so a second read of model.value right after
-      // the first write would still see the OLD value (dropping the
-      // freshly-set fields when spread).
+      // One assignment, not two — defineModel() write-through isn't synchronous,
+      // so a second read right after the first write would still see the old value.
       model.value = model.value
         ? { ...model.value, status: 'ENABLED' }
         : { status: 'ENABLED', timezone_id: 'Asia/Jakarta', weekly_operating_hours: [] }

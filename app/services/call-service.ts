@@ -52,11 +52,8 @@ export class CallService {
     }
   }
 
-  /**
-   * 404 (not requested / still downloading) and 410 (Meta's 7-day window
-   * expired) are expected, routine states here — NOT error-toast-worthy —
-   * so this deliberately does not go through handleServiceError.
-   */
+  /** 404 (not requested/downloading) and 410 (Meta's 7-day window expired) are
+   * routine here, not error-toast-worthy, so this skips handleServiceError. */
   async getRecordingAvailability(id: number): Promise<ArtifactAvailability> {
     try {
       const response = await apiService.client.get<ApiResponse<{ url: string }>>(`/call/${id}/recording`, this.authHeaders)
@@ -64,9 +61,7 @@ export class CallService {
     } catch (error) {
       const status = axios.isAxiosError(error) ? error.response?.status : undefined
       if (status === 410) return { state: 'expired' }
-      // 404 is the expected/routine case (not requested, or still
-      // downloading) — anything else (500, network error) still resolves
-      // to the same quiet UI state, but logged so it doesn't vanish silently.
+      // Non-404 errors still resolve to the same quiet UI state, but get logged.
       if (status !== 404) console.error('Unexpected error fetching recording availability', error)
       return { state: 'not_ready' }
     }
@@ -84,7 +79,7 @@ export class CallService {
     }
   }
 
-  /** Fase 3 — places a business-initiated call. `offerSdp` is the agent's own browser SDP offer, generated up front. */
+  /** Places a business-initiated call. `offerSdp` is the agent's own browser SDP offer, generated up front. */
   async placeOutboundCall(phoneNumberId: string, waId: string, offerSdp: string): Promise<ApiResponse<{ wacid: string, answerSdp: string }>> {
     try {
       const response = await apiService.client.post<ApiResponse<{ wacid: string, answerSdp: string }>>(
