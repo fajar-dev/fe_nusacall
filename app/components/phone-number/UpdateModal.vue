@@ -43,6 +43,17 @@
           />
         </UFormField>
 
+        <UFormField :label="$t('pages.phoneNumber.updateModal.color')">
+          <div class="flex items-center gap-2">
+            <input
+              v-model="form.color"
+              type="color"
+              class="size-8 rounded border border-default cursor-pointer bg-transparent"
+            >
+            <span class="text-sm text-muted font-mono">{{ form.color }}</span>
+          </div>
+        </UFormField>
+
         <UFormField :label="$t('pages.phoneNumber.updateModal.answerTimeout')">
           <UInput
             v-model.number="form.answerTimeoutSeconds"
@@ -108,6 +119,7 @@ watch(() => props.phoneNumber, (pn) => {
     label: pn.label,
     callingEnabled: pn.callingEnabled,
     callIconVisibility: pn.callIconVisibility,
+    color: pn.color,
     answerTimeoutSeconds: pn.answerTimeoutSeconds,
     callHours: pn.callHours
   }

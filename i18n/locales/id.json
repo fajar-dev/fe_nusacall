@@ -59,9 +59,7 @@
       "answerFailedTitle": "Gagal menjawab panggilan",
       "answerFailedDescription": "Periksa izin mikrofon dan koneksi Anda, lalu coba lagi.",
       "incoming": {
-        "to": "Ke {label}",
-        "reject": "Tolak",
-        "answer": "Jawab"
+        "notifyTitle": "Panggilan masuk"
       },
       "active": {
         "title": "Sedang menelepon",
@@ -87,6 +85,15 @@
       "requestSentTitle": "Permintaan izin terkirim",
       "requestSentDescription": "Pelanggan akan menerima pesan WhatsApp meminta izin panggilan.",
       "quota": "{used}/{max} panggilan hari ini"
+    },
+    "callBoard": {
+      "title": "Panggilan",
+      "queue": "Antrian",
+      "ongoing": "Berlangsung",
+      "history": "Riwayat",
+      "answer": "Jawab",
+      "empty": "Belum ada apa-apa di sini",
+      "searchPlaceholder": "Cari nama atau nomor..."
     }
   },
   "pages": {
@@ -200,6 +207,7 @@
         "iconVisibility": "Visibilitas ikon telepon",
         "iconDefault": "Default",
         "iconDisabled": "Sembunyikan semua",
+        "color": "Warna papan panggilan",
         "answerTimeout": "Timeout menjawab (detik)",
         "callHours": "Jam operasional",
         "cancel": "Batal",

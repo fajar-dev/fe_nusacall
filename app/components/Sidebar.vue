@@ -249,6 +249,29 @@
           </NuxtLink>
         </template>
 
+        <!-- Mobile Call Board Toggle -->
+        <button
+          class="lg:hidden flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-colors cursor-pointer text-muted hover:bg-muted/50 hover:text-highlighted group relative"
+          :aria-label="$t('components.callBoard.title')"
+          @click="toggleBoard"
+        >
+          <UIcon
+            name="i-lucide-phone-call"
+            class="size-4 shrink-0 text-muted group-hover:text-highlighted"
+          />
+          <span class="text-sm font-normal leading-tight truncate text-left">
+            {{ $t('components.callBoard.title') }}
+          </span>
+          <UBadge
+            v-if="boardCount"
+            color="primary"
+            size="sm"
+            class="ml-auto"
+          >
+            {{ boardCount }}
+          </UBadge>
+        </button>
+
         <!-- Mobile User Settings -->
         <div class="lg:hidden">
           <UserPopover :popover-props="{ content: { side: 'top', sideOffset: 8, align: 'start' } }">
@@ -294,6 +317,14 @@
 <script setup lang="ts">
 const { navGroups, bottomNavItems, isItemActive, isParentActive, isExpanded, toggleExpanded } = useNavigation()
 const isMobileMenuOpen = useState('isMobileMenuOpen', () => false)
+
+const boardOpen = useState<boolean>('call-board-open', () => false)
+const { queue, ongoing } = useCallBoard()
+const boardCount = computed(() => queue.value.length + ongoing.value.length)
+
+function toggleBoard() {
+  boardOpen.value = !boardOpen.value
+}
 
 function closeMobileMenu() {
   isMobileMenuOpen.value = false

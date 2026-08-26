@@ -3,23 +3,9 @@ import { callService } from '~/services/call-service'
 export type SoftphoneState
   = | 'disconnected'
     | 'idle'
-    | 'ringing'
     | 'connecting'
     | 'active'
     | 'ending'
-
-export interface IncomingCall {
-  wacid: string
-  callId: number
-  waId: string
-  displayWaId?: string
-  contactName: string | null
-  profileName: string | null
-  phoneNumberLabel?: string
-  phoneNumberId?: string
-  displayPhoneNumber?: string | null
-  expiresAt?: number
-}
 
 /**
  * Single source of truth for the softphone state: components only read it,
@@ -27,7 +13,6 @@ export interface IncomingCall {
  */
 export function useSoftphone() {
   const state = useState<SoftphoneState>('softphone-state', () => 'disconnected')
-  const incomingCall = useState<IncomingCall | null>('softphone-incoming-call', () => null)
   const activeWacid = useState<string | null>('softphone-active-wacid', () => null)
   const answeredAt = useState<number | null>('softphone-answered-at', () => null)
   const lastTakenBy = useState<string | null>('softphone-last-taken-by', () => null)
@@ -36,9 +21,14 @@ export function useSoftphone() {
   const signaling = useSignaling()
   const webrtc = useWebRTC()
   const audio = useCallAudio()
+  const toast = useToast()
   const { t } = useI18n()
 
   const initialized = useState<boolean>('softphone-initialized', () => false)
+  // Local bookkeeping only — which wacids are still ringing somewhere, so the ringtone
+  // knows when to stop. The call board (useCallBoard) owns the actual queue/ongoing/history
+  // lists; this composable doesn't need to duplicate that.
+  const ringingWacids = new Set<string>()
 
   function init() {
     if (initialized.value || typeof window === 'undefined') return
@@ -57,32 +47,40 @@ export function useSoftphone() {
       if (granted) await audio.requestNotificationPermission()
     })
 
+    // Broadcast to every connected agent (routing is broadcast-to-all) — this is purely
+    // the "something needs picking up" signal now, not a personal ring. No modal: a toast
+    // plus the shared call board (useCallBoard) is where an agent actually answers from.
     signaling.on('incoming_call', (packet) => {
-      if (state.value !== 'idle') return // already ringing/on a call
-      // wacid lives on the packet envelope, not packet.data — the backend
-      // never puts it there. Without this merge, answer()/reject() send
-      // no wacid and the server can't match the call.
       if (!packet.wacid) {
         console.error('incoming_call packet missing wacid, dropping', packet)
         return
       }
-      const data = { ...(packet.data as unknown as IncomingCall), wacid: packet.wacid }
-      incomingCall.value = data
-      state.value = 'ringing'
-      audio.startRinging()
+      const data = packet.data as { waId?: string, contactName?: string | null, profileName?: string | null } | undefined
+      ringingWacids.add(packet.wacid)
+      if (state.value === 'idle') audio.startRinging()
       audio.notifyDesktop(
-        'Panggilan masuk',
-        data.contactName || data.profileName || data.waId
+        t('components.softphone.incoming.notifyTitle'),
+        data?.contactName || data?.profileName || data?.waId || ''
       )
+      toast.add({
+        title: t('components.softphone.incoming.notifyTitle'),
+        description: data?.contactName || data?.profileName || data?.waId || '',
+        icon: 'i-lucide-phone-incoming',
+        color: 'primary'
+      })
+    })
+
+    // Fired for every status change, system-wide (see useCallBoard) — used here only to know
+    // when a call stops ringing, so the shared ringtone can stop.
+    signaling.on('call_board', (packet) => {
+      const call = packet.data as { wacid?: string, status?: string } | undefined
+      if (!call?.wacid || call.status === 'ringing') return
+      ringingWacids.delete(call.wacid)
+      if (ringingWacids.size === 0) audio.stopRinging()
     })
 
     signaling.on('call_taken', (packet) => {
-      if (incomingCall.value?.wacid === packet.wacid) {
-        audio.stopRinging()
-        lastTakenBy.value = (packet.data?.byEmail as string) ?? null
-        incomingCall.value = null
-        state.value = 'idle'
-      }
+      lastTakenBy.value = (packet.data?.byEmail as string) ?? null
     })
 
     signaling.on('webrtc_answer', async (packet) => {
@@ -104,18 +102,19 @@ export function useSoftphone() {
     })
   }
 
-  async function answer() {
-    if (!incomingCall.value) return
-    const wacid = incomingCall.value.wacid
+  /** Answers any ringing call by wacid — used by the call board's "Answer" action. */
+  async function answerCall(wacid: string): Promise<boolean> {
+    if (state.value !== 'idle') return false // already on/connecting to another call
+
     audio.stopRinging()
     state.value = 'connecting'
     activeWacid.value = wacid
-    incomingCall.value = null
 
     try {
       const offerSdp = await webrtc.start()
       if (!signaling.connected.value) throw new Error('Signaling socket is not connected')
       signaling.send({ type: 'answer_call', wacid, data: { sdp: offerSdp } })
+      return true
     } catch (err) {
       // getUserMedia/ICE failures have no server-side signal, and a closed
       // socket send() silently no-ops — without this catch the call would
@@ -131,12 +130,13 @@ export function useSoftphone() {
       webrtc.close()
       activeWacid.value = null
       state.value = 'idle'
+      return false
     }
   }
 
   /**
    * Places an outbound call. Permission is pre-checked by the caller UI;
-   * the backend re-checks. Unlike answer(), a failure here doesn't strand
+   * the backend re-checks. Unlike answerCall(), a failure here doesn't strand
    * a waiting caller, so a plain error toast is enough.
    */
   async function callOutbound(phoneNumberId: string, waId: string): Promise<boolean> {
@@ -158,14 +158,6 @@ export function useSoftphone() {
     }
   }
 
-  function reject(reason?: string) {
-    if (!incomingCall.value) return
-    audio.stopRinging()
-    signaling.send({ type: 'reject_call', wacid: incomingCall.value.wacid, data: { reason } })
-    incomingCall.value = null
-    state.value = 'idle'
-  }
-
   function hangup() {
     if (!activeWacid.value) return
     signaling.send({ type: 'hangup', wacid: activeWacid.value })
@@ -185,16 +177,14 @@ export function useSoftphone() {
 
   return {
     state,
-    incomingCall,
     activeWacid,
     answeredAt,
     lastTakenBy,
     micDenied,
     wsConnected: signaling.connected,
     init,
-    answer,
+    answerCall,
     callOutbound,
-    reject,
     hangup,
     setMuted
   }

@@ -7,6 +7,7 @@ export interface UpdatePhoneNumberPayload {
   label?: string
   callingEnabled?: boolean
   callIconVisibility?: 'DEFAULT' | 'DISABLE_ALL'
+  color?: string
   answerTimeoutSeconds?: number
   callHours?: CallHours | null
 }

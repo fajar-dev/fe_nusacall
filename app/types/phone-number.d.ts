@@ -19,6 +19,7 @@ export interface PhoneNumber {
   isTestNumber: boolean
   callingEnabled: boolean
   callIconVisibility: 'DEFAULT' | 'DISABLE_ALL'
+  color: string
   callHours: CallHours | null
   answerTimeoutSeconds: number
   routingStrategy: string

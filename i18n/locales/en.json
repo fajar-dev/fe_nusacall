@@ -59,9 +59,7 @@
       "answerFailedTitle": "Failed to answer call",
       "answerFailedDescription": "Check your microphone permission and connection, then try again.",
       "incoming": {
-        "to": "To {label}",
-        "reject": "Decline",
-        "answer": "Answer"
+        "notifyTitle": "Incoming call"
       },
       "active": {
         "title": "On call",
@@ -87,6 +85,15 @@
       "requestSentTitle": "Permission request sent",
       "requestSentDescription": "The customer will receive a WhatsApp message asking for call permission.",
       "quota": "{used}/{max} calls today"
+    },
+    "callBoard": {
+      "title": "Calls",
+      "queue": "Queue",
+      "ongoing": "Ongoing",
+      "history": "History",
+      "answer": "Answer",
+      "empty": "Nothing here right now",
+      "searchPlaceholder": "Search name or number..."
     }
   },
   "pages": {
@@ -200,6 +207,7 @@
         "iconVisibility": "Call icon visibility",
         "iconDefault": "Default",
         "iconDisabled": "Hide everywhere",
+        "color": "Call board color",
         "answerTimeout": "Answer timeout (seconds)",
         "callHours": "Operating hours",
         "cancel": "Cancel",

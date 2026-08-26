@@ -22,13 +22,19 @@
       >
         <div class="flex flex-col gap-3">
           <div class="flex items-start justify-between">
-            <div>
-              <h3 class="font-medium text-highlighted">
-                {{ pn.label }}
-              </h3>
-              <p class="text-sm text-muted">
-                {{ pn.displayPhoneNumber }}
-              </p>
+            <div class="flex items-start gap-2">
+              <span
+                class="size-3 rounded-full mt-1.5 shrink-0"
+                :style="{ backgroundColor: pn.color }"
+              />
+              <div>
+                <h3 class="font-medium text-highlighted">
+                  {{ pn.label }}
+                </h3>
+                <p class="text-sm text-muted">
+                  {{ pn.displayPhoneNumber }}
+                </p>
+              </div>
             </div>
             <UBadge
               :color="pn.callingEnabled ? 'success' : 'neutral'"
