@@ -55,7 +55,7 @@
         </div>
 
         <div v-else class="relative">
-          <div class="w-52 h-52 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-2 shadow-sm">
+          <div class="w-52 h-52 rounded-xl bg-white border border-neutral-200 dark:border-neutral-800 p-2 shadow-sm">
             <img
               v-if="qrCode"
               :src="qrCode"
