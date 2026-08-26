@@ -10,7 +10,7 @@ interface CallListParams {
   q?: string
   status?: string[]
   direction?: string
-  agentEmail?: string
+  userId?: number
   from?: string
   to?: string
   sortBy?: string
@@ -30,7 +30,7 @@ class CallService {
       if (params.q) query.set('q', params.q)
       if (params.status?.length) query.set('status', params.status.join(','))
       if (params.direction) query.set('direction', params.direction)
-      if (params.agentEmail) query.set('agentEmail', params.agentEmail)
+      if (params.userId) query.set('userId', String(params.userId))
       if (params.from) query.set('from', params.from)
       if (params.to) query.set('to', params.to)
       if (params.sortBy) query.set('sortBy', params.sortBy)

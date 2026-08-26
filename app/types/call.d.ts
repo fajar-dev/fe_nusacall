@@ -12,6 +12,7 @@ export interface Call {
   waId: string
   profileName: string | null
   contactName: string | null
+  userId: number | null
   agentEmail: string | null
   direction: CallDirection
   status: CallStatus

@@ -36,10 +36,10 @@ export const useNavigation = () => {
       title: t('components.sidebar.nav.main'),
       items: [
         {
-          id: 'user',
-          label: t('components.sidebar.nav.user'),
-          to: '/user',
-          icon: 'i-lucide-users'
+          id: 'contact',
+          label: t('components.sidebar.nav.contact'),
+          to: '#',
+          icon: 'i-lucide-notebook-text'
         },
         {
           id: 'call',
@@ -48,10 +48,16 @@ export const useNavigation = () => {
           icon: 'i-lucide-phone-call'
         },
         {
-          id: 'phone-number',
-          label: t('components.sidebar.nav.phoneNumber'),
-          to: '/phone-number',
-          icon: 'i-lucide-radio-tower'
+          id: 'user',
+          label: t('components.sidebar.nav.user'),
+          to: '/user',
+          icon: 'i-lucide-users'
+        },
+        {
+          id: 'report',
+          label: t('components.sidebar.nav.report'),
+          to: '#',
+          icon: 'i-lucide-clipboard-list'
         }
       ]
     }
@@ -63,6 +69,12 @@ export const useNavigation = () => {
       label: t('components.sidebar.nav.feedback'),
       to: '/feedback',
       icon: 'i-lucide-message-square-warning'
+    },
+    {
+      id: 'whatsapp',
+      label: t('components.sidebar.nav.whatsapp'),
+      to: '/phone-number',
+      icon: 'i-lucide-phone'
     }
   ])
 

@@ -16,7 +16,9 @@
         "feedback": "Feedback",
         "user": "Agents",
         "call": "Calls",
-        "phoneNumber": "Phone Numbers"
+        "contact": "Contacts",
+        "report": "Report",
+        "whatsapp": "WhatsApp"
       }
     },
     "dashboardLayout": {

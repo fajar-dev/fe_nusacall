@@ -54,7 +54,7 @@
         <UIcon
           v-else
           :name="item.icon"
-          class="size-5 gap-1.5"
+          class="size-5"
           :class="item.value === activeTab ? 'text-highlighted' : 'text-muted'"
         />
       </template>
@@ -88,10 +88,10 @@
       >
         <div class="min-w-0 flex-1">
           <p class="font-medium text-highlighted truncate">
-            {{ call.contactName || call.profileName || call.waId }}
+            {{ call.profileName || call.waId }}
           </p>
           <p class="text-xs text-muted truncate">
-            {{ call.displayPhoneNumber || call.phoneNumberId }}
+            {{ call.waId }}
           </p>
         </div>
 

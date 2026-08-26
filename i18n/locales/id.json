@@ -16,7 +16,9 @@
         "feedback": "Feedback",
         "user": "Agent",
         "call": "Panggilan",
-        "phoneNumber": "Nomor"
+        "contact": "Kontak",
+        "report": "Laporan",
+        "whatsapp": "WhatsApp"
       }
     },
     "dashboardLayout": {

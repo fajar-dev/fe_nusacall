@@ -22,7 +22,6 @@ export interface PhoneNumber {
   color: string
   callHours: CallHours | null
   answerTimeoutSeconds: number
-  routingStrategy: string
   lastSyncedAt: string | null
 }
 
