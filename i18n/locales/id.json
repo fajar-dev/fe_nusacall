@@ -61,7 +61,9 @@
       "answerFailedTitle": "Gagal menjawab panggilan",
       "answerFailedDescription": "Periksa izin mikrofon dan koneksi Anda, lalu coba lagi.",
       "incoming": {
-        "notifyTitle": "Panggilan masuk"
+        "notifyTitle": "Panggilan masuk",
+        "answer": "Jawab",
+        "reject": "Tolak"
       },
       "active": {
         "title": "Sedang menelepon",

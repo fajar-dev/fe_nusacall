@@ -29,6 +29,16 @@ export function useSoftphone() {
   // knows when to stop. The call board (useCallBoard) owns the actual queue/ongoing/history
   // lists; this composable doesn't need to duplicate that.
   const ringingWacids = new Set<string>()
+  // Toast id per ringing wacid, so the prompt can be pulled back the moment the
+  // call stops ringing — answered here, taken by another agent, or timed out.
+  const incomingToasts = new Map<string, string | number>()
+
+  function dismissIncomingToast(wacid: string) {
+    const id = incomingToasts.get(wacid)
+    if (!id) return
+    toast.remove(id)
+    incomingToasts.delete(wacid)
+  }
 
   function init() {
     if (initialized.value || typeof window === 'undefined') return
@@ -55,19 +65,37 @@ export function useSoftphone() {
         console.error('incoming_call packet missing wacid, dropping', packet)
         return
       }
+      const wacid = packet.wacid
       const data = packet.data as { waId?: string, contactName?: string | null, profileName?: string | null } | undefined
-      ringingWacids.add(packet.wacid)
+      const caller = data?.contactName || data?.profileName || data?.waId || ''
+      ringingWacids.add(wacid)
       if (state.value === 'idle') audio.startRinging()
-      audio.notifyDesktop(
-        t('components.softphone.incoming.notifyTitle'),
-        data?.contactName || data?.profileName || data?.waId || ''
-      )
-      toast.add({
+      audio.notifyDesktop(t('components.softphone.incoming.notifyTitle'), caller)
+      // duration 0 = never auto-dismiss: the prompt stays until it is acted on
+      // or dismissIncomingToast() pulls it once the call stops ringing.
+      const created = toast.add({
         title: t('components.softphone.incoming.notifyTitle'),
-        description: data?.contactName || data?.profileName || data?.waId || '',
+        description: caller,
         icon: 'i-lucide-phone-incoming',
-        color: 'primary'
+        color: 'primary',
+        duration: 0,
+        actions: [
+          {
+            label: t('components.softphone.incoming.answer'),
+            icon: 'i-lucide-phone',
+            color: 'success',
+            onClick: () => { answerCall(wacid) }
+          },
+          {
+            label: t('components.softphone.incoming.reject'),
+            icon: 'i-lucide-phone-off',
+            color: 'error',
+            variant: 'outline',
+            onClick: () => rejectCall(wacid)
+          }
+        ]
       })
+      incomingToasts.set(wacid, created.id)
     })
 
     // Fired for every status change, system-wide (see useCallBoard) — used here only to know
@@ -76,6 +104,7 @@ export function useSoftphone() {
       const call = packet.data as { wacid?: string, status?: string } | undefined
       if (!call?.wacid || call.status === 'ringing') return
       ringingWacids.delete(call.wacid)
+      dismissIncomingToast(call.wacid)
       if (ringingWacids.size === 0) audio.stopRinging()
     })
 
@@ -106,6 +135,7 @@ export function useSoftphone() {
   async function answerCall(wacid: string): Promise<boolean> {
     if (state.value !== 'idle') return false // already on/connecting to another call
 
+    dismissIncomingToast(wacid)
     audio.stopRinging()
     state.value = 'connecting'
     activeWacid.value = wacid
@@ -136,6 +166,7 @@ export function useSoftphone() {
 
   /** Rejects any ringing call by wacid — used by the call board's "Reject" action. */
   function rejectCall(wacid: string) {
+    dismissIncomingToast(wacid)
     ringingWacids.delete(wacid)
     if (ringingWacids.size === 0) audio.stopRinging()
     signaling.send({ type: 'reject_call', wacid })

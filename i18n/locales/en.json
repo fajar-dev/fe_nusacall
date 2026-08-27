@@ -61,7 +61,9 @@
       "answerFailedTitle": "Failed to answer call",
       "answerFailedDescription": "Check your microphone permission and connection, then try again.",
       "incoming": {
-        "notifyTitle": "Incoming call"
+        "notifyTitle": "Incoming call",
+        "answer": "Answer",
+        "reject": "Reject"
       },
       "active": {
         "title": "On call",
