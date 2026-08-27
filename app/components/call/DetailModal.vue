@@ -1,77 +1,106 @@
 <template>
   <UModal
     v-model:open="open"
-    :ui="{ content: 'sm:max-w-lg' }"
+    :title="$t('pages.call.detail.title')"
+    :ui="{ content: 'sm:max-w-xl', footer: 'justify-end' }"
   >
-    <template #content>
-      <UCard
+    <template #body>
+      <div
         v-if="call"
-        :ui="{ body: 'flex flex-col gap-5' }"
+        class="space-y-5"
       >
-        <div class="flex items-center justify-between">
-          <h3 class="text-base font-medium text-highlighted">
-            {{ $t('pages.call.detail.title') }}
-          </h3>
-          <UBadge
-            :color="statusColor"
-            variant="subtle"
-          >
-            {{ $t(`pages.call.status.${call.status}`) }}
-          </UBadge>
+        <!-- Top Status Bar & Main Info Grid -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <UIcon
+                name="i-lucide-phone-call"
+                class="size-4 text-muted"
+              />
+              <span class="text-xs text-muted">{{ call.wacid }}</span>
+            </div>
+            <UBadge
+              :color="statusColor"
+              variant="subtle"
+            >
+              {{ $t(`pages.call.status.${call.status}`) }}
+            </UBadge>
+          </div>
+
+          <!-- Key Info Grid -->
+          <div class="grid grid-cols-2 gap-3 p-3.5 rounded-lg border border-default bg-muted/20 text-sm">
+            <div>
+              <p class="text-xs text-muted mb-0.5">
+                {{ $t('pages.call.detail.contact') }}
+              </p>
+              <p class="font-medium text-highlighted">
+                {{ call.contact?.profileName || call.waId }}
+              </p>
+              <p class="text-xs text-dimmed">
+                {{ call.waId }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-muted mb-0.5">
+                {{ $t('pages.call.detail.destination') }}
+              </p>
+              <p class="font-medium text-highlighted">
+                {{ call.displayPhoneNumber || call.phoneNumberId }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-muted mb-0.5">
+                {{ $t('pages.call.detail.agent') }}
+              </p>
+              <p class="font-medium text-highlighted">
+                {{ call.user?.name || '—' }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-muted mb-0.5">
+                {{ $t('pages.call.detail.duration') }}
+              </p>
+              <p class="font-medium text-highlighted">
+                {{ call.durationSeconds != null ? formatDuration(call.durationSeconds) : '—' }}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 text-sm">
-          <div>
-            <p class="text-xs text-muted">
-              {{ $t('pages.call.detail.contact') }}
-            </p>
-            <p class="text-highlighted">
-              {{ call.contact?.profileName || call.waId }}
-            </p>
-            <p class="text-xs text-dimmed">
-              {{ call.waId }}
-            </p>
-          </div>
-          <div>
-            <p class="text-xs text-muted">
-              {{ $t('pages.call.detail.destination') }}
-            </p>
-            <p class="text-highlighted">
-              {{ call.displayPhoneNumber || call.phoneNumberId }}
-            </p>
-          </div>
-          <div>
-            <p class="text-xs text-muted">
-              {{ $t('pages.call.detail.agent') }}
-            </p>
-            <p class="text-highlighted">
-              {{ call.user?.name || '—' }}
-            </p>
-          </div>
-          <div>
-            <p class="text-xs text-muted">
-              {{ $t('pages.call.detail.duration') }}
-            </p>
-            <p class="text-highlighted">
-              {{ call.durationSeconds != null ? formatDuration(call.durationSeconds) : '—' }}
-            </p>
-          </div>
-        </div>
-
+        <!-- Outbound Action Bar -->
         <template v-if="call.phoneNumberId && call.waId">
           <USeparator />
-          <div class="flex items-center gap-2 flex-wrap">
-            <p
-              v-if="loadingPermission"
-              class="text-xs text-dimmed"
-            >
-              {{ $t('components.callOutbound.checking') }}
-            </p>
+          <div class="flex items-center justify-between gap-3 p-3 rounded-lg border border-default bg-elevated">
+            <div class="flex items-center gap-2">
+              <UIcon
+                name="i-lucide-shield-check"
+                class="size-4 text-muted"
+              />
+              <USkeleton
+                v-if="loadingPermission"
+                class="h-4 w-28"
+              />
+              <span
+                v-else-if="hasPermission"
+                class="text-xs text-toned"
+              >
+                {{ quotaText || $t('components.callOutbound.call') }}
+              </span>
+              <UBadge
+                v-else
+                color="neutral"
+                variant="subtle"
+                size="xs"
+              >
+                {{ $t('components.callOutbound.noPermission') }}
+              </UBadge>
+            </div>
 
-            <template v-else-if="hasPermission">
+            <div class="flex items-center gap-2">
               <UButton
+                v-if="hasPermission"
                 icon="i-lucide-phone-outgoing"
-                size="sm"
+                size="xs"
                 color="primary"
                 :loading="calling"
                 :disabled="softphoneState !== 'idle'"
@@ -79,22 +108,10 @@
               >
                 {{ $t('components.callOutbound.call') }}
               </UButton>
-              <span
-                v-if="quotaText"
-                class="text-xs text-dimmed"
-              >{{ quotaText }}</span>
-            </template>
-
-            <template v-else>
-              <UBadge
-                color="neutral"
-                variant="subtle"
-              >
-                {{ $t('components.callOutbound.noPermission') }}
-              </UBadge>
               <UButton
+                v-else-if="!loadingPermission"
                 icon="i-lucide-send"
-                size="sm"
+                size="xs"
                 variant="subtle"
                 :loading="requesting"
                 :disabled="justRequested"
@@ -102,71 +119,73 @@
               >
                 {{ justRequested ? $t('components.callOutbound.requested') : $t('components.callOutbound.requestPermission') }}
               </UButton>
-            </template>
+            </div>
           </div>
         </template>
 
-        <USeparator />
-
+        <!-- Timeline Section -->
         <div>
-          <p class="text-xs text-muted mb-2">
+          <h4 class="text-xs font-semibold text-muted uppercase tracking-wider mb-2.5">
             {{ $t('pages.call.detail.timeline') }}
-          </p>
-          <ul class="space-y-1.5 text-sm">
-            <li
+          </h4>
+          <div class="space-y-2 pl-1">
+            <div
               v-for="event in timeline"
               :key="event.label"
-              class="flex justify-between"
+              class="flex items-center justify-between text-sm"
             >
-              <span class="text-toned">{{ event.label }}</span>
-              <span class="text-highlighted">{{ event.time }}</span>
-            </li>
-          </ul>
+              <div class="flex items-center gap-2">
+                <span class="size-1.5 rounded-full bg-primary shrink-0" />
+                <span class="text-toned text-xs">{{ event.label }}</span>
+              </div>
+              <span class="text-xs text-highlighted">{{ event.time }}</span>
+            </div>
+          </div>
         </div>
 
+        <!-- Error Alert -->
         <template v-if="call.errorMessage">
-          <USeparator />
           <UAlert
             color="error"
             variant="subtle"
+            icon="i-lucide-alert-triangle"
             :title="$t('pages.call.detail.error')"
             :description="call.errorMessage"
           />
         </template>
 
+        <!-- Recording Section -->
         <template v-if="call.recordingEnabled">
           <USeparator />
           <div>
-            <p class="text-xs text-muted mb-2">
+            <h4 class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">
               {{ $t('pages.call.detail.recording') }}
-            </p>
+            </h4>
             <div>
-              <p
+              <USkeleton
                 v-if="loadingRecording"
-                class="text-xs text-dimmed"
-              >
-                {{ $t('components.callRecording.loading') }}
-              </p>
+                class="h-9 w-full rounded-md"
+              />
               <audio
                 v-else-if="recordingAvailability.state === 'ready'"
                 :src="recordingAvailability.url"
                 controls
                 preload="none"
-                class="w-full h-9"
+                class="w-full h-9 rounded-md"
               />
-              <p
+              <div
                 v-else-if="recordingAvailability.state === 'expired'"
-                class="text-xs text-dimmed flex items-center gap-1.5"
+                class="flex items-center gap-2 p-2.5 rounded-md bg-muted/40 text-xs text-muted"
               >
                 <UIcon
                   name="i-lucide-clock-alert"
-                  class="size-3.5 shrink-0"
+                  class="size-4 shrink-0 text-warning"
                 />
-                {{ $t('components.callRecording.expired') }}
-              </p>
+                <span>{{ $t('components.callRecording.expired') }}</span>
+              </div>
               <p
                 v-else
-                class="text-xs text-dimmed"
+                class="text-xs text-dimmed p-2 rounded-md bg-muted/20"
               >
                 {{ $t('components.callRecording.notReady') }}
               </p>
@@ -174,86 +193,92 @@
           </div>
         </template>
 
+        <!-- Transcript Section -->
         <template v-if="call.transcriptionEnabled">
           <USeparator />
           <div>
-            <p class="text-xs text-muted mb-2">
+            <h4 class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">
               {{ $t('pages.call.detail.transcript') }}
-            </p>
+            </h4>
             <div>
-              <p
+              <div
                 v-if="loadingTranscript"
-                class="text-xs text-dimmed"
+                class="space-y-2"
               >
-                {{ $t('components.callRecording.loading') }}
-              </p>
+                <USkeleton class="h-8 w-full rounded-md" />
+                <USkeleton class="h-8 w-3/4 rounded-md" />
+              </div>
 
-              <p
+              <div
                 v-else-if="transcriptAvailability.state === 'expired'"
-                class="text-xs text-dimmed flex items-center gap-1.5"
+                class="flex items-center gap-2 p-2.5 rounded-md bg-muted/40 text-xs text-muted"
               >
                 <UIcon
                   name="i-lucide-clock-alert"
-                  class="size-3.5 shrink-0"
+                  class="size-4 shrink-0 text-warning"
                 />
-                {{ $t('components.callRecording.expired') }}
-              </p>
+                <span>{{ $t('components.callRecording.expired') }}</span>
+              </div>
 
               <p
                 v-else-if="transcriptAvailability.state === 'not_ready'"
-                class="text-xs text-dimmed"
+                class="text-xs text-dimmed p-2 rounded-md bg-muted/20"
               >
                 {{ $t('components.callRecording.notReady') }}
               </p>
 
-              <ul
+              <div
                 v-else-if="transcriptSegments.length"
-                class="space-y-2.5 max-h-64 overflow-y-auto pr-1"
+                class="space-y-2 max-h-60 overflow-y-auto pr-1"
               >
-                <li
+                <div
                   v-for="(segment, i) in transcriptSegments"
                   :key="i"
-                  class="flex gap-2 text-sm"
+                  class="p-2.5 rounded-lg border border-default bg-muted/10 text-xs space-y-1"
                 >
-                  <span class="text-xs text-dimmed font-mono shrink-0 w-10 pt-0.5">{{ formatTranscriptTimestamp(segment.start) }}</span>
-                  <div class="min-w-0">
+                  <div class="flex items-center justify-between">
                     <UBadge
                       :color="segment.speaker === 'Business' ? 'primary' : 'neutral'"
                       variant="subtle"
-                      size="sm"
-                      class="mb-0.5"
+                      size="xs"
                     >
                       {{ segment.speaker === 'Business' ? $t('components.callRecording.speakerBusiness') : $t('components.callRecording.speakerCustomer') }}
                     </UBadge>
-                    <p class="text-toned break-words">
-                      {{ segment.text }}
-                    </p>
+                    <span class="text-dimmed text-xs">{{ formatTranscriptTimestamp(segment.start) }}</span>
                   </div>
-                </li>
-              </ul>
+                  <p class="text-toned text-xs leading-relaxed break-words">
+                    {{ segment.text }}
+                  </p>
+                </div>
+              </div>
 
               <p
-                v-else
-                class="text-xs text-dimmed"
+                v-else-if="transcriptAvailability.state === 'ready' && transcriptAvailability.content?.transcript?.text"
+                class="text-xs text-toned p-2.5 rounded-lg border border-default bg-muted/10 leading-relaxed"
               >
-                {{ transcriptAvailability.state === 'ready' ? transcriptAvailability.content.transcript.text : '' }}
+                {{ transcriptAvailability.content.transcript.text }}
               </p>
             </div>
           </div>
         </template>
 
+        <!-- Technical Metadata -->
         <USeparator />
-
-        <div class="space-y-1 text-xs text-dimmed">
-          <p>WACID: {{ call.wacid }}</p>
-          <p v-if="call.errorCode">
-            {{ $t('pages.call.detail.errorCode') }}: {{ call.errorCode }}
-          </p>
-          <p v-if="call.setupDurationMs != null">
-            {{ $t('pages.call.detail.setupDuration') }}: {{ call.setupDurationMs }}ms
-          </p>
+        <div class="flex items-center justify-between text-xs text-dimmed">
+          <span v-if="call.errorCode">{{ $t('pages.call.detail.errorCode') }}: {{ call.errorCode }}</span>
+          <span v-if="call.setupDurationMs != null">{{ $t('pages.call.detail.setupDuration') }}: {{ call.setupDurationMs }}ms</span>
         </div>
-      </UCard>
+      </div>
+    </template>
+
+    <template #footer>
+      <UButton
+        color="neutral"
+        variant="outline"
+        @click="() => { open = false }"
+      >
+        {{ $t('pages.call.detail.close') }}
+      </UButton>
     </template>
   </UModal>
 </template>
