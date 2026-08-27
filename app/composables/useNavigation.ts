@@ -38,7 +38,7 @@ export const useNavigation = () => {
         {
           id: 'contact',
           label: t('components.sidebar.nav.contact'),
-          to: '#',
+          to: '/contact',
           icon: 'i-lucide-notebook-text'
         },
         {

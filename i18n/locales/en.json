@@ -143,6 +143,14 @@
         "offline": "Offline"
       }
     },
+    "contact": {
+      "title": "Contacts",
+      "description": "Contacts auto-saved from inbound calls",
+      "searchPlaceholder": "Search by number or name...",
+      "columnProfileName": "Name",
+      "columnWaId": "WhatsApp Number",
+      "columnCreatedAt": "Saved Since"
+    },
     "call": {
       "title": "Calls",
       "description": "Full call history and outcomes",

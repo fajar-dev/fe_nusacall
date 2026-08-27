@@ -143,6 +143,14 @@
         "offline": "Tidak Aktif"
       }
     },
+    "contact": {
+      "title": "Kontak",
+      "description": "Kontak yang tersimpan otomatis dari panggilan masuk",
+      "searchPlaceholder": "Cari nomor atau nama...",
+      "columnProfileName": "Nama",
+      "columnWaId": "Nomor WhatsApp",
+      "columnCreatedAt": "Tersimpan Sejak"
+    },
     "call": {
       "title": "Panggilan",
       "description": "Riwayat dan hasil seluruh panggilan",
