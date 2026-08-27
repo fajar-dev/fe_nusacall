@@ -53,7 +53,7 @@
                 type="color"
                 class="size-5 rounded cursor-pointer border-0 p-0 bg-transparent shrink-0"
               >
-              <span class="text-sm font-mono text-default uppercase">{{ form.color }}</span>
+              <span class="text-sm text-default uppercase">{{ form.color }}</span>
             </div>
           </UFormField>
         </div>
