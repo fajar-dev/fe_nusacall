@@ -134,6 +134,13 @@ export function useSoftphone() {
     }
   }
 
+  /** Rejects any ringing call by wacid — used by the call board's "Reject" action. */
+  function rejectCall(wacid: string) {
+    ringingWacids.delete(wacid)
+    if (ringingWacids.size === 0) audio.stopRinging()
+    signaling.send({ type: 'reject_call', wacid })
+  }
+
   /**
    * Places an outbound call. Permission is pre-checked by the caller UI;
    * the backend re-checks. Unlike answerCall(), a failure here doesn't strand
@@ -184,6 +191,7 @@ export function useSoftphone() {
     wsConnected: signaling.connected,
     init,
     answerCall,
+    rejectCall,
     callOutbound,
     hangup,
     setMuted

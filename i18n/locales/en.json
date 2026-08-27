@@ -96,7 +96,8 @@
       "answer": "Answer",
       "empty": "Nothing here right now",
       "searchPlaceholder": "Search name or number...",
-      "yesterday": "Yesterday"
+      "yesterday": "Yesterday",
+      "reject": "Reject"
     }
   },
   "pages": {

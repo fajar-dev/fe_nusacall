@@ -99,19 +99,44 @@
             <p class="text-xs text-muted truncate leading-normal">
               {{ call.waId }}
             </p>
+            <p
+              v-if="call.user"
+              class="text-xs text-muted truncate leading-normal flex items-center gap-1.5"
+            >
+              <span class="truncate">{{ call.user.name }}</span>
+              <span
+                v-if="displayDuration(call)"
+                class="shrink-0"
+              >{{ displayDuration(call) }}</span>
+            </p>
           </div>
         </div>
 
-        <UButton
+        <div
           v-if="activeTab === 'queue'"
-          size="sm"
-          icon="i-lucide-phone"
-          :disabled="softphoneState !== 'idle'"
-          :loading="answeringWacid === call.wacid"
-          @click="onAnswer(call)"
+          class="flex items-center gap-2 shrink-0"
         >
-          {{ $t('components.callBoard.answer') }}
-        </UButton>
+          <UButton
+            icon="i-lucide-phone"
+            color="success"
+            size="sm"
+            class="rounded-full"
+            :disabled="softphoneState !== 'idle'"
+            :loading="answeringWacid === call.wacid"
+            :aria-label="$t('components.callBoard.answer')"
+            @click="onAnswer(call)"
+          />
+          <UButton
+            icon="i-lucide-phone-off"
+            color="error"
+            size="sm"
+            class="rounded-full"
+            :disabled="softphoneState !== 'idle' || rejectingWacid === call.wacid"
+            :loading="rejectingWacid === call.wacid"
+            :aria-label="$t('components.callBoard.reject')"
+            @click="onReject(call)"
+          />
+        </div>
         <span
           v-else
           class="text-xs text-muted shrink-0 font-medium"
@@ -152,10 +177,14 @@ const {
   init,
   loadMore
 } = useCallBoard()
-const { state: softphoneState, answerCall } = useSoftphone()
+const { state: softphoneState, answerCall, rejectCall } = useSoftphone()
 
 const activeTab = ref<BoardTab>('queue')
 const answeringWacid = ref<string | null>(null)
+const rejectingWacid = ref<string | null>(null)
+
+const nowTick = ref(Date.now())
+let tickTimer: ReturnType<typeof setInterval> | undefined
 
 const panelClasses = computed(() => [
   'h-full bg-default border-r border-default shrink-0 flex-col transition-transform duration-200',
@@ -245,5 +274,32 @@ async function onAnswer(call: Call) {
   }
 }
 
-onMounted(init)
+function onReject(call: Call) {
+  rejectingWacid.value = call.wacid
+  rejectCall(call.wacid)
+  rejectingWacid.value = null
+}
+
+function formatDuration(seconds: number): string {
+  const minutes = Math.floor(seconds / 60)
+  return `${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
+}
+
+function displayDuration(call: Call): string | null {
+  if (call.status === 'active' && call.answeredAt) {
+    const elapsed = Math.max(0, Math.floor((nowTick.value - new Date(call.answeredAt).getTime()) / 1000))
+    return formatDuration(elapsed)
+  }
+  if (call.durationSeconds != null) return formatDuration(call.durationSeconds)
+  return null
+}
+
+onMounted(() => {
+  init()
+  tickTimer = setInterval(() => (nowTick.value = Date.now()), 1000)
+})
+
+onUnmounted(() => {
+  if (tickTimer) clearInterval(tickTimer)
+})
 </script>
