@@ -21,6 +21,16 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 - Custom design system (green primary, Geist font)
 - Dokumentasi lengkap di `docs/`
 
+## [0.2.1] — 2026-08-27
+
+### Changed
+
+- Updated `/phone-number` page layout from card grid to structured sectioned `<UTable>` matching the Meta/WhatsApp Business Account list design.
+
+### Fixed
+
+- Resolved TypeScript `TimeValue` compatibility error in `CallHoursForm.vue`.
+
 ---
 
 ## [0.2.0] — 2026-08-24
