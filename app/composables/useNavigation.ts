@@ -73,7 +73,7 @@ export const useNavigation = () => {
     {
       id: 'whatsapp',
       label: t('components.sidebar.nav.whatsapp'),
-      to: '/phone-number',
+      to: '/account',
       icon: 'i-lucide-phone'
     }
   ])

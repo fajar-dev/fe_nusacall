@@ -1,9 +1,9 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
 import type { ApiResponse } from '../types/api'
-import type { PhoneNumber, CallHours, HealthStatus } from '../types/phone-number'
+import type { Account, CallHours, HealthStatus } from '../types/account'
 
-export interface UpdatePhoneNumberPayload {
+export interface UpdateAccountPayload {
   label?: string
   callingEnabled?: boolean
   callIconVisibility?: 'DEFAULT' | 'DISABLE_ALL'
@@ -12,33 +12,33 @@ export interface UpdatePhoneNumberPayload {
   callHours?: CallHours | null
 }
 
-class PhoneNumberService {
+class AccountService {
   private get authHeaders() {
     return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
   }
 
-  async getAll(page = 1, limit = 50): Promise<ApiResponse<PhoneNumber[]>> {
+  async getAll(page = 1, limit = 50): Promise<ApiResponse<Account[]>> {
     try {
       const params = new URLSearchParams({ page: String(page), limit: String(limit) })
-      const response = await apiService.client.get<ApiResponse<PhoneNumber[]>>(`/phone-number?${params.toString()}`, this.authHeaders)
+      const response = await apiService.client.get<ApiResponse<Account[]>>(`/account?${params.toString()}`, this.authHeaders)
       return response.data
     } catch (error) {
       return handleServiceError(error)
     }
   }
 
-  async update(id: number, payload: UpdatePhoneNumberPayload): Promise<ApiResponse<PhoneNumber>> {
+  async update(id: number, payload: UpdateAccountPayload): Promise<ApiResponse<Account>> {
     try {
-      const response = await apiService.client.put<ApiResponse<PhoneNumber>>(`/phone-number/${id}`, payload, this.authHeaders)
+      const response = await apiService.client.put<ApiResponse<Account>>(`/account/${id}`, payload, this.authHeaders)
       return response.data
     } catch (error) {
       return handleServiceError(error)
     }
   }
 
-  async sync(id: number): Promise<ApiResponse<PhoneNumber>> {
+  async sync(id: number): Promise<ApiResponse<Account>> {
     try {
-      const response = await apiService.client.post<ApiResponse<PhoneNumber>>(`/phone-number/${id}/sync`, null, this.authHeaders)
+      const response = await apiService.client.post<ApiResponse<Account>>(`/account/${id}/sync`, null, this.authHeaders)
       return response.data
     } catch (error) {
       return handleServiceError(error)
@@ -47,7 +47,7 @@ class PhoneNumberService {
 
   async getHealth(id: number): Promise<ApiResponse<HealthStatus>> {
     try {
-      const response = await apiService.client.get<ApiResponse<HealthStatus>>(`/phone-number/${id}/health`, this.authHeaders)
+      const response = await apiService.client.get<ApiResponse<HealthStatus>>(`/account/${id}/health`, this.authHeaders)
       return response.data
     } catch (error) {
       return handleServiceError(error)
@@ -55,4 +55,4 @@ class PhoneNumberService {
   }
 }
 
-export const phoneNumberService = new PhoneNumberService()
+export const accountService = new AccountService()

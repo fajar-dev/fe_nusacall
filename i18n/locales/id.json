@@ -194,13 +194,14 @@
         "answered": "Dijawab",
         "ended": "Berakhir",
         "recording": "Rekaman",
-        "transcript": "Transkrip"
+        "transcript": "Transkrip",
+        "close": "Tutup"
       }
     },
-    "phoneNumber": {
-      "title": "Nomor Telepon",
-      "description": "Atur konfigurasi panggilan per nomor WhatsApp",
-      "loading": "Memuat nomor telepon...",
+    "account": {
+      "title": "Akun Meta",
+      "description": "Pengaturan kanal dan nomor yang digunakan untuk Kotak Masuk",
+      "loading": "Memuat akun...",
       "enabled": "Panggilan aktif",
       "disabled": "Panggilan nonaktif",
       "testNumber": "Nomor uji",
@@ -209,8 +210,15 @@
       "edit": "Ubah",
       "sync": "Sinkron",
       "syncSuccess": "Berhasil disinkron ke Meta",
+      "accountInfo": "WhatsApp (Business Account ID: {id})",
+      "columnId": "ID",
+      "columnName": "Nama",
+      "columnNumber": "Nomor",
+      "columnColor": "Identifikasi Warna",
+      "columnStatus": "Status",
+      "columnActions": "Aksi",
       "updateModal": {
-        "title": "Ubah Nomor Telepon",
+        "title": "Ubah Akun",
         "propagationWarning": "Perubahan pengaturan panggilan membutuhkan waktu hingga 7 hari untuk tersebar ke seluruh aplikasi WhatsApp pengguna. Sisi server berlaku segera.",
         "iconWarning": "Menyembunyikan ikon telepon tidak mencegah pengguna menelepon lewat kontak tersimpan, riwayat panggilan, atau tombol di pesan.",
         "label": "Label",
@@ -223,7 +231,7 @@
         "callHours": "Jam operasional",
         "cancel": "Batal",
         "save": "Simpan",
-        "savedSuccess": "Nomor telepon berhasil diperbarui"
+        "savedSuccess": "Akun berhasil diperbarui"
       },
       "callHours": {
         "enable": "Batasi ke jam operasional",
@@ -240,7 +248,8 @@
           "SATURDAY": "Sabtu",
           "SUNDAY": "Minggu"
         }
-      }
+      },
+      "columnAppId": "App ID"
     }
   }
 }

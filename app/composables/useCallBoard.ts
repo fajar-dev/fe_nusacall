@@ -1,5 +1,5 @@
 import { callService } from '~/services/call-service'
-import { phoneNumberService } from '~/services/phone-number-service'
+import { accountService } from '~/services/account-service'
 import type { Call, CallStatus } from '~/types/call'
 
 const QUEUE_STATUSES: CallStatus[] = ['ringing']
@@ -86,17 +86,17 @@ export function useCallBoard() {
     queueLoading.value = true
     ongoingLoading.value = true
     historyLoading.value = true
-    const [, , , phoneNumbersRes] = await Promise.all([
+    const [, , , accountsRes] = await Promise.all([
       fetchTab('queue', 1),
       fetchTab('ongoing', 1),
       fetchTab('history', 1),
-      phoneNumberService.getAll(1, 100)
+      accountService.getAll(1, 100)
     ])
     queueLoading.value = false
     ongoingLoading.value = false
     historyLoading.value = false
-    if (phoneNumbersRes.success) {
-      phoneNumberColors.value = Object.fromEntries(phoneNumbersRes.data.map(pn => [pn.phoneNumberId, pn.color]))
+    if (accountsRes.success) {
+      phoneNumberColors.value = Object.fromEntries(accountsRes.data.map(pn => [pn.phoneNumberId, pn.color]))
     }
   }
 

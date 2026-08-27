@@ -11,8 +11,9 @@ export interface CallHours {
   holiday_schedule?: Array<{ date: string, start_time: string, end_time: string }>
 }
 
-export interface PhoneNumber {
+export interface Account {
   id: number
+  appId: string | null
   phoneNumberId: string
   displayPhoneNumber: string
   label: string

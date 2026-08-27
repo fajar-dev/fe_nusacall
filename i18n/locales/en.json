@@ -194,13 +194,14 @@
         "answered": "Answered",
         "ended": "Ended",
         "recording": "Recording",
-        "transcript": "Transcript"
+        "transcript": "Transcript",
+        "close": "Close"
       }
     },
-    "phoneNumber": {
-      "title": "Phone Numbers",
-      "description": "Configure calling per WhatsApp number",
-      "loading": "Loading phone numbers...",
+    "account": {
+      "title": "Meta Account",
+      "description": "Channel and number settings used for Inbox",
+      "loading": "Loading accounts...",
       "enabled": "Calling enabled",
       "disabled": "Calling disabled",
       "testNumber": "Test number",
@@ -209,8 +210,15 @@
       "edit": "Edit",
       "sync": "Sync",
       "syncSuccess": "Synced to Meta successfully",
+      "accountInfo": "WhatsApp (Business Account ID: {id})",
+      "columnId": "ID",
+      "columnName": "Name",
+      "columnNumber": "Number",
+      "columnColor": "Color Identification",
+      "columnStatus": "Status",
+      "columnActions": "Actions",
       "updateModal": {
-        "title": "Edit Phone Number",
+        "title": "Edit Account",
         "propagationWarning": "Calling setting changes can take up to 7 days to propagate to WhatsApp clients. Server-side takes effect immediately.",
         "iconWarning": "Hiding the call icon does not prevent users from calling via saved contacts, call history, or a button in a message.",
         "label": "Label",
@@ -223,7 +231,7 @@
         "callHours": "Operating hours",
         "cancel": "Cancel",
         "save": "Save",
-        "savedSuccess": "Phone number updated successfully"
+        "savedSuccess": "Account updated successfully"
       },
       "callHours": {
         "enable": "Restrict to operating hours",
@@ -240,7 +248,8 @@
           "SATURDAY": "Saturday",
           "SUNDAY": "Sunday"
         }
-      }
+      },
+      "columnAppId": "App ID"
     }
   }
 }
