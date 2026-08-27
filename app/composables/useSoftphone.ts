@@ -67,15 +67,19 @@ export function useSoftphone() {
       }
       const wacid = packet.wacid
       const data = packet.data as { waId?: string, contactName?: string | null, profileName?: string | null } | undefined
-      const caller = data?.contactName || data?.profileName || data?.waId || ''
+      const name = data?.contactName || data?.profileName || ''
+      const number = data?.waId || ''
       ringingWacids.add(wacid)
       if (state.value === 'idle') audio.startRinging()
-      audio.notifyDesktop(t('components.softphone.incoming.notifyTitle'), caller)
+      audio.notifyDesktop(t('components.softphone.incoming.notifyTitle'), name || number)
+      // The phone icon already says "incoming call", so the text is just who is
+      // calling: name on top, number below — falling back to number alone when
+      // the contact is unknown, rather than repeating it on both lines.
       // duration 0 = never auto-dismiss: the prompt stays until it is acted on
       // or dismissIncomingToast() pulls it once the call stops ringing.
       const created = toast.add({
-        title: t('components.softphone.incoming.notifyTitle'),
-        description: caller,
+        title: name || number,
+        description: name ? number : undefined,
         icon: 'i-lucide-phone-incoming',
         color: 'primary',
         duration: 0,
