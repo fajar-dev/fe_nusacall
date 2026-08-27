@@ -8,11 +8,16 @@
     :title="$t('components.auth.nusawork.title')"
     :description="$t('components.auth.nusawork.description')"
   >
-
     <template #body>
       <div class="flex flex-col items-center gap-4 py-2">
-        <div v-if="isLoading" class="w-52 h-52 rounded-xl bg-neutral-100 flex items-center justify-center">
-          <UIcon name="i-lucide-loader-2" class="w-8 h-8 text-neutral-600 animate-spin" />
+        <div
+          v-if="isLoading"
+          class="w-52 h-52 rounded-xl bg-neutral-100 flex items-center justify-center"
+        >
+          <UIcon
+            name="i-lucide-loader-2"
+            class="w-8 h-8 text-neutral-600 animate-spin"
+          />
         </div>
 
         <UAlert
@@ -35,7 +40,10 @@
           </template>
         </UAlert>
 
-        <div v-else-if="status === 'confirmation' && profile" class="w-full flex flex-col items-center gap-4 py-2">
+        <div
+          v-else-if="status === 'confirmation' && profile"
+          class="w-full flex flex-col items-center gap-4 py-2"
+        >
           <UAvatar
             :src="profile.photo"
             :alt="`${profile.firstName} ${profile.lastName}`"
@@ -45,25 +53,41 @@
             loading="lazy"
           />
           <div class="text-center">
-            <p class="text-base font-bold text-highlighted">{{ profile.firstName }} {{ profile.lastName }}</p>
-            <p class="text-xs text-muted mt-0.5">{{ profile.email }}</p>
+            <p class="text-base font-bold text-highlighted">
+              {{ profile.firstName }} {{ profile.lastName }}
+            </p>
+            <p class="text-xs text-muted mt-0.5">
+              {{ profile.email }}
+            </p>
           </div>
-          <UBadge :label="$t('components.auth.nusawork.confirmed')" color="success" variant="subtle" size="sm" class="uppercase tracking-wide" />
+          <UBadge
+            :label="$t('components.auth.nusawork.confirmed')"
+            color="success"
+            variant="subtle"
+            size="sm"
+            class="uppercase tracking-wide"
+          />
           <p class="text-xs text-muted text-center">
             {{ $t('components.auth.nusawork.confirmInstruction') }}
           </p>
         </div>
 
-        <div v-else class="relative">
+        <div
+          v-else
+          class="relative"
+        >
           <div class="w-52 h-52 rounded-xl bg-white border border-neutral-200 dark:border-neutral-800 p-2 shadow-sm">
             <img
               v-if="qrCode"
               :src="qrCode"
               alt="QR Code"
               class="w-full h-full object-contain rounded-lg"
-            />
+            >
           </div>
-          <div v-if="status === 'waiting'" class="absolute bottom-2 left-2 right-2 flex items-center justify-center">
+          <div
+            v-if="status === 'waiting'"
+            class="absolute bottom-2 left-2 right-2 flex items-center justify-center"
+          >
             <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm">
               <span class="relative flex h-2 w-2">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
@@ -76,19 +100,31 @@
           </div>
         </div>
 
-        <div v-if="status === 'waiting'" class="w-full space-y-2">
+        <div
+          v-if="status === 'waiting'"
+          class="w-full space-y-2"
+        >
           <div class="flex items-center gap-3 rounded-lg bg-neutral-100/80 dark:bg-neutral-800/80 px-3.5 py-3 border border-neutral-200/50 dark:border-neutral-700/50">
-            <UBadge label="1" color="success" variant="subtle" class="rounded-full size-6 justify-center shrink-0" />
+            <UBadge
+              label="1"
+              color="success"
+              variant="subtle"
+              class="rounded-full size-6 justify-center shrink-0"
+            />
             <span class="text-sm text-toned font-medium">{{ $t('components.auth.nusawork.step1') }}</span>
           </div>
           <div class="flex items-center gap-3 rounded-lg bg-neutral-100/80 dark:bg-neutral-800/80 px-3.5 py-3 border border-neutral-200/50 dark:border-neutral-700/50">
-            <UBadge label="2" color="success" variant="subtle" class="rounded-full size-6 justify-center shrink-0" />
+            <UBadge
+              label="2"
+              color="success"
+              variant="subtle"
+              class="rounded-full size-6 justify-center shrink-0"
+            />
             <span class="text-sm text-toned font-medium">{{ $t('components.auth.nusawork.step2') }}</span>
           </div>
         </div>
       </div>
     </template>
-
   </UModal>
 </template>
 
@@ -100,7 +136,7 @@ interface QrProfile {
   lastName: string
   email: string
   photo: string
-  company?: { name: string; address: string }
+  company?: { name: string, address: string }
 }
 
 const { t } = useI18n()
@@ -210,7 +246,7 @@ async function exchangeToken(panelToken: string) {
     toast.add({
       title: t('pages.auth.signIn.loginSuccess'),
       icon: 'i-lucide-circle-check',
-      color: 'success',
+      color: 'success'
     })
     emit('success')
   } catch (e: any) {
@@ -218,7 +254,7 @@ async function exchangeToken(panelToken: string) {
     toast.add({
       title: e?.response?.data?.message || t('components.auth.nusawork.loginFailed'),
       icon: 'i-lucide-circle-x',
-      color: 'error',
+      color: 'error'
     })
   }
 }

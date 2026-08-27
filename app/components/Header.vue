@@ -13,8 +13,6 @@
         <BrandLogo size="sm" />
       </div>
 
-
-
       <div class="flex items-center gap-3">
         <NuxtLink to="/feedback">
           <UButton

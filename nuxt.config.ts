@@ -25,10 +25,6 @@ export default defineNuxtConfig({
     }
   },
 
-  googleSignIn: {
-    clientId: process.env.GOOGLE_CLIENT_ID
-  },
-
   routeRules: {
     '/': { prerender: true }
   },
@@ -42,6 +38,10 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'
       }
     }
+  },
+
+  googleSignIn: {
+    clientId: process.env.GOOGLE_CLIENT_ID
   },
 
   i18n: {
