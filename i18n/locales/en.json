@@ -167,7 +167,6 @@
       "columnDestination": "Destination",
       "columnAgent": "Agent",
       "columnDuration": "Duration",
-      "columnStatus": "Status",
       "columnActions": "Actions",
       "status": {
         "pending": "Pending",

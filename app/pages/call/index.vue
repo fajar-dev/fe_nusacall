@@ -48,13 +48,14 @@
 import { h, resolveComponent } from 'vue'
 import type { TableColumn } from '@nuxt/ui'
 import { callService } from '~/services/call-service'
+import { callIcon, callIconColor } from '~/composables/call-display'
 import type { Call, CallStatus } from '~/types/call'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
-const UBadge = resolveComponent('UBadge')
+const UAvatar = resolveComponent('UAvatar')
 const UButton = resolveComponent('UButton')
 const UIcon = resolveComponent('UIcon')
 const { t } = useI18n()
@@ -115,18 +116,6 @@ const directionOptions = [
   { label: t('pages.call.directionOutbound'), value: 'outbound' }
 ]
 
-const statusColorMap: Record<CallStatus, 'success' | 'primary' | 'info' | 'warning' | 'neutral' | 'error'> = {
-  completed: 'success',
-  active: 'primary',
-  ringing: 'info',
-  connecting: 'info',
-  pending: 'neutral',
-  missed: 'warning',
-  rejected: 'neutral',
-  failed: 'error',
-  abandoned: 'error'
-}
-
 const relativeFormatter = new Intl.RelativeTimeFormat('id-ID', { numeric: 'auto' })
 function formatRelative(iso: string): string {
   const diffMs = new Date(iso).getTime() - Date.now()
@@ -147,7 +136,11 @@ const columns: TableColumn<Call>[] = [
     accessorKey: 'direction',
     header: t('pages.call.columnDirection'),
     cell: ({ row }) =>
-      h(UIcon, { name: row.original.direction === 'inbound' ? 'i-lucide-phone-incoming' : 'i-lucide-phone-outgoing', class: 'size-4' })
+      h(UIcon, {
+        name: callIcon(row.original),
+        class: `size-4 ${callIconColor(row.original)}`,
+        title: t(`pages.call.status.${row.original.status}`)
+      })
   },
   {
     accessorKey: 'contact',
@@ -168,7 +161,17 @@ const columns: TableColumn<Call>[] = [
   {
     accessorKey: 'user',
     header: t('pages.call.columnAgent'),
-    cell: ({ row }) => row.original.user?.name || '—'
+    cell: ({ row }) => {
+      const user = row.original.user
+      if (!user) return '—'
+      return h('div', { class: 'flex items-center gap-2.5' }, [
+        h(UAvatar, { src: user.photo ?? undefined, alt: user.name }),
+        h('div', { class: 'flex flex-col' }, [
+          h('span', { class: 'font-medium text-highlighted' }, user.name),
+          h('span', { class: 'text-xs text-muted' }, user.email)
+        ])
+      ])
+    }
   },
   {
     accessorKey: 'durationSeconds',
@@ -179,12 +182,6 @@ const columns: TableColumn<Call>[] = [
       const minutes = Math.floor(seconds / 60)
       return `${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
     }
-  },
-  {
-    accessorKey: 'status',
-    header: t('pages.call.columnStatus'),
-    cell: ({ row }) =>
-      h(UBadge, { color: statusColorMap[row.original.status], variant: 'subtle' }, () => t(`pages.call.status.${row.original.status}`))
   },
   {
     id: 'actions',

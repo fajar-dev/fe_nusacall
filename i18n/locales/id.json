@@ -167,7 +167,6 @@
       "columnDestination": "Tujuan",
       "columnAgent": "Agent",
       "columnDuration": "Durasi",
-      "columnStatus": "Status",
       "columnActions": "Aksi",
       "status": {
         "pending": "Menunggu",

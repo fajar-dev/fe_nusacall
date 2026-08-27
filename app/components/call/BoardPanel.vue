@@ -88,9 +88,9 @@
       >
         <div class="min-w-0 flex-1 flex items-center gap-2.5">
           <UIcon
-            :name="getCallIcon(call)"
+            :name="callIcon(call)"
             class="size-5 shrink-0"
-            :class="getCallIconColor(call)"
+            :class="callIconColor(call)"
           />
           <div class="min-w-0 flex-1">
             <p class="text-base font-medium text-highlighted truncate leading-snug">
@@ -161,6 +161,7 @@
 <script setup lang="ts">
 import type { Call } from '~/types/call'
 import type { BoardTab } from '~/composables/useCallBoard'
+import { callIcon, callIconColor } from '~/composables/call-display'
 
 const { t } = useI18n()
 const open = useState<boolean>('call-board-open', () => false)
@@ -220,24 +221,6 @@ function onScroll(e: Event) {
 
 function colorFor(call: Call): string {
   return phoneNumberColors.value[call.phoneNumberId] || 'transparent'
-}
-
-function getCallIcon(call: Call): string {
-  if (call.status === 'missed') {
-    return 'i-lucide-phone-missed'
-  }
-  if (call.status === 'rejected' || call.status === 'failed' || call.status === 'abandoned') {
-    return 'i-lucide-x'
-  }
-  if (call.direction === 'outbound') {
-    return 'i-lucide-phone-outgoing'
-  }
-  return 'i-lucide-phone-incoming'
-}
-
-function getCallIconColor(call: Call): string {
-  const isFailed = ['missed', 'rejected', 'failed', 'abandoned'].includes(call.status)
-  return isFailed ? 'text-red-500' : 'text-green-500'
 }
 
 function formatCallDate(dateStr: string | null | undefined): string {
