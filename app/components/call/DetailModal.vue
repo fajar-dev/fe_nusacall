@@ -26,7 +26,7 @@
               {{ $t('pages.call.detail.contact') }}
             </p>
             <p class="text-highlighted">
-              {{ call.contactName || call.profileName || call.waId }}
+              {{ call.contact?.profileName || call.waId }}
             </p>
             <p class="text-xs text-dimmed">
               {{ call.waId }}
@@ -45,7 +45,7 @@
               {{ $t('pages.call.detail.agent') }}
             </p>
             <p class="text-highlighted">
-              {{ call.agentEmail || '—' }}
+              {{ call.user?.name || '—' }}
             </p>
           </div>
           <div>

@@ -13,7 +13,7 @@ export type BoardTab = 'queue' | 'ongoing' | 'history'
 function matchesQuery(call: Call, q: string): boolean {
   if (!q) return true
   const needle = q.toLowerCase()
-  return [call.contactName, call.profileName, call.waId, call.displayPhoneNumber, call.wacid]
+  return [call.contact?.profileName, call.waId, call.displayPhoneNumber, call.wacid]
     .some(field => field?.toLowerCase().includes(needle))
 }
 

@@ -1,3 +1,6 @@
+import type { UserSummary } from './user'
+import type { Contact } from './contact'
+
 export type CallStatus
   = | 'pending' | 'ringing' | 'connecting' | 'active'
     | 'completed' | 'missed' | 'rejected' | 'failed' | 'abandoned'
@@ -10,10 +13,8 @@ export interface Call {
   phoneNumberId: string
   displayPhoneNumber: string | null
   waId: string
-  profileName: string | null
-  contactName: string | null
-  userId: number | null
-  agentEmail: string | null
+  contact: Contact | null
+  user: UserSummary | null
   direction: CallDirection
   status: CallStatus
   endReason: string | null

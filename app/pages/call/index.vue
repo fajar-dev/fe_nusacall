@@ -150,10 +150,10 @@ const columns: TableColumn<Call>[] = [
       h(UIcon, { name: row.original.direction === 'inbound' ? 'i-lucide-phone-incoming' : 'i-lucide-phone-outgoing', class: 'size-4' })
   },
   {
-    accessorKey: 'contactName',
+    accessorKey: 'contact',
     header: t('pages.call.columnContact'),
     cell: ({ row }) => {
-      const name = row.original.contactName || row.original.profileName || row.original.waId
+      const name = row.original.contact?.profileName || row.original.waId
       return h('div', { class: 'flex flex-col' }, [
         h('span', { class: 'font-medium text-highlighted' }, name),
         h('span', { class: 'text-xs text-muted' }, row.original.waId)
@@ -166,9 +166,9 @@ const columns: TableColumn<Call>[] = [
     cell: ({ row }) => row.original.displayPhoneNumber || row.original.phoneNumberId
   },
   {
-    accessorKey: 'agentEmail',
+    accessorKey: 'user',
     header: t('pages.call.columnAgent'),
-    cell: ({ row }) => row.original.agentEmail || '—'
+    cell: ({ row }) => row.original.user?.name || '—'
   },
   {
     accessorKey: 'durationSeconds',

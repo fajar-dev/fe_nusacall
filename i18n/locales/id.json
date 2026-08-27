@@ -95,7 +95,8 @@
       "history": "Riwayat",
       "answer": "Jawab",
       "empty": "Belum ada apa-apa di sini",
-      "searchPlaceholder": "Cari nama atau nomor..."
+      "searchPlaceholder": "Cari nama atau nomor...",
+      "yesterday": "Kemarin"
     }
   },
   "pages": {

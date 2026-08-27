@@ -28,7 +28,7 @@
       :items="tabs"
       :content="false"
       :ui="{
-        list: 'bg-primary-50 p-1 gap-1 justify-around w-full',
+        list: 'bg-primary-50 dark:bg-muted p-1 gap-1 justify-around w-full',
         indicator: 'hidden',
         trigger: 'grow flex-col gap-0.5 py-1 data-[state=active]:bg-default data-[state=active]:shadow-xs data-[state=active]:text-highlighted',
         label: 'text-xs'
@@ -86,13 +86,20 @@
         class="flex items-center gap-3 p-3 pr-5 mb-1 border-l-5"
         :style="{ borderLeftColor: colorFor(call) }"
       >
-        <div class="min-w-0 flex-1">
-          <p class="font-medium text-highlighted truncate">
-            {{ call.profileName || call.waId }}
-          </p>
-          <p class="text-xs text-muted truncate">
-            {{ call.waId }}
-          </p>
+        <div class="min-w-0 flex-1 flex items-center gap-2.5">
+          <UIcon
+            :name="getCallIcon(call)"
+            class="size-5 shrink-0"
+            :class="getCallIconColor(call)"
+          />
+          <div class="min-w-0 flex-1">
+            <p class="text-base font-medium text-highlighted truncate leading-snug">
+              {{ call.contact?.profileName || call.waId }}
+            </p>
+            <p class="text-xs text-muted truncate leading-normal">
+              {{ call.waId }}
+            </p>
+          </div>
         </div>
 
         <UButton
@@ -105,20 +112,12 @@
         >
           {{ $t('components.callBoard.answer') }}
         </UButton>
-        <UBadge
-          v-else-if="activeTab === 'ongoing'"
-          color="primary"
-          variant="subtle"
-        >
-          {{ call.agentEmail || '—' }}
-        </UBadge>
-        <UBadge
+        <span
           v-else
-          :color="statusColorMap[call.status]"
-          variant="subtle"
+          class="text-xs text-muted shrink-0 font-medium"
         >
-          {{ $t(`pages.call.status.${call.status}`) }}
-        </UBadge>
+          {{ formatCallDate(call.createdAt) }}
+        </span>
       </div>
 
       <div
@@ -135,7 +134,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Call, CallStatus } from '~/types/call'
+import type { Call } from '~/types/call'
 import type { BoardTab } from '~/composables/useCallBoard'
 
 const { t } = useI18n()
@@ -161,7 +160,7 @@ const answeringWacid = ref<string | null>(null)
 const panelClasses = computed(() => [
   'h-full bg-default border-r border-default shrink-0 flex-col transition-transform duration-200',
   'fixed inset-y-0 left-0 z-40 w-full sm:w-96 shadow-2xl',
-  'lg:static lg:z-auto lg:w-96 lg:shadow-none lg:flex lg:translate-x-0',
+  'lg:static lg:z-auto lg:w-82.5 lg:shadow-none lg:flex lg:translate-x-0',
   open.value ? 'flex translate-x-0' : 'hidden -translate-x-full'
 ])
 
@@ -194,16 +193,46 @@ function colorFor(call: Call): string {
   return phoneNumberColors.value[call.phoneNumberId] || 'transparent'
 }
 
-const statusColorMap: Record<CallStatus, 'success' | 'primary' | 'info' | 'warning' | 'neutral' | 'error'> = {
-  completed: 'success',
-  active: 'primary',
-  ringing: 'info',
-  connecting: 'info',
-  pending: 'neutral',
-  missed: 'warning',
-  rejected: 'neutral',
-  failed: 'error',
-  abandoned: 'error'
+function getCallIcon(call: Call): string {
+  if (call.status === 'missed') {
+    return 'i-lucide-phone-missed'
+  }
+  if (call.status === 'rejected' || call.status === 'failed' || call.status === 'abandoned') {
+    return 'i-lucide-x'
+  }
+  if (call.direction === 'outbound') {
+    return 'i-lucide-phone-outgoing'
+  }
+  return 'i-lucide-phone-incoming'
+}
+
+function getCallIconColor(call: Call): string {
+  const isFailed = ['missed', 'rejected', 'failed', 'abandoned'].includes(call.status)
+  return isFailed ? 'text-red-500' : 'text-green-500'
+}
+
+function formatCallDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return '—'
+  const date = new Date(dateStr)
+  if (isNaN(date.getTime())) return '—'
+
+  const now = new Date()
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const yesterdayStart = new Date(todayStart)
+  yesterdayStart.setDate(yesterdayStart.getDate() - 1)
+
+  if (date >= todayStart) {
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+    return `${hours}:${minutes}`
+  } else if (date >= yesterdayStart) {
+    return t('components.callBoard.yesterday')
+  } else {
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const year = String(date.getFullYear()).slice(-2)
+    return `${day}/${month}/${year}`
+  }
 }
 
 async function onAnswer(call: Call) {
