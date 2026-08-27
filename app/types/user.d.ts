@@ -23,6 +23,12 @@ export interface User {
     id: number
     name: string
   } | null
+  /** Office branch, resolved during the Nusawork sync by matching the employee's branch code. */
+  branch?: {
+    id: number
+    name: string
+    code: string
+  } | null
   role: string
   /** Live presence, merged in on every response that serializes a User — "offline" if not currently connected via WebSocket. */
   availability: UserAvailability

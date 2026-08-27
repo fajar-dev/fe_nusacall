@@ -125,6 +125,11 @@ const columns: TableColumn<User>[] = [
     cell: ({ row }) => row.original.organization?.name || '—'
   },
   {
+    accessorKey: 'branch',
+    header: t('pages.user.columnBranch'),
+    cell: ({ row }) => row.original.branch?.name || '—'
+  },
+  {
     accessorKey: 'availability',
     header: t('pages.user.columnStatus'),
     cell: ({ row }) => statusDot(row.original.availability === 'available', t(`pages.user.status.${row.original.availability}`))

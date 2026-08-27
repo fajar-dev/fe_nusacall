@@ -140,6 +140,7 @@
       "columnUser": "Agent",
       "columnRole": "Role",
       "columnOrganization": "Organization",
+      "columnBranch": "Branch",
       "columnStatus": "Status",
       "allOrganizations": "All organizations",
       "status": {

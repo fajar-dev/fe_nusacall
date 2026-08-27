@@ -140,6 +140,7 @@
       "columnUser": "Agent",
       "columnRole": "Peran",
       "columnOrganization": "Organisasi",
+      "columnBranch": "Cabang",
       "columnStatus": "Status",
       "allOrganizations": "Semua organisasi",
       "status": {
