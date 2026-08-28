@@ -31,7 +31,20 @@ class SignalingClient {
 
     const config = useRuntimeConfig()
     const url = `${config.public.wsUrl}?token=${encodeURIComponent(token)}`
-    this.ws = new WebSocket(url)
+
+    // A malformed or insecure wsUrl (e.g. ws:// on an HTTPS page) makes this
+    // constructor throw synchronously. Left uncaught it escapes the caller's
+    // onMounted and Nuxt renders a 500 page, so a misconfigured socket takes
+    // the whole app down instead of just the softphone. No reconnect here:
+    // that failure is a config error, not a transient one.
+    try {
+      this.ws = new WebSocket(url)
+    } catch (err) {
+      console.error(`Failed to open signaling socket at "${config.public.wsUrl}". An HTTPS page requires wss://.`, err)
+      this.connected.value = false
+      this.ws = null
+      return
+    }
 
     this.ws.onopen = () => {
       this.connected.value = true
