@@ -83,7 +83,7 @@
       <div
         v-for="call in currentList"
         :key="call.id"
-        class="flex items-center gap-3 p-3 pr-5 mb-1 border-l-5"
+        class="flex items-center gap-3 p-3 pr-5 mb-1 border-l-5 hover:bg-neutral-100/80 dark:hover:bg-neutral-950/60"
         :style="{ borderLeftColor: colorFor(call) }"
       >
         <div class="min-w-0 flex-1 flex items-center gap-2.5">
