@@ -164,8 +164,6 @@
       }
     },
     "contactDetail": {
-      "description": "Rincian kontak dan riwayat panggilannya",
-      "back": "Kembali",
       "notFound": "Kontak tidak ditemukan",
       "searchPlaceholder": "Cari panggilan...",
       "tabs": {

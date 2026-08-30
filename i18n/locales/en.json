@@ -164,8 +164,6 @@
       }
     },
     "contactDetail": {
-      "description": "Contact details and call history",
-      "back": "Back",
       "notFound": "Contact not found",
       "searchPlaceholder": "Search calls...",
       "tabs": {

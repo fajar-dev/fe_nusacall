@@ -2,18 +2,8 @@
   <div class="space-y-6">
     <AppHeader
       :title="contact?.name || contact?.phoneNumber || '—'"
-      :description="$t('pages.contactDetail.description')"
-    >
-      <template #actions>
-        <UButton
-          icon="i-lucide-arrow-left"
-          color="neutral"
-          variant="ghost"
-          :label="$t('pages.contactDetail.back')"
-          @click="() => { navigateTo('/contact') }"
-        />
-      </template>
-    </AppHeader>
+      :description="contact?.phoneNumber"
+    />
 
     <UCard>
       <div
