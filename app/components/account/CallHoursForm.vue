@@ -11,7 +11,7 @@
       >
         <USelectMenu
           v-model="timezoneId"
-          :items="timezoneOptions"
+          :items="timezoneItems"
           class="w-full"
         />
       </UFormField>
@@ -64,6 +64,8 @@ import type { TimeValue } from 'reka-ui'
 import { parseHHmm, toHHmm } from '~/utils/time'
 import { findDayRange, isDayOpen, withDayRange, withDayToggled } from '~/utils/call-hours'
 import { DAYS_OF_WEEK } from '~/enums/day-of-week'
+import { DEFAULT_TIMEZONE, TIMEZONES } from '~/enums/timezone'
+import type { Timezone } from '~/enums/timezone'
 import type { CallHours, CallHoursDay } from '~/types/account'
 
 const { t } = useI18n()
@@ -71,16 +73,7 @@ const { t } = useI18n()
 const model = defineModel<CallHours | null>({ default: null })
 
 const days = DAYS_OF_WEEK
-
-const timezoneOptions = [
-  'Asia/Jakarta',
-  'Asia/Makassar',
-  'Asia/Jayapura',
-  'Asia/Singapore',
-  'Asia/Bangkok',
-  'Asia/Tokyo',
-  'UTC'
-]
+const timezoneItems = [...TIMEZONES]
 
 const enabled = computed({
   get: () => model.value?.status === 'ENABLED',
@@ -88,7 +81,7 @@ const enabled = computed({
     if (value) {
       model.value = model.value
         ? { ...model.value, status: 'ENABLED' }
-        : { status: 'ENABLED', timezone_id: 'Asia/Jakarta', weekly_operating_hours: [] }
+        : { status: 'ENABLED', timezone_id: DEFAULT_TIMEZONE, weekly_operating_hours: [] }
     } else {
       model.value = model.value ? { ...model.value, status: 'DISABLED' } : null
     }
@@ -96,8 +89,8 @@ const enabled = computed({
 })
 
 const timezoneId = computed({
-  get: () => model.value?.timezone_id ?? 'Asia/Jakarta',
-  set: (value: string) => {
+  get: () => model.value?.timezone_id ?? DEFAULT_TIMEZONE,
+  set: (value: Timezone) => {
     if (model.value) model.value = { ...model.value, timezone_id: value }
   }
 })

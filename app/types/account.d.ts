@@ -1,5 +1,6 @@
 import type { DayOfWeek } from '~/enums/day-of-week'
 import type { CallHoursStatus } from '~/enums/call-hours-status'
+import type { Timezone } from '~/enums/timezone'
 import type { CallIconVisibility } from '~/enums/call-icon-visibility'
 
 export interface CallHoursDay {
@@ -10,7 +11,7 @@ export interface CallHoursDay {
 
 export interface CallHours {
   status: CallHoursStatus
-  timezone_id: string
+  timezone_id: Timezone
   weekly_operating_hours: CallHoursDay[]
   holiday_schedule?: Array<{ date: string, start_time: string, end_time: string }>
 }
