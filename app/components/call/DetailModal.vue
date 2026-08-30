@@ -160,22 +160,14 @@
                 v-if="loadingRecording"
                 class="h-9 w-full rounded-md"
               />
-              <div
-                v-else-if="recordingTracks.length"
-                class="space-y-2"
-              >
-                <div
-                  v-for="track in recordingTracks"
-                  :key="track.key"
-                >
-                  <span class="text-xs text-muted">{{ $t(`components.callRecording.track.${track.key}`) }}</span>
-                  <audio
-                    :src="track.url"
-                    controls
-                    preload="none"
-                    class="w-full h-9 rounded-md mt-1"
-                  />
-                </div>
+              <div v-else-if="recordingAvailability.state === 'ready'">
+                <audio
+                  :src="recordingAvailability.url"
+                  controls
+                  preload="none"
+                  class="w-full h-9 rounded-md"
+                />
+                <span class="text-xs text-dimmed mt-1 block">{{ $t('components.callRecording.stereoHint') }}</span>
               </div>
               <p
                 v-else
@@ -229,14 +221,6 @@ const permission = ref<PermissionCheckResult | null>(null)
 
 const loadingRecording = ref(false)
 const recordingAvailability = ref<RecordingAvailability>({ state: 'not_ready' })
-
-const recordingTracks = computed(() => {
-  const availability = recordingAvailability.value
-  if (availability.state !== 'ready') return []
-  return ([['customer', availability.customer], ['agent', availability.agent]] as const)
-    .filter((entry): entry is readonly ['customer' | 'agent', string] => entry[1] !== null)
-    .map(([key, url]) => ({ key, url }))
-})
 
 const statusColorMap: Record<CallStatus, 'success' | 'primary' | 'info' | 'warning' | 'neutral' | 'error'> = {
   completed: 'success',

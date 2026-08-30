@@ -43,8 +43,8 @@ class CallService {
   async getRecordingAvailability(id: number): Promise<RecordingAvailability> {
     try {
       const response = await apiService.client.get<ApiResponse<RecordingTracks>>(`/call/${id}/recording`)
-      const { customer, agent, durationSeconds } = response.data.data
-      return { state: 'ready', customer, agent, durationSeconds }
+      const { url, durationSeconds } = response.data.data
+      return { state: 'ready', url, durationSeconds }
     } catch (error) {
       const status = axios.isAxiosError(error) ? error.response?.status : undefined
       if (status !== 404) console.error('Unexpected error fetching recording availability', error)

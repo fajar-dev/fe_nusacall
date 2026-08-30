@@ -75,10 +75,7 @@
     "callRecording": {
       "notReady": "No recording available for this call",
       "loading": "Loading...",
-      "track": {
-        "customer": "Customer",
-        "agent": "Agent"
-      }
+      "stereoHint": "Stereo — customer on the left channel, agent on the right"
     },
     "callOutbound": {
       "checking": "Checking call permission...",

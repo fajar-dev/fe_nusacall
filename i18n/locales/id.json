@@ -75,10 +75,7 @@
     "callRecording": {
       "notReady": "Tidak ada rekaman untuk panggilan ini",
       "loading": "Memuat...",
-      "track": {
-        "customer": "Pelanggan",
-        "agent": "Agen"
-      }
+      "stereoHint": "Stereo — pelanggan di kanal kiri, agen di kanan"
     },
     "callOutbound": {
       "checking": "Memeriksa izin panggilan...",

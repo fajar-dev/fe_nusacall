@@ -24,8 +24,7 @@ export interface Call {
 }
 
 export interface RecordingTracks {
-  customer: string | null
-  agent: string | null
+  url: string
   durationSeconds: number
 }
 
