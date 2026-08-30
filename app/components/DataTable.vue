@@ -10,12 +10,6 @@
             :placeholder="searchPlaceholder ?? $t('components.dataTable.searchPlaceholder')"
             class="w-full sm:w-64"
           />
-
-          <USelect
-            v-model="perPage"
-            :items="limitOptions"
-            class="w-20"
-          />
         </div>
 
         <div class="w-full sm:w-auto">
@@ -80,14 +74,12 @@ withDefaults(defineProps<{
   from?: number
   to?: number
   searchPlaceholder?: string
-  limitOptions?: number[]
   tableClass?: string
 }>(), {
   loading: false,
   total: 0,
   from: 0,
   to: 0,
-  limitOptions: () => [10, 25, 50, 100],
   tableClass: ''
 })
 </script>

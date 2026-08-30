@@ -20,14 +20,16 @@
     >
       <template #filters>
         <div class="flex items-center gap-2">
-          <USelect
+          <USelectMenu
             v-model="organizationFilter"
             :items="organizationOptions"
+            value-key="value"
             class="w-48"
           />
-          <USelect
+          <USelectMenu
             v-model="branchFilter"
             :items="branchOptions"
+            value-key="value"
             class="w-48"
           />
         </div>

@@ -13,7 +13,6 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
   const { defaultSortBy = '', defaultOrder = 'DESC' } = options
 
   const search = ref('')
-  const limitOptions = ref([10, 25, 50, 100])
   const perPage = ref(10)
   const page = ref(1)
   const sortBy = ref(defaultSortBy)
@@ -75,7 +74,6 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
 
   return {
     search,
-    limitOptions,
     perPage,
     page,
     sortBy,

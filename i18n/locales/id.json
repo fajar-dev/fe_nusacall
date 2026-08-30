@@ -165,7 +165,7 @@
         "name": "Nama Kontak",
         "namePlaceholder": "Nama Kontak",
         "phoneNumber": "Nomor Telepon",
-        "phoneNumberPlaceholder": "Nomor Telepon",
+        "phoneNumberPlaceholder": "Contoh: 08123456789 atau +62 812-3456-789",
         "timeZone": "Zona Waktu",
         "timeZonePlaceholder": "Pilih timezone...",
         "branch": "Cabang",

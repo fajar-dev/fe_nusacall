@@ -28,9 +28,10 @@
             :placeholder="$t('pages.call.filterStatus')"
             class="w-40"
           />
-          <USelect
+          <USelectMenu
             v-model="directionFilter"
             :items="directionOptions"
+            value-key="value"
             class="w-36"
           />
         </div>
