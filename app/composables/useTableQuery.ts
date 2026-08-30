@@ -31,14 +31,25 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
 
   onMounted(() => onQueryChange())
 
+  /**
+   * Mengubah page memicu watcher di atas, jadi pemuatan ulang tidak dipanggil
+   * lagi secara langsung agar tidak terjadi dua permintaan yang sama.
+   */
+  const resetToFirstPage = () => {
+    if (page.value !== 1) {
+      page.value = 1
+      return
+    }
+    onQueryChange()
+  }
+
   let searchTimeout: ReturnType<typeof setTimeout>
   watch(search, () => {
     clearTimeout(searchTimeout)
-    searchTimeout = setTimeout(() => {
-      page.value = 1
-      onQueryChange()
-    }, 300)
+    searchTimeout = setTimeout(resetToFirstPage, 300)
   })
+
+  onScopeDispose(() => clearTimeout(searchTimeout))
 
   const chevron = (direction: 'up' | 'down', colorClass: string) =>
     h('svg', {
@@ -79,6 +90,7 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
     sortBy,
     order,
     toggleSort,
-    sortHeader
+    sortHeader,
+    resetToFirstPage
   }
 }

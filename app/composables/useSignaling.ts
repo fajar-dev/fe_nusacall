@@ -22,6 +22,7 @@ class SignalingClient {
 
   connect(token: string) {
     if (typeof window === 'undefined') return
+    this.closeSocket()
     this.manuallyClosed = false
     this.token = token
 
@@ -70,10 +71,21 @@ class SignalingClient {
 
   disconnect() {
     this.manuallyClosed = true
+    this.token = null
+    this.closeSocket()
+    this.connected.value = false
+  }
+
+  private closeSocket() {
     if (this.reconnectTimer) clearTimeout(this.reconnectTimer)
+    this.reconnectTimer = null
     if (this.pingTimer) clearInterval(this.pingTimer)
-    this.ws?.close()
-    this.ws = null
+    this.pingTimer = null
+    if (this.ws) {
+      this.ws.onclose = null
+      this.ws.close()
+      this.ws = null
+    }
   }
 
   send(packet: Omit<WsPacket, 'ts'> & { ts?: number }) {

@@ -99,12 +99,9 @@ async function fetchCalls() {
   }
 }
 
-const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchCalls)
+const { search, perPage, page, sortBy, order, sortHeader, resetToFirstPage } = useTableQuery(fetchCalls)
 
-watch([statusFilter, directionFilter], () => {
-  page.value = 1
-  fetchCalls()
-})
+watch([statusFilter, directionFilter], resetToFirstPage)
 
 function openDetail(call: Call) {
   selectedCall.value = call

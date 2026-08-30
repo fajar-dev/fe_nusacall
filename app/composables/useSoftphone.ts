@@ -15,9 +15,27 @@ export function useSoftphone() {
   const toast = useToast()
   const { t } = useI18n()
 
-  const initialized = useState<boolean>('softphone-initialized', () => false)
+  const initializedForToken = useState<string | null>('softphone-initialized-token', () => null)
   const ringingWacids = new Set<string>()
   const incomingToasts = new Map<string, string | number>()
+  const unsubscribers: Array<() => void> = []
+
+  function listen(type: string, handler: Parameters<typeof signaling.on>[1]) {
+    unsubscribers.push(signaling.on(type, handler))
+  }
+
+  /** Sesi sebelumnya dilepas agar pengguna berikutnya tidak mewarisi koneksi dan handler lama. */
+  function teardown() {
+    while (unsubscribers.length) unsubscribers.pop()!()
+    signaling.disconnect()
+    audio.stopRinging()
+    for (const wacid of [...incomingToasts.keys()]) dismissIncomingToast(wacid)
+    ringingWacids.clear()
+    state.value = 'disconnected'
+    activeWacid.value = null
+    answeredAt.value = null
+    initializedForToken.value = null
+  }
 
   function dismissIncomingToast(wacid: string) {
     const id = incomingToasts.get(wacid)
@@ -27,21 +45,27 @@ export function useSoftphone() {
   }
 
   function init() {
-    if (initialized.value || typeof window === 'undefined') return
+    if (typeof window === 'undefined') return
     const { state: authState } = useAuth()
-    if (!authState.token) return
-    initialized.value = true
+
+    if (!authState.token) {
+      if (initializedForToken.value) teardown()
+      return
+    }
+    if (initializedForToken.value === authState.token) return
+    if (initializedForToken.value) teardown()
+    initializedForToken.value = authState.token
 
     signaling.connect(authState.token)
 
-    signaling.on('connected', async () => {
+    listen('connected', async () => {
       if (state.value === 'disconnected') state.value = 'idle'
       const granted = await audio.requestMicPermission()
       micDenied.value = !granted
       if (granted) await audio.requestNotificationPermission()
     })
 
-    signaling.on('incoming_call', (packet) => {
+    listen('incoming_call', (packet) => {
       if (!packet.wacid) {
         console.error('incoming_call packet missing wacid, dropping', packet)
         return
@@ -78,7 +102,7 @@ export function useSoftphone() {
       incomingToasts.set(wacid, created.id)
     })
 
-    signaling.on('call_board', (packet) => {
+    listen('call_board', (packet) => {
       const call = packet.data as { wacid?: string, status?: string } | undefined
       if (!call?.wacid || call.status === 'ringing') return
       ringingWacids.delete(call.wacid)
@@ -86,16 +110,16 @@ export function useSoftphone() {
       if (ringingWacids.size === 0) audio.stopRinging()
     })
 
-    signaling.on('call_taken', (packet) => {
+    listen('call_taken', (packet) => {
       lastTakenBy.value = (packet.data?.byEmail as string) ?? null
     })
 
-    signaling.on('webrtc_answer', async (packet) => {
+    listen('webrtc_answer', async (packet) => {
       if (packet.wacid !== activeWacid.value) return
       await webrtc.applyAnswer(packet.data?.sdp as string)
     })
 
-    signaling.on('call_state', (packet) => {
+    listen('call_state', (packet) => {
       if (packet.wacid !== activeWacid.value) return
       if (packet.data?.status === 'active') {
         state.value = 'active'
@@ -103,7 +127,7 @@ export function useSoftphone() {
       }
     })
 
-    signaling.on('call_ended', (packet) => {
+    listen('call_ended', (packet) => {
       if (packet.wacid !== activeWacid.value) return
       teardownActiveCall()
     })

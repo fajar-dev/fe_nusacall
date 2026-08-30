@@ -12,6 +12,10 @@ class CallAudio {
       osc.frequency.value = 440
       gain.gain.setValueAtTime(0.15, this.audioCtx.currentTime)
       osc.connect(gain).connect(this.audioCtx.destination)
+      osc.onended = () => {
+        osc.disconnect()
+        gain.disconnect()
+      }
       osc.start()
       osc.stop(this.audioCtx.currentTime + 0.4)
     }

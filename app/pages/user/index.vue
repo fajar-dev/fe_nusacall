@@ -116,12 +116,9 @@ onMounted(() => {
   fetchBranches()
 })
 
-const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchUsers)
+const { search, perPage, page, sortBy, order, sortHeader, resetToFirstPage } = useTableQuery(fetchUsers)
 
-watch([organizationFilter, branchFilter], () => {
-  page.value = 1
-  fetchUsers()
-})
+watch([organizationFilter, branchFilter], resetToFirstPage)
 
 const columns: TableColumn<User>[] = [
   {
