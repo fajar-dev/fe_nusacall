@@ -124,7 +124,7 @@ const columns: TableColumn<Call>[] = [
   },
   {
     accessorKey: 'direction',
-    header: t('pages.call.columnDirection'),
+    header: sortHeader(() => t('pages.call.columnDirection'), 'direction'),
     cell: ({ row }) =>
       h(UIcon, {
         name: callIcon(row.original),
@@ -134,7 +134,7 @@ const columns: TableColumn<Call>[] = [
   },
   {
     accessorKey: 'contact',
-    header: t('pages.call.columnContact'),
+    header: sortHeader(() => t('pages.call.columnContact'), 'contact'),
     cell: ({ row }) => {
       const contact = row.original.contact
       return h('div', { class: 'flex flex-col' }, [
@@ -144,13 +144,20 @@ const columns: TableColumn<Call>[] = [
     }
   },
   {
-    accessorKey: 'phoneNumberId',
-    header: t('pages.call.columnDestination'),
-    cell: ({ row }) => row.original.phoneNumberId
+    accessorKey: 'account',
+    header: sortHeader(() => t('pages.call.columnAccount'), 'account'),
+    cell: ({ row }) => {
+      const account = row.original.account
+      if (!account) return '—'
+      return h('div', { class: 'flex flex-col' }, [
+        h('span', { class: 'font-medium text-highlighted' }, account.label),
+        h('span', { class: 'text-xs text-muted' }, account.displayPhoneNumber)
+      ])
+    }
   },
   {
     accessorKey: 'user',
-    header: t('pages.call.columnAgent'),
+    header: sortHeader(() => t('pages.call.columnAgent'), 'user'),
     cell: ({ row }) => {
       const user = row.original.user
       if (!user) return '—'
@@ -165,7 +172,7 @@ const columns: TableColumn<Call>[] = [
   },
   {
     accessorKey: 'durationSeconds',
-    header: t('pages.call.columnDuration'),
+    header: sortHeader(() => t('pages.call.columnDuration'), 'durationSeconds'),
     cell: ({ row }) => {
       const seconds = row.original.durationSeconds
       return seconds == null ? '—' : formatDuration(seconds)

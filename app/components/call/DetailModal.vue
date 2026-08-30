@@ -16,7 +16,7 @@
                 name="i-lucide-phone-call"
                 class="size-4 text-muted"
               />
-              <span class="text-xs text-muted">{{ call.wacid }}</span>
+              <span class="text-xs text-muted tabular-nums">#{{ call.id }}</span>
             </div>
             <UBadge
               :color="statusColor"
