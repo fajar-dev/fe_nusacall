@@ -10,6 +10,7 @@ export interface UserListParams {
   limit?: number
   q?: string
   organizationId?: number
+  branchId?: number
   sortBy?: string
   order?: SortOrder
 }

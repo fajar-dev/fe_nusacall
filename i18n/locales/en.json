@@ -140,6 +140,7 @@
       "columnBranch": "Branch",
       "columnStatus": "Status",
       "allOrganizations": "All organizations",
+      "allBranches": "All branches",
       "status": {
         "available": "Online",
         "offline": "Offline"

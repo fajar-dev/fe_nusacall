@@ -140,6 +140,7 @@
       "columnBranch": "Cabang",
       "columnStatus": "Status",
       "allOrganizations": "Semua organisasi",
+      "allBranches": "Semua cabang",
       "status": {
         "available": "Aktif",
         "offline": "Tidak Aktif"

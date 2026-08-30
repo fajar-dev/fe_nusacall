@@ -19,11 +19,18 @@
       table-class="min-w-[760px]"
     >
       <template #filters>
-        <USelect
-          v-model="organizationFilter"
-          :items="organizationOptions"
-          class="w-48"
-        />
+        <div class="flex items-center gap-2">
+          <USelect
+            v-model="organizationFilter"
+            :items="organizationOptions"
+            class="w-48"
+          />
+          <USelect
+            v-model="branchFilter"
+            :items="branchOptions"
+            class="w-48"
+          />
+        </div>
       </template>
     </DataTable>
   </div>
@@ -34,8 +41,10 @@ import { h, resolveComponent } from 'vue'
 import type { TableColumn } from '@nuxt/ui'
 import { userService } from '~/services/user-service'
 import { organizationService } from '~/services/organization-service'
+import { branchService } from '~/services/branch-service'
 import type { User } from '~/types/user'
 import type { OrganizationListItem } from '~/types/organization'
+import type { BranchListItem } from '~/types/branch'
 
 definePageMeta({
   layout: 'dashboard'
@@ -48,6 +57,8 @@ const data = ref<User[]>([])
 const isLoading = ref(false)
 const organizations = ref<OrganizationListItem[]>([])
 const organizationFilter = ref('all')
+const branchFilter = ref('all')
+const branches = ref<BranchListItem[]>([])
 
 const meta = reactive({ total: 0, from: 0, to: 0 })
 
@@ -56,20 +67,32 @@ const organizationOptions = computed(() => [
   ...organizations.value.map(org => ({ label: org.name, value: String(org.id) }))
 ])
 
+const branchOptions = computed(() => [
+  { label: t('pages.user.allBranches'), value: 'all' },
+  ...branches.value.map(branch => ({ label: branch.name, value: String(branch.id) }))
+])
+
 async function fetchOrganizations() {
   const response = await organizationService.getList()
   if (response.success) organizations.value = response.data
+}
+
+async function fetchBranches() {
+  const response = await branchService.getList()
+  if (response.success) branches.value = response.data
 }
 
 async function fetchUsers() {
   isLoading.value = true
   try {
     const organizationId = organizationFilter.value === 'all' ? undefined : Number(organizationFilter.value)
+    const branchId = branchFilter.value === 'all' ? undefined : Number(branchFilter.value)
     const response = await userService.getAll({
       page: page.value,
       limit: perPage.value,
       q: search.value,
       organizationId,
+      branchId,
       sortBy: sortBy.value || undefined,
       order: order.value
     })
@@ -86,11 +109,14 @@ async function fetchUsers() {
   }
 }
 
-onMounted(fetchOrganizations)
+onMounted(() => {
+  fetchOrganizations()
+  fetchBranches()
+})
 
 const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchUsers)
 
-watch(organizationFilter, () => {
+watch([organizationFilter, branchFilter], () => {
   page.value = 1
   fetchUsers()
 })
@@ -118,12 +144,12 @@ const columns: TableColumn<User>[] = [
   },
   {
     accessorKey: 'branch',
-    header: t('pages.user.columnBranch'),
+    header: sortHeader(() => t('pages.user.columnBranch'), 'branch'),
     cell: ({ row }) => row.original.branch?.name || '—'
   },
   {
     accessorKey: 'availability',
-    header: t('pages.user.columnStatus'),
+    header: sortHeader(() => t('pages.user.columnStatus'), 'availability'),
     cell: ({ row }) => statusDot(row.original.availability === 'available', t(`pages.user.status.${row.original.availability}`))
   }
 ]
