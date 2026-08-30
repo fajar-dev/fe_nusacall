@@ -75,10 +75,7 @@
     "callRecording": {
       "notReady": "Not available yet (not requested, or still processing)",
       "expired": "Expired — not downloaded within 7 days before Meta deleted it",
-      "loading": "Loading...",
-      "corrupted": "Failed to load transcript",
-      "speakerBusiness": "Agent",
-      "speakerCustomer": "Customer"
+      "loading": "Loading..."
     },
     "callOutbound": {
       "checking": "Checking call permission...",
@@ -197,7 +194,6 @@
         "answered": "Answered",
         "ended": "Ended",
         "recording": "Recording",
-        "transcript": "Transcript",
         "close": "Close"
       }
     },

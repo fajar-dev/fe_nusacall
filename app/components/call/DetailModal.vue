@@ -187,74 +187,6 @@
           </div>
         </template>
 
-        <template v-if="call.transcriptionEnabled">
-          <USeparator />
-          <div>
-            <h4 class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">
-              {{ $t('pages.call.detail.transcript') }}
-            </h4>
-            <div>
-              <div
-                v-if="loadingTranscript"
-                class="space-y-2"
-              >
-                <USkeleton class="h-8 w-full rounded-md" />
-                <USkeleton class="h-8 w-3/4 rounded-md" />
-              </div>
-
-              <div
-                v-else-if="transcriptAvailability.state === 'expired'"
-                class="flex items-center gap-2 p-2.5 rounded-md bg-muted/40 text-xs text-muted"
-              >
-                <UIcon
-                  name="i-lucide-clock-alert"
-                  class="size-4 shrink-0 text-warning"
-                />
-                <span>{{ $t('components.callRecording.expired') }}</span>
-              </div>
-
-              <p
-                v-else-if="transcriptAvailability.state === 'not_ready'"
-                class="text-xs text-dimmed p-2 rounded-md bg-muted/20"
-              >
-                {{ $t('components.callRecording.notReady') }}
-              </p>
-
-              <div
-                v-else-if="transcriptSegments.length"
-                class="space-y-2 max-h-60 overflow-y-auto pr-1"
-              >
-                <div
-                  v-for="(segment, i) in transcriptSegments"
-                  :key="i"
-                  class="p-2.5 rounded-lg border border-default bg-muted/10 text-xs space-y-1"
-                >
-                  <div class="flex items-center justify-between">
-                    <UBadge
-                      :color="segment.speaker === 'Business' ? 'primary' : 'neutral'"
-                      variant="subtle"
-                      size="xs"
-                    >
-                      {{ segment.speaker === 'Business' ? $t('components.callRecording.speakerBusiness') : $t('components.callRecording.speakerCustomer') }}
-                    </UBadge>
-                    <span class="text-dimmed text-xs">{{ formatDuration(segment.start) }}</span>
-                  </div>
-                  <p class="text-toned text-xs leading-relaxed break-words">
-                    {{ segment.text }}
-                  </p>
-                </div>
-              </div>
-
-              <p
-                v-else-if="transcriptAvailability.state === 'ready' && transcriptAvailability.content?.transcript?.text"
-                class="text-xs text-toned p-2.5 rounded-lg border border-default bg-muted/10 leading-relaxed"
-              >
-                {{ transcriptAvailability.content.transcript.text }}
-              </p>
-            </div>
-          </div>
-        </template>
-
         <USeparator />
         <div class="flex items-center justify-between text-xs text-dimmed">
           <span v-if="call.errorCode">{{ $t('pages.call.detail.errorCode') }}: {{ call.errorCode }}</span>
@@ -279,7 +211,7 @@
 import { callService } from '~/services/call-service'
 import { formatClockTime, formatDuration } from '~/utils/format'
 import { permissionService } from '~/services/permission-service'
-import type { ArtifactAvailability, Call, CallStatus, TranscriptAvailability, TranscriptSegment } from '~/types/call'
+import type { ArtifactAvailability, Call, CallStatus } from '~/types/call'
 import type { PermissionCheckResult } from '~/types/permission'
 
 const props = defineProps<{ call: Call | null }>()
@@ -297,9 +229,6 @@ const permission = ref<PermissionCheckResult | null>(null)
 
 const loadingRecording = ref(false)
 const recordingAvailability = ref<ArtifactAvailability>({ state: 'not_ready' })
-
-const loadingTranscript = ref(false)
-const transcriptAvailability = ref<TranscriptAvailability>({ state: 'not_ready' })
 
 const statusColorMap: Record<CallStatus, 'success' | 'primary' | 'info' | 'warning' | 'neutral' | 'error'> = {
   completed: 'success',
@@ -338,14 +267,6 @@ const quotaText = computed(() => {
   const limit = action?.limits?.[0]
   if (!limit) return null
   return t('components.callOutbound.quota', { used: limit.current_usage, max: limit.max_allowed })
-})
-
-const transcriptSegments = computed(() => {
-  if (transcriptAvailability.value.state !== 'ready') return []
-  return transcriptAvailability.value.content.transcript.segments.map((segment: TranscriptSegment) => ({
-    ...segment,
-    text: segment.words?.map(w => w.word).join(' ') || ''
-  })).filter(s => s.text)
 })
 
 async function loadPermission() {
@@ -403,18 +324,6 @@ async function loadRecording() {
   }
 }
 
-async function loadTranscript() {
-  if (!props.call?.transcriptionEnabled) return
-  loadingTranscript.value = true
-  try {
-    transcriptAvailability.value = await callService.getTranscriptAvailability(props.call.id)
-  } catch {
-    transcriptAvailability.value = { state: 'not_ready' }
-  } finally {
-    loadingTranscript.value = false
-  }
-}
-
 function loadDetailData() {
   if (!open.value || !props.call) return
   if (props.call.phoneNumberId && props.call.waId) {
@@ -422,9 +331,6 @@ function loadDetailData() {
   }
   if (props.call.recordingEnabled) {
     loadRecording()
-  }
-  if (props.call.transcriptionEnabled) {
-    loadTranscript()
   }
 }
 

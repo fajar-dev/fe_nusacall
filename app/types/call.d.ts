@@ -22,42 +22,13 @@ export interface Call {
   durationSeconds: number | null
   setupDurationMs: number | null
   recordingEnabled: boolean
-  transcriptionEnabled: boolean
   createdAt: string
-}
-
-export interface TranscriptDocument {
-  metadata?: {
-    duration?: number
-    sample_rate?: number
-    channels?: number
-    processed_at?: string
-  }
-  transcript: {
-    text: string
-    language: string
-    confidence: number
-    segments: TranscriptSegment[]
-  }
-}
-
-export interface TranscriptSegment {
-  speaker: 'Business' | 'Customer'
-  channel: 0 | 1
-  start: number
-  end: number
-  words?: Array<{ word: string, start: number, end: number, confidence: number }>
 }
 
 export type ArtifactAvailability
   = | { state: 'not_ready' }
     | { state: 'expired' }
     | { state: 'ready', url: string }
-
-export type TranscriptAvailability
-  = | { state: 'not_ready' }
-    | { state: 'expired' }
-    | { state: 'ready', content: TranscriptDocument }
 
 export interface CallStats {
   total: number

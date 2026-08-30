@@ -3,7 +3,7 @@ import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
 import { buildPagedQuery, buildQuery } from '~/utils/query'
 import type { ApiResponse } from '../types/api'
-import type { Call, CallStats, ArtifactAvailability, TranscriptAvailability, TranscriptDocument } from '../types/call'
+import type { Call, CallStats, ArtifactAvailability } from '../types/call'
 import type { SortOrder } from '~/enums/sort-order'
 
 interface CallListParams {
@@ -48,18 +48,6 @@ class CallService {
       const status = axios.isAxiosError(error) ? error.response?.status : undefined
       if (status === 410) return { state: 'expired' }
       if (status !== 404) console.error('Unexpected error fetching recording availability', error)
-      return { state: 'not_ready' }
-    }
-  }
-
-  async getTranscriptAvailability(id: number): Promise<TranscriptAvailability> {
-    try {
-      const response = await apiService.client.get<ApiResponse<TranscriptDocument>>(`/call/${id}/transcript`)
-      return { state: 'ready', content: response.data.data }
-    } catch (error) {
-      const status = axios.isAxiosError(error) ? error.response?.status : undefined
-      if (status === 410) return { state: 'expired' }
-      if (status !== 404) console.error('Unexpected error fetching transcript availability', error)
       return { state: 'not_ready' }
     }
   }

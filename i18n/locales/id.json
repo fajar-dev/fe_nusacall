@@ -75,10 +75,7 @@
     "callRecording": {
       "notReady": "Belum tersedia (belum diminta, atau masih diproses)",
       "expired": "Sudah kedaluwarsa — tidak diunduh dalam 7 hari sebelum dihapus Meta",
-      "loading": "Memuat...",
-      "corrupted": "Gagal memuat transkrip",
-      "speakerBusiness": "Agent",
-      "speakerCustomer": "Pelanggan"
+      "loading": "Memuat..."
     },
     "callOutbound": {
       "checking": "Memeriksa izin panggilan...",
@@ -197,7 +194,6 @@
         "answered": "Dijawab",
         "ended": "Berakhir",
         "recording": "Rekaman",
-        "transcript": "Transkrip",
         "close": "Tutup"
       }
     },
