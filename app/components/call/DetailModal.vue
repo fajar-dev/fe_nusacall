@@ -9,7 +9,6 @@
         v-if="call"
         class="space-y-5"
       >
-        <!-- Top Status Bar & Main Info Grid -->
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -27,7 +26,6 @@
             </UBadge>
           </div>
 
-          <!-- Key Info Grid -->
           <div class="grid grid-cols-2 gap-3 p-3.5 rounded-lg border border-default bg-muted/20 text-sm">
             <div>
               <p class="text-xs text-muted mb-0.5">
@@ -67,7 +65,6 @@
           </div>
         </div>
 
-        <!-- Outbound Action Bar -->
         <template v-if="call.phoneNumberId && call.waId">
           <USeparator />
           <div class="flex items-center justify-between gap-3 p-3 rounded-lg border border-default bg-elevated">
@@ -123,7 +120,6 @@
           </div>
         </template>
 
-        <!-- Timeline Section -->
         <div>
           <h4 class="text-xs font-semibold text-muted uppercase tracking-wider mb-2.5">
             {{ $t('pages.call.detail.timeline') }}
@@ -143,7 +139,6 @@
           </div>
         </div>
 
-        <!-- Error Alert -->
         <template v-if="call.errorMessage">
           <UAlert
             color="error"
@@ -154,7 +149,6 @@
           />
         </template>
 
-        <!-- Recording Section -->
         <template v-if="call.recordingEnabled">
           <USeparator />
           <div>
@@ -193,7 +187,6 @@
           </div>
         </template>
 
-        <!-- Transcript Section -->
         <template v-if="call.transcriptionEnabled">
           <USeparator />
           <div>
@@ -262,7 +255,6 @@
           </div>
         </template>
 
-        <!-- Technical Metadata -->
         <USeparator />
         <div class="flex items-center justify-between text-xs text-dimmed">
           <span v-if="call.errorCode">{{ $t('pages.call.detail.errorCode') }}: {{ call.errorCode }}</span>
@@ -296,18 +288,15 @@ const { t } = useI18n()
 const toast = useToast()
 const { state: softphoneState, callOutbound } = useSoftphone()
 
-// Permission state
 const loadingPermission = ref(false)
 const calling = ref(false)
 const requesting = ref(false)
 const justRequested = ref(false)
 const permission = ref<PermissionCheckResult | null>(null)
 
-// Recording state
 const loadingRecording = ref(false)
 const recordingAvailability = ref<ArtifactAvailability>({ state: 'not_ready' })
 
-// Transcript state
 const loadingTranscript = ref(false)
 const transcriptAvailability = ref<TranscriptAvailability>({ state: 'not_ready' })
 
@@ -404,7 +393,7 @@ async function requestPermission() {
     })
     justRequested.value = true
   } catch {
-    // Error notification handled by interceptor
+    return
   } finally {
     requesting.value = false
   }

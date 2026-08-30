@@ -10,10 +10,6 @@ export interface ContactListParams {
 }
 
 class ContactService {
-  private get authHeaders() {
-    return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
-  }
-
   async getAll(params: ContactListParams = {}): Promise<ApiResponse<Contact[]>> {
     try {
       const query = new URLSearchParams()
@@ -21,7 +17,7 @@ class ContactService {
       query.set('limit', String(params.limit ?? 10))
       if (params.q) query.set('q', params.q)
 
-      const response = await apiService.client.get<ApiResponse<Contact[]>>(`/contact?${query.toString()}`, this.authHeaders)
+      const response = await apiService.client.get<ApiResponse<Contact[]>>(`/contact?${query.toString()}`)
       return response.data
     } catch (error) {
       return handleServiceError(error)

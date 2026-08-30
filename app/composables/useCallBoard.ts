@@ -30,13 +30,6 @@ function remove(list: Call[], id: number): boolean {
   return true
 }
 
-/**
- * Shared, realtime call board (queue/ongoing/history) — each tab is a server-paginated,
- * server-searched slice (search is global: one query re-fetches all three tabs), kept
- * live via the `call_board` WS broadcast (every status transition, system-wide, see
- * backend CallStateService.attachBoardListener). Lives in useState so every component
- * reading it shares the same lists, and they survive page navigation.
- */
 export function useCallBoard() {
   const queue = useState<Call[]>('call-board-queue', () => [])
   const ongoing = useState<Call[]>('call-board-ongoing', () => [])

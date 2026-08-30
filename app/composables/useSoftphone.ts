@@ -7,10 +7,6 @@ export type SoftphoneState
     | 'active'
     | 'ending'
 
-/**
- * Single source of truth for the softphone state: components only read it,
- * only this composable writes it. Call useSignaling/useWebRTC/useCallAudio only from here.
- */
 export function useSoftphone() {
   const state = useState<SoftphoneState>('softphone-state', () => 'disconnected')
   const activeWacid = useState<string | null>('softphone-active-wacid', () => null)
@@ -25,12 +21,7 @@ export function useSoftphone() {
   const { t } = useI18n()
 
   const initialized = useState<boolean>('softphone-initialized', () => false)
-  // Local bookkeeping only — which wacids are still ringing somewhere, so the ringtone
-  // knows when to stop. The call board (useCallBoard) owns the actual queue/ongoing/history
-  // lists; this composable doesn't need to duplicate that.
   const ringingWacids = new Set<string>()
-  // Toast id per ringing wacid, so the prompt can be pulled back the moment the
-  // call stops ringing — answered here, taken by another agent, or timed out.
   const incomingToasts = new Map<string, string | number>()
 
   function dismissIncomingToast(wacid: string) {
@@ -50,16 +41,11 @@ export function useSoftphone() {
 
     signaling.on('connected', async () => {
       if (state.value === 'disconnected') state.value = 'idle'
-      // Being connected IS being available now (no manual toggle), so
-      // request mic/notification permission as soon as the socket connects.
       const granted = await audio.requestMicPermission()
       micDenied.value = !granted
       if (granted) await audio.requestNotificationPermission()
     })
 
-    // Broadcast to every connected agent (routing is broadcast-to-all) — this is purely
-    // the "something needs picking up" signal now, not a personal ring. No modal: a toast
-    // plus the shared call board (useCallBoard) is where an agent actually answers from.
     signaling.on('incoming_call', (packet) => {
       if (!packet.wacid) {
         console.error('incoming_call packet missing wacid, dropping', packet)
@@ -72,11 +58,6 @@ export function useSoftphone() {
       ringingWacids.add(wacid)
       if (state.value === 'idle') audio.startRinging()
       audio.notifyDesktop(t('components.softphone.incoming.notifyTitle'), name || number)
-      // The phone icon already says "incoming call", so the text is just who is
-      // calling: name on top, number below — falling back to number alone when
-      // the contact is unknown, rather than repeating it on both lines.
-      // duration 0 = never auto-dismiss: the prompt stays until it is acted on
-      // or dismissIncomingToast() pulls it once the call stops ringing.
       const created = toast.add({
         title: name || number,
         description: name ? number : undefined,
@@ -102,8 +83,6 @@ export function useSoftphone() {
       incomingToasts.set(wacid, created.id)
     })
 
-    // Fired for every status change, system-wide (see useCallBoard) — used here only to know
-    // when a call stops ringing, so the shared ringtone can stop.
     signaling.on('call_board', (packet) => {
       const call = packet.data as { wacid?: string, status?: string } | undefined
       if (!call?.wacid || call.status === 'ringing') return
@@ -135,9 +114,8 @@ export function useSoftphone() {
     })
   }
 
-  /** Answers any ringing call by wacid — used by the call board's "Answer" action. */
   async function answerCall(wacid: string): Promise<boolean> {
-    if (state.value !== 'idle') return false // already on/connecting to another call
+    if (state.value !== 'idle') return false
 
     dismissIncomingToast(wacid)
     audio.stopRinging()
@@ -150,10 +128,6 @@ export function useSoftphone() {
       signaling.send({ type: 'answer_call', wacid, data: { sdp: offerSdp } })
       return true
     } catch (err) {
-      // getUserMedia/ICE failures have no server-side signal, and a closed
-      // socket send() silently no-ops — without this catch the call would
-      // hang until the backend's answer-timeout. No answer_call was sent,
-      // so there's nothing to undo server-side.
       console.error('Failed to answer call', err)
       useToast().add({
         title: t('components.softphone.answerFailedTitle'),
@@ -168,7 +142,6 @@ export function useSoftphone() {
     }
   }
 
-  /** Rejects any ringing call by wacid — used by the call board's "Reject" action. */
   function rejectCall(wacid: string) {
     dismissIncomingToast(wacid)
     ringingWacids.delete(wacid)
@@ -176,11 +149,6 @@ export function useSoftphone() {
     signaling.send({ type: 'reject_call', wacid })
   }
 
-  /**
-   * Places an outbound call. Permission is pre-checked by the caller UI;
-   * the backend re-checks. Unlike answerCall(), a failure here doesn't strand
-   * a waiting caller, so a plain error toast is enough.
-   */
   async function callOutbound(phoneNumberId: string, waId: string): Promise<boolean> {
     if (state.value !== 'idle') return false
     state.value = 'connecting'

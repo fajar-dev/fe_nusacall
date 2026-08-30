@@ -1,8 +1,6 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="relative h-full shrink-0 select-none">
     <aside class="flex flex-col h-full bg-default border-r border-default shrink-0 justify-between w-full lg:w-24 p-2 lg:px-1 lg:py-3">
-      <!-- Mobile Header (Logo + Close Button) -->
       <div class="flex items-center justify-between px-2 py-1 pb-2 shrink-0 lg:hidden border-b border-default mb-2">
         <BrandLogo />
         <UButton
@@ -16,7 +14,6 @@
         />
       </div>
 
-      <!-- Desktop Header (Logo) -->
       <div class="hidden lg:flex flex-col items-center pb-4 pt-1 shrink-0">
         <BrandLogo size="lg" />
       </div>
@@ -26,13 +23,11 @@
         size="sm"
       />
 
-      <!-- Navigation Content -->
       <nav class="flex-1 overflow-y-auto min-h-0 py-3 space-y-1 lg:space-y-1.5 scrollbar-thin">
         <template
           v-for="group in navGroups"
           :key="group.id || group.title"
         >
-          <!-- Mobile Group Header -->
           <div
             v-if="group.title"
             class="px-3 pt-2 pb-1 text-xs font-medium text-muted uppercase tracking-wider lg:hidden"
@@ -44,9 +39,7 @@
             v-for="item in group.items"
             :key="item.id"
           >
-            <!-- 1. ITEM WITH CHILDREN -->
             <template v-if="item.children && item.children.length">
-              <!-- Mobile Submenu (Accordion) -->
               <div class="lg:hidden">
                 <button
                   class="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl transition-colors cursor-pointer group"
@@ -97,7 +90,6 @@
                 </div>
               </div>
 
-              <!-- Desktop Submenu (Hover Popover) -->
               <UPopover
                 class="hidden lg:block"
                 :content="{ side: 'right', sideOffset: 12, align: 'start' }"
@@ -159,9 +151,7 @@
               </UPopover>
             </template>
 
-            <!-- 2. DIRECT SINGLE ITEM -->
             <template v-else>
-              <!-- Mobile Direct Link -->
               <NuxtLink
                 :to="item.to"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors cursor-pointer group lg:hidden"
@@ -182,7 +172,6 @@
                 </span>
               </NuxtLink>
 
-              <!-- Desktop Direct Link -->
               <NuxtLink
                 :to="item.to"
                 class="hidden lg:flex flex-col items-center justify-center w-full py-1 px-1 rounded-xl transition-colors cursor-pointer group"
@@ -214,13 +203,11 @@
         </template>
       </nav>
 
-      <!-- Bottom Nav Section -->
       <div class="shrink-0 pt-2 space-y-1">
         <template
           v-for="item in bottomNavItems"
           :key="item.id"
         >
-          <!-- Desktop Bottom Item -->
           <NuxtLink
             :to="item.to"
             class="hidden lg:flex flex-col items-center justify-center w-full py-1 px-1 rounded-xl transition-colors cursor-pointer group"
@@ -249,7 +236,6 @@
           </NuxtLink>
         </template>
 
-        <!-- Mobile Call Board Toggle -->
         <button
           class="lg:hidden flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-colors cursor-pointer text-muted hover:bg-muted/50 hover:text-highlighted group relative"
           :aria-label="$t('components.callBoard.title')"
@@ -272,7 +258,6 @@
           </UBadge>
         </button>
 
-        <!-- Mobile User Settings -->
         <div class="lg:hidden">
           <UserPopover :popover-props="{ content: { side: 'top', sideOffset: 8, align: 'start' } }">
             <button
@@ -290,7 +275,6 @@
           </UserPopover>
         </div>
 
-        <!-- Desktop User Settings -->
         <div class="hidden lg:flex flex-col items-center">
           <UserPopover :popover-props="{ content: { side: 'right', sideOffset: 12, align: 'end' } }">
             <button

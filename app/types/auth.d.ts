@@ -21,3 +21,25 @@ interface AuthData {
 }
 
 export type AuthResponse = ApiResponse<AuthData>
+
+export interface NusaworkProfile {
+  firstName: string
+  lastName: string
+  email: string
+  photo: string
+  company?: { name: string, address: string }
+}
+
+export interface NusaworkQrCode {
+  token: string
+  qrCode: string
+  timeoutMinutes: number
+  expired: string
+}
+
+export interface NusaworkQrStatus {
+  status: 'waiting' | 'confirmation' | 'success'
+  panelToken?: string
+  profile?: NusaworkProfile
+  message?: string
+}

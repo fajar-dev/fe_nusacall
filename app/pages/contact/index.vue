@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <Header
+    <AppHeader
       :title="$t('pages.contact.title')"
       :description="$t('pages.contact.description')"
     />

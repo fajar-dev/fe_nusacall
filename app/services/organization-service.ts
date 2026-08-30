@@ -4,13 +4,9 @@ import type { ApiResponse } from '../types/api'
 import type { OrganizationListItem } from '../types/organization'
 
 class OrganizationService {
-  private get authHeaders() {
-    return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
-  }
-
   async getList(): Promise<ApiResponse<OrganizationListItem[]>> {
     try {
-      const response = await apiService.client.get<ApiResponse<OrganizationListItem[]>>('/organization/list', this.authHeaders)
+      const response = await apiService.client.get<ApiResponse<OrganizationListItem[]>>('/organization/list')
       return response.data
     } catch (error) {
       return handleServiceError(error)

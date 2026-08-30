@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <Header
+    <AppHeader
       :title="$t('pages.account.title')"
       :description="$t('pages.account.description')"
     />
@@ -187,7 +187,7 @@ async function doSync(acc: Account) {
       toast.add({ title: t('pages.account.syncSuccess'), color: 'success', icon: 'i-lucide-circle-check' })
     }
   } catch {
-    // handleServiceError already showed a toast.
+    return
   } finally {
     syncingId.value = null
   }

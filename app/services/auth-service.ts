@@ -1,13 +1,10 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
-import type { AuthResponse, User } from '../types/auth'
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, SIGN_IN_PATH, USER_KEY } from '~/constants/storage'
+import type { AuthResponse, NusaworkQrCode, NusaworkQrStatus, User } from '../types/auth'
 import type { ApiResponse } from '../types/api'
 
 class AuthService {
-  private readonly ACCESS_TOKEN_KEY = 'accessToken'
-  private readonly REFRESH_TOKEN_KEY = 'refreshToken'
-  private readonly USER_KEY = 'user'
-
   public user = ref<User | null>(null)
   public token = ref<string | null>(null)
 
@@ -20,53 +17,44 @@ class AuthService {
   private restoreSession() {
     if (typeof window === 'undefined') return
 
-    const accessToken = localStorage.getItem(this.ACCESS_TOKEN_KEY)
-    if (accessToken) {
-      this.token.value = accessToken
-      const userJson = localStorage.getItem(this.USER_KEY)
-      if (userJson) {
-        try {
-          this.user.value = JSON.parse(userJson)
-        } catch (e) {
-          console.error('Failed to parse user from local storage', e)
-        }
-      }
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY)
+    if (!accessToken) return
+
+    this.token.value = accessToken
+
+    const userJson = localStorage.getItem(USER_KEY)
+    if (!userJson) return
+
+    try {
+      this.user.value = JSON.parse(userJson)
+    } catch (error) {
+      console.error('Failed to parse user from local storage', error)
     }
   }
 
   private async validateSession() {
-    if (typeof window === 'undefined') return
-    const accessToken = this.token.value
-    if (!accessToken) return
+    if (typeof window === 'undefined' || !this.token.value) return
 
     try {
-      const response = await apiService.client.get<{ success: boolean, data: User }>('/auth/me', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
+      const response = await apiService.client.get<ApiResponse<User>>('/auth/me')
       this.user.value = response.data.data
-      localStorage.setItem(this.USER_KEY, JSON.stringify(this.user.value))
-    } catch (error) {
-      // Validation failed, let interceptor handle it
+      localStorage.setItem(USER_KEY, JSON.stringify(this.user.value))
+    } catch {
+      return
     }
   }
 
   async refreshToken(): Promise<string | null> {
     if (typeof window === 'undefined') return null
 
-    const refreshToken = localStorage.getItem(this.REFRESH_TOKEN_KEY)
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY)
     if (!refreshToken) return null
 
     try {
-      const config = useRuntimeConfig()
-      const response = await apiService.client.post<AuthResponse>(`${config.public.apiUrl}/auth/refresh`, {
-        refreshToken
-      })
-
+      const response = await apiService.client.post<AuthResponse>('/auth/refresh', { refreshToken })
       this.setSession(response.data)
       return response.data.data.accessToken
-    } catch (error) {
+    } catch {
       this.logout()
       return null
     }
@@ -87,43 +75,45 @@ class AuthService {
       const response = await apiService.client.post<AuthResponse>('/auth/google', { code })
       this.setSession(response.data)
       return response.data
-    } catch (error: any) {
+    } catch (error) {
       return handleServiceError(error)
     }
   }
 
   async logout(preserveRedirect = false) {
     if (typeof window === 'undefined') return
-    const accessToken = localStorage.getItem(this.ACCESS_TOKEN_KEY)
 
     try {
       if (this.token.value) {
-        this.token.value = accessToken
-        await apiService.client.post('/auth/logout', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
+        await apiService.client.post('/auth/logout')
       }
     } catch (error) {
       console.error('Logout failed:', error)
     } finally {
-      localStorage.removeItem(this.ACCESS_TOKEN_KEY)
-      localStorage.removeItem(this.REFRESH_TOKEN_KEY)
-      localStorage.removeItem(this.USER_KEY)
-
-      this.token.value = null
-      this.user.value = null
-
-      if (window.location.pathname !== '/auth/sign-in') {
-        if (preserveRedirect) {
-          const currentPath = window.location.pathname + window.location.search
-          navigateTo({ path: '/auth/sign-in', query: { redirect: currentPath } })
-        } else {
-          navigateTo('/auth/sign-in')
-        }
-      }
+      this.clearSession()
+      this.redirectToSignIn(preserveRedirect)
     }
+  }
+
+  private clearSession() {
+    localStorage.removeItem(ACCESS_TOKEN_KEY)
+    localStorage.removeItem(REFRESH_TOKEN_KEY)
+    localStorage.removeItem(USER_KEY)
+
+    this.token.value = null
+    this.user.value = null
+  }
+
+  private redirectToSignIn(preserveRedirect: boolean) {
+    if (window.location.pathname === SIGN_IN_PATH) return
+
+    if (!preserveRedirect) {
+      navigateTo(SIGN_IN_PATH)
+      return
+    }
+
+    const redirect = window.location.pathname + window.location.search
+    navigateTo({ path: SIGN_IN_PATH, query: { redirect } })
   }
 
   private setSession(response: AuthResponse) {
@@ -131,31 +121,26 @@ class AuthService {
 
     const { user, accessToken, refreshToken } = response.data
 
-    localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken)
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken)
-    localStorage.setItem(this.USER_KEY, JSON.stringify(user))
+    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
+    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+    localStorage.setItem(USER_KEY, JSON.stringify(user))
 
     this.token.value = accessToken
     this.user.value = user
   }
 
-  private getBaseUrl(): string {
-    const config = useRuntimeConfig()
-    return config.public.apiUrl as string
-  }
-
-  async generateNusaworkQr(): Promise<ApiResponse<{ token: string, qrCode: string, timeoutMinutes: number, expired: string }>> {
-    const response = await apiService.client.get<ApiResponse<{ token: string, qrCode: string, timeoutMinutes: number, expired: string }>>(`${this.getBaseUrl()}/auth/qrcode/generate`)
+  async generateNusaworkQr(): Promise<ApiResponse<NusaworkQrCode>> {
+    const response = await apiService.client.get<ApiResponse<NusaworkQrCode>>('/auth/qrcode/generate')
     return response.data
   }
 
-  async checkNusaworkStatus(token: string): Promise<ApiResponse<{ status: 'waiting' | 'confirmation' | 'success', panelToken?: string, profile?: any, message?: string }>> {
-    const response = await apiService.client.get<ApiResponse<{ status: 'waiting' | 'confirmation' | 'success', panelToken?: string, profile?: any, message?: string }>>(`${this.getBaseUrl()}/auth/qrcode/${token}/status`)
+  async checkNusaworkStatus(token: string): Promise<ApiResponse<NusaworkQrStatus>> {
+    const response = await apiService.client.get<ApiResponse<NusaworkQrStatus>>(`/auth/qrcode/${token}/status`)
     return response.data
   }
 
   async nusaworkLogin(panelToken: string): Promise<AuthResponse> {
-    const response = await apiService.client.post<AuthResponse>(`${this.getBaseUrl()}/auth/qrcode/login`, { panelToken })
+    const response = await apiService.client.post<AuthResponse>('/auth/qrcode/login', { panelToken })
     this.setSession(response.data)
     return response.data
   }

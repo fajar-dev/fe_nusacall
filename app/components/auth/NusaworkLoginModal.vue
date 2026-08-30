@@ -130,14 +130,8 @@
 
 <script setup lang="ts">
 import { authService } from '~/services/auth-service'
-
-interface QrProfile {
-  firstName: string
-  lastName: string
-  email: string
-  photo: string
-  company?: { name: string, address: string }
-}
+import { extractErrorMessage } from '~/composables/error-helper'
+import type { NusaworkProfile } from '~/types/auth'
 
 const { t } = useI18n()
 const open = defineModel<boolean>({ default: false })
@@ -149,7 +143,7 @@ const error = ref<string | null>(null)
 const qrToken = ref<string | null>(null)
 const qrCode = ref<string | null>(null)
 const status = ref<'idle' | 'waiting' | 'confirmation' | 'success'>('idle')
-const profile = ref<QrProfile | null>(null)
+const profile = ref<NusaworkProfile | null>(null)
 const countdown = ref(0)
 let pollingTimer: ReturnType<typeof setInterval> | null = null
 let countdownTimer: ReturnType<typeof setInterval> | null = null
@@ -178,8 +172,8 @@ async function generate() {
     } else {
       error.value = res.message || t('components.auth.nusawork.generateFailed')
     }
-  } catch (e: any) {
-    error.value = e?.response?.data?.message || e?.message || t('components.auth.nusawork.generateFailed')
+  } catch (e) {
+    error.value = extractErrorMessage(e, t('components.auth.nusawork.generateFailed'))
   } finally {
     isLoading.value = false
   }
@@ -216,7 +210,6 @@ function startPolling() {
       } else if (res.data?.status === 'confirmation' && res.data.profile) {
         status.value = 'confirmation'
         profile.value = res.data.profile
-        // Keep polling — waiting for user to approve on mobile
       }
     } catch {
       stopAll()
@@ -227,11 +220,15 @@ function startPolling() {
 }
 
 function stopPolling() {
-  if (pollingTimer) { clearInterval(pollingTimer); pollingTimer = null }
+  if (!pollingTimer) return
+  clearInterval(pollingTimer)
+  pollingTimer = null
 }
 
 function stopCountdown() {
-  if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null }
+  if (!countdownTimer) return
+  clearInterval(countdownTimer)
+  countdownTimer = null
 }
 
 function stopAll() {
@@ -249,10 +246,10 @@ async function exchangeToken(panelToken: string) {
       color: 'success'
     })
     emit('success')
-  } catch (e: any) {
+  } catch (e) {
     open.value = false
     toast.add({
-      title: e?.response?.data?.message || t('components.auth.nusawork.loginFailed'),
+      title: extractErrorMessage(e, t('components.auth.nusawork.loginFailed')),
       icon: 'i-lucide-circle-x',
       color: 'error'
     })

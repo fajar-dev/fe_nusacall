@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-screen w-full font-sans text-highlighted overflow-hidden">
     <div class="hidden lg:block h-full">
-      <Sidebar />
+      <AppSidebar />
     </div>
 
     <div
@@ -33,7 +33,7 @@
         appear
       >
         <div class="fixed inset-y-0 left-0 w-64 z-50 bg-default h-full shadow-2xl">
-          <Sidebar class="h-full" />
+          <AppSidebar class="h-full" />
         </div>
       </Transition>
     </div>

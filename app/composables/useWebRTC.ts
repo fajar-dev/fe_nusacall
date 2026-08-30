@@ -1,7 +1,3 @@
-/**
- * Agent-leg RTCPeerConnection. Waits for full ICE gathering before sending
- * the offer, matching the backend's MediaSession — no trickle exchange.
- */
 class WebRTCClient {
   private pc: RTCPeerConnection | null = null
   private localStream: MediaStream | null = null

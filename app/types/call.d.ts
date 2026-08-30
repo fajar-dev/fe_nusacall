@@ -30,7 +30,6 @@ export interface Call {
   createdAt: string
 }
 
-/** Meta's transcript document shape. */
 export interface TranscriptDocument {
   metadata?: {
     duration?: number
@@ -54,7 +53,6 @@ export interface TranscriptSegment {
   words?: Array<{ word: string, start: number, end: number, confidence: number }>
 }
 
-/** Discriminated result so the UI can render each state without triggering an error toast for expected ones (not recorded / still processing). */
 export type ArtifactAvailability
   = | { state: 'not_ready' }
     | { state: 'expired' }

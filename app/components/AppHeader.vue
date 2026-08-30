@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="space-y-4 shrink-0 select-none">
     <header class="flex items-center justify-between px-2 py-2 lg:hidden bg-default border-b border-default shrink-0 -mx-4 -mt-4 mb-4">
@@ -66,6 +65,5 @@ interface Props {
 
 defineProps<Props>()
 
-// Share mobile sidebar menu open state globally across layout and headers
 const isMobileMenuOpen = useState('isMobileMenuOpen', () => false)
 </script>

@@ -5,6 +5,11 @@ interface ApiErrorResponse {
   errors?: Array<{ field?: string, message: string }>
 }
 
+export const extractErrorMessage = (error: unknown, fallback: string): string => {
+  const axiosError = error as AxiosError<ApiErrorResponse>
+  return axiosError.response?.data?.message || axiosError.message || fallback
+}
+
 export const handleServiceError = (error: unknown): never => {
   const axiosError = error as AxiosError<ApiErrorResponse>
   if (axios.isCancel(error)) {

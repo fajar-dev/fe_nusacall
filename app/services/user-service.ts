@@ -13,10 +13,6 @@ export interface UserListParams {
 }
 
 class UserService {
-  private get authHeaders() {
-    return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
-  }
-
   async getAll(params: UserListParams = {}): Promise<ApiResponse<User[]>> {
     try {
       const query = new URLSearchParams()
@@ -27,7 +23,7 @@ class UserService {
       if (params.sortBy) query.set('sortBy', params.sortBy)
       if (params.order) query.set('order', params.order)
 
-      const response = await apiService.client.get<ApiResponse<User[]>>(`/user?${query.toString()}`, this.authHeaders)
+      const response = await apiService.client.get<ApiResponse<User[]>>(`/user?${query.toString()}`)
       return response.data
     } catch (error) {
       return handleServiceError(error)
@@ -36,17 +32,16 @@ class UserService {
 
   async getMe(): Promise<ApiResponse<User>> {
     try {
-      const response = await apiService.client.get<ApiResponse<User>>('/user/me', this.authHeaders)
+      const response = await apiService.client.get<ApiResponse<User>>('/user/me')
       return response.data
     } catch (error) {
       return handleServiceError(error)
     }
   }
 
-  /** Users currently online (live WebSocket connection) and free to take a call — no eligibility flag, every user can receive calls. */
   async getAvailable(): Promise<ApiResponse<User[]>> {
     try {
-      const response = await apiService.client.get<ApiResponse<User[]>>('/user/available', this.authHeaders)
+      const response = await apiService.client.get<ApiResponse<User[]>>('/user/available')
       return response.data
     } catch (error) {
       return handleServiceError(error)

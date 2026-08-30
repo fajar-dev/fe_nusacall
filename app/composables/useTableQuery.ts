@@ -7,10 +7,6 @@ interface TableQueryOptions {
   defaultOrder?: SortOrder
 }
 
-/**
- * Shared state for DataTable: search (debounced), pagination, and clickable/sortable
- * column headers. Call `onQueryChange` whenever any of these change to refetch data.
- */
 export function useTableQuery(onQueryChange: () => void, options: TableQueryOptions = {}) {
   const { defaultSortBy = '', defaultOrder = 'DESC' } = options
 
@@ -32,9 +28,6 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
 
   watch([page, perPage, sortBy, order], onQueryChange)
 
-  // Fires the first fetch via onMounted, not `watch(..., { immediate: true })` —
-  // immediate would run before the caller finishes destructuring this
-  // composable's return value, so onQueryChange would close over undefined bindings.
   onMounted(() => onQueryChange())
 
   let searchTimeout: ReturnType<typeof setTimeout>
@@ -46,8 +39,6 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
     }, 300)
   })
 
-  /** Inline SVG, not `UIcon` — `resolveComponent` only works inside `.vue` `<script setup>`;
-   * from this plain composable it silently falls back to a literal `<uicon>` tag. */
   const chevron = (direction: 'up' | 'down', colorClass: string) =>
     h('svg', {
       'viewBox': '0 0 24 24',
@@ -61,7 +52,6 @@ export function useTableQuery(onQueryChange: () => void, options: TableQueryOpti
       h('path', { d: direction === 'up' ? 'm18 15-6-6-6 6' : 'm6 9 6 6 6-6' })
     ])
 
-  /** Clickable, sortable UTable column header. `label` is a fn so it re-evaluates per locale. */
   const sortHeader = (label: () => string, column: string, align: 'start' | 'center' | 'end' = 'start') => {
     return () => {
       const isActive = sortBy.value === column

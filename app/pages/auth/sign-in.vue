@@ -80,7 +80,6 @@
         color="neutral"
       />
 
-      <!-- Sign In with Google Button -->
       <UButton
         type="button"
 

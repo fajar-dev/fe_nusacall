@@ -13,14 +13,10 @@ export interface UpdateAccountPayload {
 }
 
 class AccountService {
-  private get authHeaders() {
-    return { headers: { Authorization: `Bearer ${useAuth().state.token}` } }
-  }
-
   async getAll(page = 1, limit = 50): Promise<ApiResponse<Account[]>> {
     try {
       const params = new URLSearchParams({ page: String(page), limit: String(limit) })
-      const response = await apiService.client.get<ApiResponse<Account[]>>(`/account?${params.toString()}`, this.authHeaders)
+      const response = await apiService.client.get<ApiResponse<Account[]>>(`/account?${params.toString()}`)
       return response.data
     } catch (error) {
       return handleServiceError(error)
@@ -29,7 +25,7 @@ class AccountService {
 
   async update(id: number, payload: UpdateAccountPayload): Promise<ApiResponse<Account>> {
     try {
-      const response = await apiService.client.put<ApiResponse<Account>>(`/account/${id}`, payload, this.authHeaders)
+      const response = await apiService.client.put<ApiResponse<Account>>(`/account/${id}`, payload)
       return response.data
     } catch (error) {
       return handleServiceError(error)
@@ -38,7 +34,7 @@ class AccountService {
 
   async sync(id: number): Promise<ApiResponse<Account>> {
     try {
-      const response = await apiService.client.post<ApiResponse<Account>>(`/account/${id}/sync`, null, this.authHeaders)
+      const response = await apiService.client.post<ApiResponse<Account>>(`/account/${id}/sync`, null)
       return response.data
     } catch (error) {
       return handleServiceError(error)
@@ -47,7 +43,7 @@ class AccountService {
 
   async getHealth(id: number): Promise<ApiResponse<HealthStatus>> {
     try {
-      const response = await apiService.client.get<ApiResponse<HealthStatus>>(`/account/${id}/health`, this.authHeaders)
+      const response = await apiService.client.get<ApiResponse<HealthStatus>>(`/account/${id}/health`)
       return response.data
     } catch (error) {
       return handleServiceError(error)

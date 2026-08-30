@@ -1,6 +1,5 @@
 export {}
 
-/** Minimal surface of Google Identity Services we actually use (sign-in button + ID token callback). */
 declare global {
   interface Window {
     google?: {

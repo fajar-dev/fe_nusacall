@@ -9,10 +9,6 @@ export interface WsPacket {
 
 type WsHandler = (packet: WsPacket) => void
 
-/**
- * WebSocket transport for the softphone. Reconnects with exponential backoff
- * on unexpected close; useSoftphone owns call lifecycle decisions.
- */
 class SignalingClient {
   private ws: WebSocket | null = null
   private readonly handlers = new Map<string, Set<WsHandler>>()
@@ -32,11 +28,6 @@ class SignalingClient {
     const config = useRuntimeConfig()
     const url = `${config.public.wsUrl}?token=${encodeURIComponent(token)}`
 
-    // A malformed or insecure wsUrl (e.g. ws:// on an HTTPS page) makes this
-    // constructor throw synchronously. Left uncaught it escapes the caller's
-    // onMounted and Nuxt renders a 500 page, so a misconfigured socket takes
-    // the whole app down instead of just the softphone. No reconnect here:
-    // that failure is a config error, not a transient one.
     try {
       this.ws = new WebSocket(url)
     } catch (err) {
@@ -91,7 +82,6 @@ class SignalingClient {
     }
   }
 
-  /** Returns an unsubscribe function. */
   on(type: string, handler: WsHandler): () => void {
     if (!this.handlers.has(type)) this.handlers.set(type, new Set())
     this.handlers.get(type)!.add(handler)
