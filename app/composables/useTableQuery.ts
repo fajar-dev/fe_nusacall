@@ -1,6 +1,8 @@
 import { h } from 'vue'
 
-export type SortOrder = 'ASC' | 'DESC'
+import type { SortOrder } from '~/enums/sort-order'
+
+export type { SortOrder }
 
 interface TableQueryOptions {
   defaultSortBy?: string

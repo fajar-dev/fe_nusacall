@@ -50,7 +50,9 @@ import type { TableColumn } from '@nuxt/ui'
 import { callService } from '~/services/call-service'
 import { callIcon, callIconColor } from '~/utils/call'
 import { formatDuration, formatRelative } from '~/utils/format'
-import type { Call, CallStatus } from '~/types/call'
+import { CALL_STATUSES } from '~/enums/call-status'
+import type { CallStatus } from '~/enums/call-status'
+import type { Call } from '~/types/call'
 
 definePageMeta({
   layout: 'dashboard'
@@ -108,8 +110,7 @@ function openDetail(call: Call) {
   detailOpen.value = true
 }
 
-const statusOptions = (['pending', 'ringing', 'connecting', 'active', 'completed', 'missed', 'rejected', 'failed', 'abandoned'] as CallStatus[])
-  .map(value => ({ label: t(`pages.call.status.${value}`), value }))
+const statusOptions = CALL_STATUSES.map(value => ({ label: t(`pages.call.status.${value}`), value }))
 
 const directionOptions = [
   { label: t('pages.call.directionAll'), value: 'all' },

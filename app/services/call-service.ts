@@ -4,6 +4,7 @@ import { handleServiceError } from '../composables/error-helper'
 import { buildPagedQuery, buildQuery } from '~/utils/query'
 import type { ApiResponse } from '../types/api'
 import type { Call, CallStats, ArtifactAvailability, TranscriptAvailability, TranscriptDocument } from '../types/call'
+import type { SortOrder } from '~/enums/sort-order'
 
 interface CallListParams {
   page?: number
@@ -15,7 +16,7 @@ interface CallListParams {
   from?: string
   to?: string
   sortBy?: string
-  order?: 'ASC' | 'DESC'
+  order?: SortOrder
 }
 
 class CallService {

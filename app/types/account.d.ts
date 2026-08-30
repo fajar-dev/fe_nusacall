@@ -1,11 +1,15 @@
+import type { DayOfWeek } from '~/enums/day-of-week'
+import type { CallHoursStatus } from '~/enums/call-hours-status'
+import type { CallIconVisibility } from '~/enums/call-icon-visibility'
+
 export interface CallHoursDay {
-  day_of_week: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY'
+  day_of_week: DayOfWeek
   open_time: string
   close_time: string
 }
 
 export interface CallHours {
-  status: 'ENABLED' | 'DISABLED'
+  status: CallHoursStatus
   timezone_id: string
   weekly_operating_hours: CallHoursDay[]
   holiday_schedule?: Array<{ date: string, start_time: string, end_time: string }>
@@ -19,7 +23,7 @@ export interface Account {
   label: string
   isTestNumber: boolean
   callingEnabled: boolean
-  callIconVisibility: 'DEFAULT' | 'DISABLE_ALL'
+  callIconVisibility: CallIconVisibility
   color: string
   callHours: CallHours | null
   answerTimeoutSeconds: number

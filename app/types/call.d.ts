@@ -1,11 +1,7 @@
+import type { CallStatus } from '~/enums/call-status'
+import type { CallDirection } from '~/enums/call-direction'
 import type { UserSummary } from './user'
 import type { Contact } from './contact'
-
-export type CallStatus
-  = | 'pending' | 'ringing' | 'connecting' | 'active'
-    | 'completed' | 'missed' | 'rejected' | 'failed' | 'abandoned'
-
-type CallDirection = 'inbound' | 'outbound'
 
 export interface Call {
   id: number
@@ -73,3 +69,5 @@ export interface CallStats {
   avgSetupMs: number | null
   answerRate: number | null
 }
+
+export type { CallStatus, CallDirection }

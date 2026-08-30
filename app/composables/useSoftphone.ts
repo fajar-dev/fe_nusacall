@@ -1,12 +1,7 @@
 import { callService } from '~/services/call-service'
+import type { SoftphoneState } from '~/enums/softphone-state'
 
-export type SoftphoneState
-  = | 'disconnected'
-    | 'idle'
-    | 'connecting'
-    | 'active'
-    | 'ending'
-
+export type { SoftphoneState }
 export function useSoftphone() {
   const state = useState<SoftphoneState>('softphone-state', () => 'disconnected')
   const activeWacid = useState<string | null>('softphone-active-wacid', () => null)

@@ -2,7 +2,9 @@ import { callService } from '~/services/call-service'
 import { accountService } from '~/services/account-service'
 import { matchesCallQuery } from '~/utils/call'
 import { removeById, upsertById } from '~/utils/array'
-import type { Call, CallStatus } from '~/types/call'
+import type { Call } from '~/types/call'
+import type { CallStatus } from '~/enums/call-status'
+import type { BoardTab } from '~/enums/board-tab'
 
 const QUEUE_STATUSES: CallStatus[] = ['ringing']
 const ONGOING_STATUSES: CallStatus[] = ['connecting', 'active']
@@ -10,7 +12,7 @@ const HISTORY_STATUSES: CallStatus[] = ['completed', 'missed', 'rejected', 'fail
 const PAGE_SIZE = 30
 const SEARCH_DEBOUNCE_MS = 300
 
-export type BoardTab = 'queue' | 'ongoing' | 'history'
+export type { BoardTab }
 
 export function useCallBoard() {
   const queue = useState<Call[]>('call-board-queue', () => [])

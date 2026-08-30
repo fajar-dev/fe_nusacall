@@ -1,4 +1,6 @@
-type PermissionStatus = 'no_permission' | 'temporary' | 'permanent'
+import type { PermissionStatus } from '~/enums/permission-status'
+
+export type { PermissionStatus }
 
 interface PermissionQuotaLimit {
   time_period: string

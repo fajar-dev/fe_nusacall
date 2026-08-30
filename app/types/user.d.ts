@@ -1,4 +1,6 @@
-export type UserAvailability = 'available' | 'offline'
+import type { UserAvailability } from '~/enums/user-availability'
+
+export type { UserAvailability }
 
 export interface UserSummary {
   id: number

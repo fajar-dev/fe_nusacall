@@ -3,11 +3,12 @@ import { handleServiceError } from '../composables/error-helper'
 import { buildPagedQuery } from '~/utils/query'
 import type { ApiResponse } from '../types/api'
 import type { Account, CallHours, HealthStatus } from '../types/account'
+import type { CallIconVisibility } from '~/enums/call-icon-visibility'
 
 export interface UpdateAccountPayload {
   label?: string
   callingEnabled?: boolean
-  callIconVisibility?: 'DEFAULT' | 'DISABLE_ALL'
+  callIconVisibility?: CallIconVisibility
   color?: string
   answerTimeoutSeconds?: number
   callHours?: CallHours | null

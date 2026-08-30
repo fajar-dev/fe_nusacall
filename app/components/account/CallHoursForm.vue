@@ -63,13 +63,14 @@
 import type { TimeValue } from 'reka-ui'
 import { parseHHmm, toHHmm } from '~/utils/time'
 import { findDayRange, isDayOpen, withDayRange, withDayToggled } from '~/utils/call-hours'
+import { DAYS_OF_WEEK } from '~/enums/day-of-week'
 import type { CallHours, CallHoursDay } from '~/types/account'
 
 const { t } = useI18n()
 
 const model = defineModel<CallHours | null>({ default: null })
 
-const days: CallHoursDay['day_of_week'][] = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
+const days = DAYS_OF_WEEK
 
 const timezoneOptions = [
   'Asia/Jakarta',

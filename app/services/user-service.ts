@@ -3,6 +3,7 @@ import { handleServiceError } from '../composables/error-helper'
 import { buildPagedQuery } from '~/utils/query'
 import type { ApiResponse } from '../types/api'
 import type { User } from '../types/user'
+import type { SortOrder } from '~/enums/sort-order'
 
 export interface UserListParams {
   page?: number
@@ -10,7 +11,7 @@ export interface UserListParams {
   q?: string
   organizationId?: number
   sortBy?: string
-  order?: 'ASC' | 'DESC'
+  order?: SortOrder
 }
 
 class UserService {
