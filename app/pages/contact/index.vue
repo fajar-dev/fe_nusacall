@@ -18,9 +18,8 @@
       :search-placeholder="$t('pages.contact.searchPlaceholder')"
       table-class="min-w-[720px]"
     >
-      <template #filters>
+      <template #actions>
         <UButton
-          icon="i-lucide-plus"
           color="primary"
           @click="openCreate"
         >

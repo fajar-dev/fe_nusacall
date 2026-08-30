@@ -22,6 +22,6 @@ export function callIconColor(call: Call): string {
 export function matchesCallQuery(call: Call, query: string): boolean {
   if (!query) return true
   const needle = query.toLowerCase()
-  return [call.contact?.name, call.waId, call.displayPhoneNumber, call.wacid]
+  return [call.contact?.name, call.contact?.phoneNumber, call.wacid]
     .some(field => field?.toLowerCase().includes(needle))
 }

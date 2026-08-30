@@ -138,17 +138,17 @@ const columns: TableColumn<Call>[] = [
     accessorKey: 'contact',
     header: t('pages.call.columnContact'),
     cell: ({ row }) => {
-      const name = row.original.contact?.name || row.original.waId
+      const contact = row.original.contact
       return h('div', { class: 'flex flex-col' }, [
-        h('span', { class: 'font-medium text-highlighted' }, name),
-        h('span', { class: 'text-xs text-muted' }, row.original.waId)
+        h('span', { class: 'font-medium text-highlighted' }, contact?.name || contact?.phoneNumber || '—'),
+        h('span', { class: 'text-xs text-muted' }, contact?.phoneNumber || '')
       ])
     }
   },
   {
-    accessorKey: 'displayPhoneNumber',
+    accessorKey: 'phoneNumberId',
     header: t('pages.call.columnDestination'),
-    cell: ({ row }) => row.original.displayPhoneNumber || row.original.phoneNumberId
+    cell: ({ row }) => row.original.phoneNumberId
   },
   {
     accessorKey: 'user',

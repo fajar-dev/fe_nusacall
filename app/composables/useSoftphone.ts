@@ -47,9 +47,9 @@ export function useSoftphone() {
         return
       }
       const wacid = packet.wacid
-      const data = packet.data as { waId?: string, contactName?: string | null, profileName?: string | null } | undefined
-      const name = data?.contactName || data?.profileName || ''
-      const number = data?.waId || ''
+      const data = packet.data as { phoneNumber?: string | null, name?: string | null } | undefined
+      const name = data?.name || ''
+      const number = data?.phoneNumber || ''
       ringingWacids.add(wacid)
       if (state.value === 'idle') audio.startRinging()
       audio.notifyDesktop(t('components.softphone.incoming.notifyTitle'), name || number)
@@ -144,13 +144,13 @@ export function useSoftphone() {
     signaling.send({ type: 'reject_call', wacid })
   }
 
-  async function callOutbound(phoneNumberId: string, waId: string): Promise<boolean> {
+  async function callOutbound(phoneNumberId: string, contactId: number): Promise<boolean> {
     if (state.value !== 'idle') return false
     state.value = 'connecting'
 
     try {
       const offerSdp = await webrtc.start()
-      const { data } = await callService.placeOutboundCall(phoneNumberId, waId, offerSdp)
+      const { data } = await callService.placeOutboundCall(phoneNumberId, contactId, offerSdp)
       activeWacid.value = data.wacid
       await webrtc.applyAnswer(data.answerSdp)
       return true

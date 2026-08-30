@@ -32,10 +32,10 @@
                 {{ $t('pages.call.detail.contact') }}
               </p>
               <p class="font-medium text-highlighted">
-                {{ call.contact?.name || call.waId }}
+                {{ call.contact?.name || call.contact?.phoneNumber }}
               </p>
               <p class="text-xs text-dimmed">
-                {{ call.waId }}
+                {{ call.contact?.phoneNumber }}
               </p>
             </div>
             <div>
@@ -43,7 +43,7 @@
                 {{ $t('pages.call.detail.destination') }}
               </p>
               <p class="font-medium text-highlighted">
-                {{ call.displayPhoneNumber || call.phoneNumberId }}
+                {{ call.phoneNumberId }}
               </p>
             </div>
             <div>
@@ -65,7 +65,7 @@
           </div>
         </div>
 
-        <template v-if="call.phoneNumberId && call.waId">
+        <template v-if="call.phoneNumberId && call.contact">
           <USeparator />
           <div class="flex items-center justify-between gap-3 p-3 rounded-lg border border-default bg-elevated">
             <div class="flex items-center gap-2">
@@ -270,11 +270,11 @@ const quotaText = computed(() => {
 })
 
 async function loadPermission() {
-  if (!props.call?.phoneNumberId || !props.call?.waId) return
+  if (!props.call?.phoneNumberId || !props.call?.contact) return
   loadingPermission.value = true
   justRequested.value = false
   try {
-    const response = await permissionService.check(props.call.phoneNumberId, props.call.waId)
+    const response = await permissionService.check(props.call.phoneNumberId, props.call.contact.id)
     permission.value = response.data
   } catch {
     permission.value = null
@@ -284,10 +284,10 @@ async function loadPermission() {
 }
 
 async function requestPermission() {
-  if (!props.call?.phoneNumberId || !props.call?.waId) return
+  if (!props.call?.phoneNumberId || !props.call?.contact) return
   requesting.value = true
   try {
-    await permissionService.request(props.call.phoneNumberId, props.call.waId)
+    await permissionService.request(props.call.phoneNumberId, props.call.contact.id)
     toast.add({
       title: t('components.callOutbound.requestSentTitle'),
       description: t('components.callOutbound.requestSentDescription'),
@@ -303,10 +303,10 @@ async function requestPermission() {
 }
 
 async function handleCallOutbound() {
-  if (!props.call?.phoneNumberId || !props.call?.waId) return
+  if (!props.call?.phoneNumberId || !props.call?.contact) return
   calling.value = true
   try {
-    await callOutbound(props.call.phoneNumberId, props.call.waId)
+    await callOutbound(props.call.phoneNumberId, props.call.contact.id)
   } finally {
     calling.value = false
   }
@@ -326,7 +326,7 @@ async function loadRecording() {
 
 function loadDetailData() {
   if (!open.value || !props.call) return
-  if (props.call.phoneNumberId && props.call.waId) {
+  if (props.call.phoneNumberId && props.call.contact) {
     loadPermission()
   }
   if (props.call.recordingEnabled) {

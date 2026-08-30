@@ -7,8 +7,6 @@ export interface Call {
   id: number
   wacid: string
   phoneNumberId: string
-  displayPhoneNumber: string | null
-  waId: string
   contact: Contact | null
   user: UserSummary | null
   direction: CallDirection
