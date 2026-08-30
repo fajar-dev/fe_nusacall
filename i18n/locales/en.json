@@ -108,10 +108,12 @@
       "description": "Welcome to the admin dashboard",
       "totalUsers": "Total Agents",
       "onlineUsers": "Agents Online Now",
-      "callsToday": "Today's Calls",
-      "answerRate": "Answer Rate",
-      "answerRateWarning": "Below Meta's low-pickup-rate threshold",
-      "missedToday": "Missed Today"
+      "missedToday": "Missed Today",
+      "inboundToday": "Inbound Calls Today",
+      "outboundToday": "Outbound Calls Today",
+      "onlineAgents": "Agents Online",
+      "noOnlineAgents": "No agents are online right now",
+      "onCall": "On a call"
     },
     "auth": {
       "signIn": {

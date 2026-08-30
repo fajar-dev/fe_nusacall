@@ -108,10 +108,12 @@
       "description": "Selamat datang di admin dashboard",
       "totalUsers": "Total Agent",
       "onlineUsers": "Agent Online Sekarang",
-      "callsToday": "Panggilan Hari Ini",
-      "answerRate": "Tingkat Terjawab",
-      "answerRateWarning": "Di bawah ambang batas low-pickup-rate Meta",
-      "missedToday": "Tidak Terjawab Hari Ini"
+      "missedToday": "Tidak Terjawab Hari Ini",
+      "inboundToday": "Panggilan Masuk Hari Ini",
+      "outboundToday": "Panggilan Keluar Hari Ini",
+      "onlineAgents": "Agent Sedang Online",
+      "noOnlineAgents": "Tidak ada agent yang sedang online",
+      "onCall": "Sedang Menelepon"
     },
     "auth": {
       "signIn": {

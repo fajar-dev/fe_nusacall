@@ -39,6 +39,8 @@ export interface CallStats {
   missed: number
   rejected: number
   failed: number
+  inbound: number
+  outbound: number
   avgDurationSeconds: number | null
   avgSetupMs: number | null
   answerRate: number | null

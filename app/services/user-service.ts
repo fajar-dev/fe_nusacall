@@ -44,6 +44,15 @@ class UserService {
       return handleServiceError(error)
     }
   }
+
+  async getOnline(): Promise<ApiResponse<User[]>> {
+    try {
+      const response = await apiService.client.get<ApiResponse<User[]>>('/user/online')
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
 }
 
 export const userService = new UserService()
