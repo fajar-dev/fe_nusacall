@@ -1,5 +1,7 @@
 import { callService } from '~/services/call-service'
 import { accountService } from '~/services/account-service'
+import { matchesCallQuery } from '~/utils/call'
+import { removeById, upsertById } from '~/utils/array'
 import type { Call, CallStatus } from '~/types/call'
 
 const QUEUE_STATUSES: CallStatus[] = ['ringing']
@@ -9,26 +11,6 @@ const PAGE_SIZE = 30
 const SEARCH_DEBOUNCE_MS = 300
 
 export type BoardTab = 'queue' | 'ongoing' | 'history'
-
-function matchesQuery(call: Call, q: string): boolean {
-  if (!q) return true
-  const needle = q.toLowerCase()
-  return [call.contact?.profileName, call.waId, call.displayPhoneNumber, call.wacid]
-    .some(field => field?.toLowerCase().includes(needle))
-}
-
-function upsert(list: Call[], call: Call) {
-  const idx = list.findIndex(c => c.id === call.id)
-  if (idx === -1) list.unshift(call)
-  else list[idx] = call
-}
-
-function remove(list: Call[], id: number): boolean {
-  const idx = list.findIndex(c => c.id === id)
-  if (idx === -1) return false
-  list.splice(idx, 1)
-  return true
-}
 
 export function useCallBoard() {
   const queue = useState<Call[]>('call-board-queue', () => [])
@@ -105,16 +87,16 @@ export function useCallBoard() {
   }
 
   function applyUpdate(call: Call) {
-    remove(queue.value, call.id)
-    remove(ongoing.value, call.id)
-    remove(history.value, call.id)
+    removeById(queue.value, call.id)
+    removeById(ongoing.value, call.id)
+    removeById(history.value, call.id)
 
-    if (!matchesQuery(call, searchQuery.value)) return
+    if (!matchesCallQuery(call, searchQuery.value)) return
 
     if (QUEUE_STATUSES.includes(call.status)) {
-      upsert(queue.value, call)
+      upsertById(queue.value, call)
     } else if (ONGOING_STATUSES.includes(call.status)) {
-      upsert(ongoing.value, call)
+      upsertById(ongoing.value, call)
     } else {
       history.value.unshift(call)
     }

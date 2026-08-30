@@ -104,6 +104,7 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
 import { accountService } from '~/services/account-service'
+import { replaceById } from '~/utils/array'
 import type { Account } from '~/types/account'
 
 definePageMeta({
@@ -174,8 +175,7 @@ function openEdit(acc: Account) {
 }
 
 function handleUpdated(updated: Account) {
-  const index = accounts.value.findIndex(a => a.id === updated.id)
-  if (index !== -1) accounts.value[index] = updated
+  replaceById(accounts.value, updated)
 }
 
 async function doSync(acc: Account) {

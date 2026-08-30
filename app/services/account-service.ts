@@ -1,5 +1,6 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
+import { buildPagedQuery } from '~/utils/query'
 import type { ApiResponse } from '../types/api'
 import type { Account, CallHours, HealthStatus } from '../types/account'
 
@@ -15,8 +16,8 @@ export interface UpdateAccountPayload {
 class AccountService {
   async getAll(page = 1, limit = 50): Promise<ApiResponse<Account[]>> {
     try {
-      const params = new URLSearchParams({ page: String(page), limit: String(limit) })
-      const response = await apiService.client.get<ApiResponse<Account[]>>(`/account?${params.toString()}`)
+      const query = buildPagedQuery({ page, limit })
+      const response = await apiService.client.get<ApiResponse<Account[]>>(`/account?${query}`)
       return response.data
     } catch (error) {
       return handleServiceError(error)

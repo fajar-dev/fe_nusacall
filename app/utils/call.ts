@@ -18,3 +18,10 @@ export function callIcon(call: Call): string {
 export function callIconColor(call: Call): string {
   return FAILED_STATUSES.includes(call.status) ? 'text-red-500' : 'text-green-500'
 }
+
+export function matchesCallQuery(call: Call, query: string): boolean {
+  if (!query) return true
+  const needle = query.toLowerCase()
+  return [call.contact?.profileName, call.waId, call.displayPhoneNumber, call.wacid]
+    .some(field => field?.toLowerCase().includes(needle))
+}

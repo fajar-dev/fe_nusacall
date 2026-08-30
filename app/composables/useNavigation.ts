@@ -1,4 +1,5 @@
 import { useRoute } from 'vue-router'
+import { toggleValue } from '~/utils/array'
 
 export interface NavItem {
   id: string
@@ -92,12 +93,7 @@ export const useNavigation = () => {
   }
 
   const toggleExpanded = (id: string) => {
-    const index = expandedItems.value.indexOf(id)
-    if (index === -1) {
-      expandedItems.value.push(id)
-    } else {
-      expandedItems.value.splice(index, 1)
-    }
+    toggleValue(expandedItems.value, id)
   }
 
   const isExpanded = (id: string) => {

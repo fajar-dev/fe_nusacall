@@ -257,16 +257,8 @@ const state = reactive({
 
 const showPassword = ref(false)
 const loading = ref(false)
-const toast = useToast()
 const showQrModal = ref(false)
 const googleLoading = ref(false)
-
-const showToast = (type: 'success' | 'error', title: string) => {
-  toast.add({
-    title,
-    icon: type === 'success' ? 'i-lucide-circle-check' : 'i-lucide-circle-x'
-  })
-}
 
 const loginSchema = z.object({
   email: z.string().min(1, t('pages.auth.signIn.emailRequired')),

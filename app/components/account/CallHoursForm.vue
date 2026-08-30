@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import type { TimeValue } from 'reka-ui'
 import { parseHHmm, toHHmm } from '~/utils/time'
+import { findDayRange, isDayOpen, withDayRange, withDayToggled } from '~/utils/call-hours'
 import type { CallHours, CallHoursDay } from '~/types/account'
 
 const { t } = useI18n()
@@ -100,12 +101,8 @@ const timezoneId = computed({
   }
 })
 
-function rangeFor(day: CallHoursDay['day_of_week']): CallHoursDay {
-  return model.value?.weekly_operating_hours.find(r => r.day_of_week === day) ?? { day_of_week: day, open_time: '0800', close_time: '1700' }
-}
-
 function getDayTimeRange(day: CallHoursDay['day_of_week']) {
-  const range = rangeFor(day)
+  const range = findDayRange(model.value?.weekly_operating_hours ?? [], day)
   return {
     start: parseHHmm(range.open_time),
     end: parseHHmm(range.close_time)
@@ -114,24 +111,20 @@ function getDayTimeRange(day: CallHoursDay['day_of_week']) {
 
 function setDayTimeRange(day: CallHoursDay['day_of_week'], rangeObj?: { start?: TimeValue, end?: TimeValue } | null) {
   if (!model.value || !rangeObj) return
-  const openTime = toHHmm(rangeObj.start)
-  const closeTime = toHHmm(rangeObj.end)
-
-  const hours = model.value.weekly_operating_hours.map(r =>
-    r.day_of_week === day ? { ...r, open_time: openTime, close_time: closeTime } : r
-  )
+  const hours = withDayRange(model.value.weekly_operating_hours, day, toHHmm(rangeObj.start), toHHmm(rangeObj.end))
   model.value = { ...model.value, weekly_operating_hours: hours }
 }
 
 function isOpen(day: CallHoursDay['day_of_week']): boolean {
-  return !!model.value?.weekly_operating_hours.some(r => r.day_of_week === day)
+  return isDayOpen(model.value?.weekly_operating_hours ?? [], day)
 }
 
 function toggleDay(day: CallHoursDay['day_of_week'], open: boolean) {
   if (!model.value) return
-  const hours = model.value.weekly_operating_hours.filter(r => r.day_of_week !== day)
-  if (open) hours.push({ day_of_week: day, open_time: '0800', close_time: '1700' })
-  model.value = { ...model.value, weekly_operating_hours: hours }
+  model.value = {
+    ...model.value,
+    weekly_operating_hours: withDayToggled(model.value.weekly_operating_hours, day, open)
+  }
 }
 
 const errorMessage = computed(() => {

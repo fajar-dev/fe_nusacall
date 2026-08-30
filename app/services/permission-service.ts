@@ -1,13 +1,14 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
+import { buildQuery } from '~/utils/query'
 import type { ApiResponse } from '../types/api'
 import type { PermissionCheckResult } from '../types/permission'
 
 class PermissionService {
   async check(phoneNumberId: string, waId: string): Promise<ApiResponse<PermissionCheckResult>> {
     try {
-      const params = new URLSearchParams({ phoneNumberId, waId })
-      const response = await apiService.client.get<ApiResponse<PermissionCheckResult>>(`/permission?${params.toString()}`)
+      const query = buildQuery({ phoneNumberId, waId })
+      const response = await apiService.client.get<ApiResponse<PermissionCheckResult>>(`/permission?${query}`)
       return response.data
     } catch (error) {
       return handleServiceError(error)

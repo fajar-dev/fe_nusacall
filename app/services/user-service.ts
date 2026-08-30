@@ -1,5 +1,6 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
+import { buildPagedQuery } from '~/utils/query'
 import type { ApiResponse } from '../types/api'
 import type { User } from '../types/user'
 
@@ -15,15 +16,9 @@ export interface UserListParams {
 class UserService {
   async getAll(params: UserListParams = {}): Promise<ApiResponse<User[]>> {
     try {
-      const query = new URLSearchParams()
-      query.set('page', String(params.page ?? 1))
-      query.set('limit', String(params.limit ?? 10))
-      if (params.q) query.set('q', params.q)
-      if (params.organizationId) query.set('organizationId', String(params.organizationId))
-      if (params.sortBy) query.set('sortBy', params.sortBy)
-      if (params.order) query.set('order', params.order)
+      const query = buildPagedQuery(params)
 
-      const response = await apiService.client.get<ApiResponse<User[]>>(`/user?${query.toString()}`)
+      const response = await apiService.client.get<ApiResponse<User[]>>(`/user?${query}`)
       return response.data
     } catch (error) {
       return handleServiceError(error)
