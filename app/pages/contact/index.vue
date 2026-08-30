@@ -47,6 +47,7 @@ definePageMeta({
 })
 
 const UButton = resolveComponent('UButton')
+const NuxtLink = resolveComponent('NuxtLink')
 const { t } = useI18n()
 
 const data = ref<Contact[]>([])
@@ -95,7 +96,10 @@ const columns: TableColumn<Contact>[] = [
   {
     accessorKey: 'name',
     header: sortHeader(() => t('pages.contact.columnName'), 'name'),
-    cell: ({ row }) => row.original.name || '—'
+    cell: ({ row }) => h(NuxtLink, {
+      to: `/contact/${row.original.id}`,
+      class: 'font-medium text-primary hover:underline'
+    }, () => row.original.name || row.original.phoneNumber)
   },
   {
     accessorKey: 'phoneNumber',
@@ -114,22 +118,13 @@ const columns: TableColumn<Contact>[] = [
     id: 'actions',
     header: t('pages.contact.columnActions'),
     cell: ({ row }) =>
-      h('div', { class: 'flex items-center gap-1' }, [
-        h(UButton, {
-          color: 'neutral',
-          variant: 'ghost',
-          icon: 'i-lucide-eye',
-          size: 'sm',
-          onClick: () => navigateTo(`/contact/${row.original.id}`)
-        }),
-        h(UButton, {
-          color: 'neutral',
-          variant: 'ghost',
-          icon: 'i-lucide-pencil',
-          size: 'sm',
-          onClick: () => openEdit(row.original)
-        })
-      ])
+      h(UButton, {
+        color: 'neutral',
+        variant: 'ghost',
+        icon: 'i-lucide-pencil',
+        size: 'sm',
+        onClick: () => openEdit(row.original)
+      })
   }
 ]
 </script>

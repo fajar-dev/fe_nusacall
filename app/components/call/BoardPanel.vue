@@ -80,10 +80,13 @@
         {{ $t('components.callBoard.empty') }}
       </p>
 
-      <div
+      <component
+        :is="call.contact ? NuxtLink : 'div'"
         v-for="call in currentList"
         :key="call.id"
+        :to="call.contact ? `/contact/${call.contact.id}` : undefined"
         class="flex items-center gap-3 p-3 pr-5 mb-1 border-l-5 hover:bg-neutral-100/80 dark:hover:bg-neutral-950/60"
+        :class="call.contact ? 'cursor-pointer' : ''"
         :style="{ borderLeftColor: colorFor(call) }"
       >
         <div class="min-w-0 flex-1 flex items-center gap-2.5">
@@ -124,7 +127,7 @@
             :disabled="softphoneState !== 'idle'"
             :loading="answeringWacid === call.wacid"
             :aria-label="$t('components.callBoard.answer')"
-            @click="onAnswer(call)"
+            @click.stop.prevent="onAnswer(call)"
           />
           <UButton
             icon="i-lucide-phone-off"
@@ -134,7 +137,7 @@
             :disabled="softphoneState !== 'idle' || rejectingWacid === call.wacid"
             :loading="rejectingWacid === call.wacid"
             :aria-label="$t('components.callBoard.reject')"
-            @click="onReject(call)"
+            @click.stop.prevent="onReject(call)"
           />
         </div>
         <span
@@ -143,7 +146,7 @@
         >
           {{ callDate(call.createdAt) }}
         </span>
-      </div>
+      </component>
 
       <div
         v-if="currentList.length > 0 && isLoadingMore"
@@ -159,10 +162,13 @@
 </template>
 
 <script setup lang="ts">
+import { resolveComponent } from 'vue'
 import type { Call } from '~/types/call'
 import type { BoardTab } from '~/composables/useCallBoard'
 import { callIcon, callIconColor } from '~/utils/call'
 import { formatCallDate, formatDuration } from '~/utils/format'
+
+const NuxtLink = resolveComponent('NuxtLink')
 
 const { t } = useI18n()
 const open = useState<boolean>('call-board-open', () => false)
