@@ -25,6 +25,15 @@ class ContactService {
     }
   }
 
+  async getById(id: number): Promise<ApiResponse<Contact>> {
+    try {
+      const response = await apiService.client.get<ApiResponse<Contact>>(`/contact/${id}`)
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
+
   async create(payload: ContactPayload): Promise<ApiResponse<Contact>> {
     try {
       const response = await apiService.client.post<ApiResponse<Contact>>('/contact', payload)

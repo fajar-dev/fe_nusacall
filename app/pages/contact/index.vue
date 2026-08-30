@@ -114,13 +114,22 @@ const columns: TableColumn<Contact>[] = [
     id: 'actions',
     header: t('pages.contact.columnActions'),
     cell: ({ row }) =>
-      h(UButton, {
-        color: 'neutral',
-        variant: 'ghost',
-        icon: 'i-lucide-pencil',
-        size: 'sm',
-        onClick: () => openEdit(row.original)
-      })
+      h('div', { class: 'flex items-center gap-1' }, [
+        h(UButton, {
+          color: 'neutral',
+          variant: 'ghost',
+          icon: 'i-lucide-eye',
+          size: 'sm',
+          onClick: () => navigateTo(`/contact/${row.original.id}`)
+        }),
+        h(UButton, {
+          color: 'neutral',
+          variant: 'ghost',
+          icon: 'i-lucide-pencil',
+          size: 'sm',
+          onClick: () => openEdit(row.original)
+        })
+      ])
   }
 ]
 </script>

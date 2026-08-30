@@ -163,6 +163,15 @@
         "updated": "Kontak berhasil diperbarui"
       }
     },
+    "contactDetail": {
+      "description": "Rincian kontak dan riwayat panggilannya",
+      "back": "Kembali",
+      "notFound": "Kontak tidak ditemukan",
+      "searchPlaceholder": "Cari panggilan...",
+      "tabs": {
+        "calls": "Log Panggilan"
+      }
+    },
     "call": {
       "title": "Panggilan",
       "description": "Riwayat dan hasil seluruh panggilan",
@@ -192,7 +201,6 @@
       "detail": {
         "title": "Detail Panggilan",
         "contact": "Kontak",
-        "destination": "Tujuan",
         "agent": "Agent",
         "duration": "Durasi",
         "timeline": "Linimasa",

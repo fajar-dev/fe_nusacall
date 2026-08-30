@@ -163,6 +163,15 @@
         "updated": "Contact updated successfully"
       }
     },
+    "contactDetail": {
+      "description": "Contact details and call history",
+      "back": "Back",
+      "notFound": "Contact not found",
+      "searchPlaceholder": "Search calls...",
+      "tabs": {
+        "calls": "Call Log"
+      }
+    },
     "call": {
       "title": "Calls",
       "description": "Full call history and outcomes",
@@ -192,7 +201,6 @@
       "detail": {
         "title": "Call Detail",
         "contact": "Contact",
-        "destination": "Destination",
         "agent": "Agent",
         "duration": "Duration",
         "timeline": "Timeline",

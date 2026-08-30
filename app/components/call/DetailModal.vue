@@ -40,10 +40,16 @@
             </div>
             <div>
               <p class="text-xs text-muted mb-0.5">
-                {{ $t('pages.call.detail.destination') }}
+                {{ $t('pages.call.columnAccount') }}
               </p>
               <p class="font-medium text-highlighted">
-                {{ call.phoneNumberId }}
+                {{ call.account?.label || '—' }}
+              </p>
+              <p
+                v-if="call.account"
+                class="text-xs text-muted"
+              >
+                {{ call.account.displayPhoneNumber }}
               </p>
             </div>
             <div>

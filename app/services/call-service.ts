@@ -13,6 +13,7 @@ interface CallListParams {
   status?: string[]
   direction?: string
   userId?: number
+  contactId?: number
   from?: string
   to?: string
   sortBy?: string
