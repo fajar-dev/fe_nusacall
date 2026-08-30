@@ -160,22 +160,22 @@
                 v-if="loadingRecording"
                 class="h-9 w-full rounded-md"
               />
-              <audio
-                v-else-if="recordingAvailability.state === 'ready'"
-                :src="recordingAvailability.url"
-                controls
-                preload="none"
-                class="w-full h-9 rounded-md"
-              />
               <div
-                v-else-if="recordingAvailability.state === 'expired'"
-                class="flex items-center gap-2 p-2.5 rounded-md bg-muted/40 text-xs text-muted"
+                v-else-if="recordingTracks.length"
+                class="space-y-2"
               >
-                <UIcon
-                  name="i-lucide-clock-alert"
-                  class="size-4 shrink-0 text-warning"
-                />
-                <span>{{ $t('components.callRecording.expired') }}</span>
+                <div
+                  v-for="track in recordingTracks"
+                  :key="track.key"
+                >
+                  <span class="text-xs text-muted">{{ $t(`components.callRecording.track.${track.key}`) }}</span>
+                  <audio
+                    :src="track.url"
+                    controls
+                    preload="none"
+                    class="w-full h-9 rounded-md mt-1"
+                  />
+                </div>
               </div>
               <p
                 v-else
@@ -211,7 +211,7 @@
 import { callService } from '~/services/call-service'
 import { formatClockTime, formatDuration } from '~/utils/format'
 import { permissionService } from '~/services/permission-service'
-import type { ArtifactAvailability, Call, CallStatus } from '~/types/call'
+import type { Call, CallStatus, RecordingAvailability } from '~/types/call'
 import type { PermissionCheckResult } from '~/types/permission'
 
 const props = defineProps<{ call: Call | null }>()
@@ -228,7 +228,15 @@ const justRequested = ref(false)
 const permission = ref<PermissionCheckResult | null>(null)
 
 const loadingRecording = ref(false)
-const recordingAvailability = ref<ArtifactAvailability>({ state: 'not_ready' })
+const recordingAvailability = ref<RecordingAvailability>({ state: 'not_ready' })
+
+const recordingTracks = computed(() => {
+  const availability = recordingAvailability.value
+  if (availability.state !== 'ready') return []
+  return ([['customer', availability.customer], ['agent', availability.agent]] as const)
+    .filter((entry): entry is readonly ['customer' | 'agent', string] => entry[1] !== null)
+    .map(([key, url]) => ({ key, url }))
+})
 
 const statusColorMap: Record<CallStatus, 'success' | 'primary' | 'info' | 'warning' | 'neutral' | 'error'> = {
   completed: 'success',

@@ -73,9 +73,12 @@
       }
     },
     "callRecording": {
-      "notReady": "Belum tersedia (belum diminta, atau masih diproses)",
-      "expired": "Sudah kedaluwarsa — tidak diunduh dalam 7 hari sebelum dihapus Meta",
-      "loading": "Memuat..."
+      "notReady": "Tidak ada rekaman untuk panggilan ini",
+      "loading": "Memuat...",
+      "track": {
+        "customer": "Pelanggan",
+        "agent": "Agen"
+      }
     },
     "callOutbound": {
       "checking": "Memeriksa izin panggilan...",

@@ -3,7 +3,7 @@ import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
 import { buildPagedQuery, buildQuery } from '~/utils/query'
 import type { ApiResponse } from '../types/api'
-import type { Call, CallStats, ArtifactAvailability } from '../types/call'
+import type { Call, CallStats, RecordingAvailability, RecordingTracks } from '../types/call'
 import type { SortOrder } from '~/enums/sort-order'
 
 interface CallListParams {
@@ -40,13 +40,13 @@ class CallService {
     }
   }
 
-  async getRecordingAvailability(id: number): Promise<ArtifactAvailability> {
+  async getRecordingAvailability(id: number): Promise<RecordingAvailability> {
     try {
-      const response = await apiService.client.get<ApiResponse<{ url: string }>>(`/call/${id}/recording`)
-      return { state: 'ready', url: response.data.data.url }
+      const response = await apiService.client.get<ApiResponse<RecordingTracks>>(`/call/${id}/recording`)
+      const { customer, agent, durationSeconds } = response.data.data
+      return { state: 'ready', customer, agent, durationSeconds }
     } catch (error) {
       const status = axios.isAxiosError(error) ? error.response?.status : undefined
-      if (status === 410) return { state: 'expired' }
       if (status !== 404) console.error('Unexpected error fetching recording availability', error)
       return { state: 'not_ready' }
     }

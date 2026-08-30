@@ -23,10 +23,15 @@ export interface Call {
   createdAt: string
 }
 
-export type ArtifactAvailability
+export interface RecordingTracks {
+  customer: string | null
+  agent: string | null
+  durationSeconds: number
+}
+
+export type RecordingAvailability
   = | { state: 'not_ready' }
-    | { state: 'expired' }
-    | { state: 'ready', url: string }
+    | ({ state: 'ready' } & RecordingTracks)
 
 export interface CallStats {
   total: number

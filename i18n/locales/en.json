@@ -73,9 +73,12 @@
       }
     },
     "callRecording": {
-      "notReady": "Not available yet (not requested, or still processing)",
-      "expired": "Expired — not downloaded within 7 days before Meta deleted it",
-      "loading": "Loading..."
+      "notReady": "No recording available for this call",
+      "loading": "Loading...",
+      "track": {
+        "customer": "Customer",
+        "agent": "Agent"
+      }
     },
     "callOutbound": {
       "checking": "Checking call permission...",
