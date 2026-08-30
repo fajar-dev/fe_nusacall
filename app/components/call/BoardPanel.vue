@@ -96,18 +96,18 @@
             <p class="text-base font-medium text-highlighted truncate leading-snug">
               {{ call.contact?.name || call.contact?.phoneNumber }}
             </p>
-            <p class="text-xs text-muted truncate leading-normal">
+            <p class="text-sm text-muted truncate leading-normal">
               {{ call.contact?.phoneNumber }}
             </p>
             <p
               v-if="call.user"
-              class="text-xs text-muted truncate leading-normal flex items-center gap-1.5"
+              class="text-xs text-dimmed truncate leading-normal flex items-center gap-1.5"
             >
               <span class="truncate">{{ call.user.name }}</span>
               <span
                 v-if="displayDuration(call)"
-                class="shrink-0"
-              >{{ displayDuration(call) }}</span>
+                class="shrink-0 text-success/80"
+              >( {{ displayDuration(call) }} )</span>
             </p>
           </div>
         </div>
@@ -139,7 +139,7 @@
         </div>
         <span
           v-else
-          class="text-xs text-muted shrink-0 font-medium"
+          class="text-sm text-primary shrink-0"
         >
           {{ callDate(call.createdAt) }}
         </span>
