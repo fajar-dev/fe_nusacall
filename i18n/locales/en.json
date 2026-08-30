@@ -7,8 +7,6 @@
       "openMenu": "Open menu"
     },
     "sidebar": {
-      "collapseSidebar": "Collapse sidebar",
-      "expandSidebar": "Expand sidebar",
       "settings": "Settings",
       "nav": {
         "dashboard": "Dashboard",
@@ -35,14 +33,11 @@
         "title": "Login with Nusawork",
         "description": "Scan QR Code with NusaWork app",
         "waiting": "Waiting for scan...",
-        "success": "Scan successful!",
-        "redirecting": "Logging you in...",
         "expired": "QR Code has expired. Please try again.",
         "generateFailed": "Failed to generate QR Code. Please try again.",
         "loginFailed": "Login failed. User may not be registered.",
         "step1": "Open the Nusawork app on your phone",
         "step2": "Select the Scan QR menu at the top right of the home screen",
-        "waitingApproval": "Waiting for approval...",
         "confirmed": "Confirmed",
         "confirmInstruction": "Please complete the configuration in the app on your phone"
       }
@@ -52,12 +47,6 @@
       "showing": "Showing {from} to {to} of {total} results"
     },
     "softphone": {
-      "availability": {
-        "available": "Available",
-        "offline": "Offline"
-      },
-      "micDeniedTitle": "Microphone access needed",
-      "micDeniedDescription": "Allow microphone access to receive calls.",
       "answerFailedTitle": "Failed to answer call",
       "answerFailedDescription": "Check your microphone permission and connection, then try again.",
       "incoming": {
@@ -70,15 +59,14 @@
         "mute": "Mute",
         "unmute": "Unmute",
         "hangup": "Hang up"
-      }
+      },
+      "dragHandle": "Drag to move"
     },
     "callRecording": {
       "notReady": "No recording available for this call",
-      "loading": "Loading...",
       "stereoHint": "Stereo — customer on the left channel, agent on the right"
     },
     "callOutbound": {
-      "checking": "Checking call permission...",
       "call": "Call",
       "noPermission": "No call permission yet",
       "requestPermission": "Request Permission",
@@ -127,7 +115,6 @@
         "loginFailed": "Login failed. Please try again.",
         "togglePasswordVisibility": "Toggle Password Visibility",
         "or": "OR",
-        "orContinueWith": "Or continue with",
         "loginWithGoogle": "Sign in with Google",
         "loginWithNusawork": "Sign in with Nusawork"
       }
@@ -225,10 +212,6 @@
       "description": "Channel and number settings used for Inbox",
       "loading": "Loading accounts...",
       "enabled": "Calling enabled",
-      "disabled": "Calling disabled",
-      "testNumber": "Test number",
-      "answerTimeout": "Answer timeout",
-      "lastSynced": "Last synced",
       "edit": "Edit",
       "sync": "Sync",
       "syncSuccess": "Synced to Meta successfully",
@@ -238,11 +221,8 @@
       "columnNumber": "Number",
       "columnColor": "Color Identification",
       "columnStatus": "Status",
-      "columnActions": "Actions",
       "updateModal": {
         "title": "Edit Account",
-        "propagationWarning": "Calling setting changes can take up to 7 days to propagate to WhatsApp clients. Server-side takes effect immediately.",
-        "iconWarning": "Hiding the call icon does not prevent users from calling via saved contacts, call history, or a button in a message.",
         "label": "Label",
         "callingEnabled": "Calling enabled",
         "iconVisibility": "Call icon visibility",
