@@ -48,7 +48,8 @@
 import { h, resolveComponent } from 'vue'
 import type { TableColumn } from '@nuxt/ui'
 import { callService } from '~/services/call-service'
-import { callIcon, callIconColor } from '~/composables/call-display'
+import { callIcon, callIconColor } from '~/utils/call'
+import { formatDuration, formatRelative } from '~/utils/format'
 import type { Call, CallStatus } from '~/types/call'
 
 definePageMeta({
@@ -116,16 +117,6 @@ const directionOptions = [
   { label: t('pages.call.directionOutbound'), value: 'outbound' }
 ]
 
-const relativeFormatter = new Intl.RelativeTimeFormat('id-ID', { numeric: 'auto' })
-function formatRelative(iso: string): string {
-  const diffMs = new Date(iso).getTime() - Date.now()
-  const diffMinutes = Math.round(diffMs / 60000)
-  if (Math.abs(diffMinutes) < 60) return relativeFormatter.format(diffMinutes, 'minute')
-  const diffHours = Math.round(diffMinutes / 60)
-  if (Math.abs(diffHours) < 24) return relativeFormatter.format(diffHours, 'hour')
-  return relativeFormatter.format(Math.round(diffHours / 24), 'day')
-}
-
 const columns: TableColumn<Call>[] = [
   {
     accessorKey: 'createdAt',
@@ -178,9 +169,7 @@ const columns: TableColumn<Call>[] = [
     header: t('pages.call.columnDuration'),
     cell: ({ row }) => {
       const seconds = row.original.durationSeconds
-      if (seconds == null) return '—'
-      const minutes = Math.floor(seconds / 60)
-      return `${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
+      return seconds == null ? '—' : formatDuration(seconds)
     }
   },
   {

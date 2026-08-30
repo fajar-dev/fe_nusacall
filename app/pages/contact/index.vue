@@ -25,6 +25,7 @@
 import type { TableColumn } from '@nuxt/ui'
 import { contactService } from '~/services/contact-service'
 import type { Contact } from '~/types/contact'
+import { formatRelative } from '~/utils/format'
 
 definePageMeta({
   layout: 'dashboard'
@@ -59,16 +60,6 @@ async function fetchContacts() {
 }
 
 const { search, perPage, page } = useTableQuery(fetchContacts)
-
-const relativeFormatter = new Intl.RelativeTimeFormat('id-ID', { numeric: 'auto' })
-function formatRelative(iso: string): string {
-  const diffMs = new Date(iso).getTime() - Date.now()
-  const diffMinutes = Math.round(diffMs / 60000)
-  if (Math.abs(diffMinutes) < 60) return relativeFormatter.format(diffMinutes, 'minute')
-  const diffHours = Math.round(diffMinutes / 60)
-  if (Math.abs(diffHours) < 24) return relativeFormatter.format(diffHours, 'hour')
-  return relativeFormatter.format(Math.round(diffHours / 24), 'day')
-}
 
 const columns: TableColumn<Contact>[] = [
   {

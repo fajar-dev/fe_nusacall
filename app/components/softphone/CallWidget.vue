@@ -41,6 +41,8 @@
 </template>
 
 <script setup lang="ts">
+import { formatDuration } from '~/utils/format'
+
 const { state, answeredAt, setMuted, hangup, init } = useSoftphone()
 
 const muted = ref(false)
@@ -49,10 +51,7 @@ let interval: ReturnType<typeof setInterval> | null = null
 
 const formattedTimer = computed(() => {
   if (!answeredAt.value) return '00:00'
-  const totalSeconds = Math.max(0, Math.floor((now.value - answeredAt.value) / 1000))
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+  return formatDuration(Math.max(0, (now.value - answeredAt.value) / 1000))
 })
 
 function toggleMute() {

@@ -141,7 +141,7 @@
           v-else
           class="text-xs text-muted shrink-0 font-medium"
         >
-          {{ formatCallDate(call.createdAt) }}
+          {{ callDate(call.createdAt) }}
         </span>
       </div>
 
@@ -161,7 +161,8 @@
 <script setup lang="ts">
 import type { Call } from '~/types/call'
 import type { BoardTab } from '~/composables/useCallBoard'
-import { callIcon, callIconColor } from '~/composables/call-display'
+import { callIcon, callIconColor } from '~/utils/call'
+import { formatCallDate, formatDuration } from '~/utils/format'
 
 const { t } = useI18n()
 const open = useState<boolean>('call-board-open', () => false)
@@ -223,30 +224,6 @@ function colorFor(call: Call): string {
   return phoneNumberColors.value[call.phoneNumberId] || 'transparent'
 }
 
-function formatCallDate(dateStr: string | null | undefined): string {
-  if (!dateStr) return '—'
-  const date = new Date(dateStr)
-  if (isNaN(date.getTime())) return '—'
-
-  const now = new Date()
-  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const yesterdayStart = new Date(todayStart)
-  yesterdayStart.setDate(yesterdayStart.getDate() - 1)
-
-  if (date >= todayStart) {
-    const hours = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
-    return `${hours}:${minutes}`
-  } else if (date >= yesterdayStart) {
-    return t('components.callBoard.yesterday')
-  } else {
-    const day = String(date.getDate()).padStart(2, '0')
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const year = String(date.getFullYear()).slice(-2)
-    return `${day}/${month}/${year}`
-  }
-}
-
 async function onAnswer(call: Call) {
   answeringWacid.value = call.wacid
   try {
@@ -257,15 +234,14 @@ async function onAnswer(call: Call) {
   }
 }
 
+function callDate(dateStr: string | null | undefined): string {
+  return formatCallDate(dateStr, t('components.callBoard.yesterday'))
+}
+
 function onReject(call: Call) {
   rejectingWacid.value = call.wacid
   rejectCall(call.wacid)
   rejectingWacid.value = null
-}
-
-function formatDuration(seconds: number): string {
-  const minutes = Math.floor(seconds / 60)
-  return `${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
 }
 
 function displayDuration(call: Call): string | null {

@@ -60,8 +60,8 @@
 </template>
 
 <script setup lang="ts">
-import { Time } from '@internationalized/date'
 import type { TimeValue } from 'reka-ui'
+import { parseHHmm, toHHmm } from '~/utils/time'
 import type { CallHours, CallHoursDay } from '~/types/account'
 
 const { t } = useI18n()
@@ -100,20 +100,6 @@ const timezoneId = computed({
   }
 })
 
-function stringToTime(str: string): Time {
-  if (!str || str.length < 4) return new Time(8, 0)
-  const hours = parseInt(str.slice(0, 2), 10)
-  const minutes = parseInt(str.slice(2, 4), 10)
-  return new Time(isNaN(hours) ? 8 : hours, isNaN(minutes) ? 0 : minutes)
-}
-
-function timeToString(time?: TimeValue | null): string {
-  if (!time) return '0800'
-  const h = String(time.hour).padStart(2, '0')
-  const m = String(time.minute).padStart(2, '0')
-  return `${h}${m}`
-}
-
 function rangeFor(day: CallHoursDay['day_of_week']): CallHoursDay {
   return model.value?.weekly_operating_hours.find(r => r.day_of_week === day) ?? { day_of_week: day, open_time: '0800', close_time: '1700' }
 }
@@ -121,15 +107,15 @@ function rangeFor(day: CallHoursDay['day_of_week']): CallHoursDay {
 function getDayTimeRange(day: CallHoursDay['day_of_week']) {
   const range = rangeFor(day)
   return {
-    start: stringToTime(range.open_time),
-    end: stringToTime(range.close_time)
+    start: parseHHmm(range.open_time),
+    end: parseHHmm(range.close_time)
   }
 }
 
 function setDayTimeRange(day: CallHoursDay['day_of_week'], rangeObj?: { start?: TimeValue, end?: TimeValue } | null) {
   if (!model.value || !rangeObj) return
-  const openTime = timeToString(rangeObj.start)
-  const closeTime = timeToString(rangeObj.end)
+  const openTime = toHHmm(rangeObj.start)
+  const closeTime = toHHmm(rangeObj.end)
 
   const hours = model.value.weekly_operating_hours.map(r =>
     r.day_of_week === day ? { ...r, open_time: openTime, close_time: closeTime } : r

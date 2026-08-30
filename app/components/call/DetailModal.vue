@@ -237,7 +237,7 @@
                     >
                       {{ segment.speaker === 'Business' ? $t('components.callRecording.speakerBusiness') : $t('components.callRecording.speakerCustomer') }}
                     </UBadge>
-                    <span class="text-dimmed text-xs">{{ formatTranscriptTimestamp(segment.start) }}</span>
+                    <span class="text-dimmed text-xs">{{ formatDuration(segment.start) }}</span>
                   </div>
                   <p class="text-toned text-xs leading-relaxed break-words">
                     {{ segment.text }}
@@ -277,6 +277,7 @@
 
 <script setup lang="ts">
 import { callService } from '~/services/call-service'
+import { formatClockTime, formatDuration } from '~/utils/format'
 import { permissionService } from '~/services/permission-service'
 import type { ArtifactAvailability, Call, CallStatus, TranscriptAvailability, TranscriptSegment } from '~/types/call'
 import type { PermissionCheckResult } from '~/types/permission'
@@ -313,32 +314,13 @@ const statusColorMap: Record<CallStatus, 'success' | 'primary' | 'info' | 'warni
 }
 const statusColor = computed(() => props.call ? statusColorMap[props.call.status] : 'neutral')
 
-const timeFormatter = new Intl.DateTimeFormat('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-
-function formatTime(iso: string | null): string {
-  if (!iso) return '—'
-  return timeFormatter.format(new Date(iso))
-}
-
-function formatDuration(totalSeconds: number): string {
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
-}
-
-function formatTranscriptTimestamp(seconds: number): string {
-  const m = Math.floor(seconds / 60)
-  const s = Math.floor(seconds % 60)
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-}
-
 const timeline = computed(() => {
   if (!props.call) return []
   return [
-    { label: t('pages.call.detail.created'), time: formatTime(props.call.createdAt) },
-    { label: t('pages.call.detail.ringing'), time: formatTime(props.call.ringingAt) },
-    { label: t('pages.call.detail.answered'), time: formatTime(props.call.answeredAt) },
-    { label: t('pages.call.detail.ended'), time: formatTime(props.call.endedAt) }
+    { label: t('pages.call.detail.created'), time: formatClockTime(props.call.createdAt) },
+    { label: t('pages.call.detail.ringing'), time: formatClockTime(props.call.ringingAt) },
+    { label: t('pages.call.detail.answered'), time: formatClockTime(props.call.answeredAt) },
+    { label: t('pages.call.detail.ended'), time: formatClockTime(props.call.endedAt) }
   ].filter(e => e.time !== '—')
 })
 
