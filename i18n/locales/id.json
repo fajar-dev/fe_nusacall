@@ -150,9 +150,29 @@
       "title": "Kontak",
       "description": "Kontak yang tersimpan otomatis dari panggilan masuk",
       "searchPlaceholder": "Cari nomor atau nama...",
-      "columnProfileName": "Nama",
-      "columnWaId": "Nomor WhatsApp",
-      "columnCreatedAt": "Tersimpan Sejak"
+      "columnName": "Nama",
+      "columnPhoneNumber": "Nomor Telepon",
+      "columnTimeZone": "Zona Waktu",
+      "columnBranch": "Cabang",
+      "columnActions": "Aksi",
+      "add": "Tambah Kontak",
+      "form": {
+        "createTitle": "Tambah Kontak",
+        "editTitle": "Ubah Kontak",
+        "name": "Nama Kontak",
+        "namePlaceholder": "Nama Kontak",
+        "phoneNumber": "Nomor Telepon",
+        "phoneNumberPlaceholder": "Nomor Telepon",
+        "timeZone": "Zona Waktu",
+        "timeZonePlaceholder": "Pilih timezone...",
+        "branch": "Cabang",
+        "branchPlaceholder": "Pilih cabang...",
+        "branchNone": "Tanpa cabang",
+        "cancel": "Batal",
+        "save": "Simpan",
+        "created": "Kontak berhasil ditambahkan",
+        "updated": "Kontak berhasil diperbarui"
+      }
     },
     "call": {
       "title": "Panggilan",

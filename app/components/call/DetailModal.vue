@@ -32,7 +32,7 @@
                 {{ $t('pages.call.detail.contact') }}
               </p>
               <p class="font-medium text-highlighted">
-                {{ call.contact?.profileName || call.waId }}
+                {{ call.contact?.name || call.waId }}
               </p>
               <p class="text-xs text-dimmed">
                 {{ call.waId }}

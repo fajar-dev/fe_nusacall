@@ -150,9 +150,29 @@
       "title": "Contacts",
       "description": "Contacts auto-saved from inbound calls",
       "searchPlaceholder": "Search by number or name...",
-      "columnProfileName": "Name",
-      "columnWaId": "WhatsApp Number",
-      "columnCreatedAt": "Saved Since"
+      "columnName": "Name",
+      "columnPhoneNumber": "Phone Number",
+      "columnTimeZone": "Time Zone",
+      "columnBranch": "Branch",
+      "columnActions": "Actions",
+      "add": "Add Contact",
+      "form": {
+        "createTitle": "Add Contact",
+        "editTitle": "Edit Contact",
+        "name": "Contact Name",
+        "namePlaceholder": "Contact Name",
+        "phoneNumber": "Phone Number",
+        "phoneNumberPlaceholder": "Phone Number",
+        "timeZone": "Time Zone",
+        "timeZonePlaceholder": "Select timezone...",
+        "branch": "Branch",
+        "branchPlaceholder": "Select branch...",
+        "branchNone": "No branch",
+        "cancel": "Cancel",
+        "save": "Save",
+        "created": "Contact created successfully",
+        "updated": "Contact updated successfully"
+      }
     },
     "call": {
       "title": "Calls",

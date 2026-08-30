@@ -138,7 +138,7 @@ const columns: TableColumn<Call>[] = [
     accessorKey: 'contact',
     header: t('pages.call.columnContact'),
     cell: ({ row }) => {
-      const name = row.original.contact?.profileName || row.original.waId
+      const name = row.original.contact?.name || row.original.waId
       return h('div', { class: 'flex flex-col' }, [
         h('span', { class: 'font-medium text-highlighted' }, name),
         h('span', { class: 'text-xs text-muted' }, row.original.waId)
