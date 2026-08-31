@@ -1,5 +1,7 @@
 import { callService } from '~/services/call-service'
 import type { SoftphoneState } from '~/enums/softphone-state'
+import type { CallStatus } from '~/enums/call-status'
+import { TERMINAL_CALL_STATUSES } from '~/enums/call-status'
 
 export type { SoftphoneState }
 export function useSoftphone() {
@@ -103,11 +105,17 @@ export function useSoftphone() {
     })
 
     listen('call_board', (packet) => {
-      const call = packet.data as { wacid?: string, status?: string } | undefined
+      const call = packet.data as { wacid?: string, status?: CallStatus } | undefined
       if (!call?.wacid || call.status === 'ringing') return
       ringingWacids.delete(call.wacid)
       dismissIncomingToast(call.wacid)
       if (ringingWacids.size === 0) audio.stopRinging()
+
+      // Jaring pengaman bila call_ended tidak sampai: papan panggilan selalu
+      // menyiarkan status terakhir, jadi widget ikut ditutup dari sini.
+      if (call.wacid === activeWacid.value && call.status && TERMINAL_CALL_STATUSES.includes(call.status)) {
+        teardownActiveCall()
+      }
     })
 
     listen('call_taken', (packet) => {
