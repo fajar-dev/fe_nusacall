@@ -203,7 +203,7 @@
       },
       "detail": {
         "title": "Call Detail",
-        "contact": "Contact",
+        "status": "Status",
         "agent": "Agent",
         "duration": "Duration",
         "timeline": "Timeline",

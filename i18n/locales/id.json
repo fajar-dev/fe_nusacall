@@ -203,7 +203,7 @@
       },
       "detail": {
         "title": "Detail Panggilan",
-        "contact": "Kontak",
+        "status": "Status",
         "agent": "Agent",
         "duration": "Durasi",
         "timeline": "Linimasa",
