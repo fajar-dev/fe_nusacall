@@ -29,7 +29,6 @@ export interface User {
     name: string
     code: string
   } | null
-  role: string
   availability: UserAvailability
   currentCallId: number | null
 }

@@ -130,7 +130,6 @@
       "description": "Manage agents and their roles",
       "searchPlaceholder": "Search agents...",
       "columnUser": "Agent",
-      "columnRole": "Role",
       "columnOrganization": "Organization",
       "columnBranch": "Branch",
       "columnStatus": "Status",

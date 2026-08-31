@@ -130,7 +130,6 @@
       "description": "Kelola agent dan perannya",
       "searchPlaceholder": "Cari agent...",
       "columnUser": "Agent",
-      "columnRole": "Peran",
       "columnOrganization": "Organisasi",
       "columnBranch": "Cabang",
       "columnStatus": "Status",

@@ -133,10 +133,6 @@ const columns: TableColumn<User>[] = [
     ])
   },
   {
-    accessorKey: 'role',
-    header: sortHeader(() => t('pages.user.columnRole'), 'role')
-  },
-  {
     accessorKey: 'organization',
     header: sortHeader(() => t('pages.user.columnOrganization'), 'organization'),
     cell: ({ row }) => row.original.organization?.name || '—'
