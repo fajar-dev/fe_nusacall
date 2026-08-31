@@ -1,7 +1,7 @@
 <template>
   <aside
     v-if="open"
-    class="h-full w-full sm:w-96 shrink-0 border-l border-default bg-default flex flex-col"
+    class="h-full w-full sm:w-96 shrink-0 border-l border-default bg-default flex flex-col shadow-md"
   >
     <header class="shrink-0 flex items-center gap-2 px-4 h-14 border-b border-default">
       <h2 class="text-sm font-semibold text-highlighted">
@@ -48,7 +48,6 @@
       </div>
 
       <dl class="px-4 pb-5 space-y-3 text-sm">
-
         <div class="flex items-baseline gap-3">
           <dt class="w-20 shrink-0 text-muted">
             {{ $t('pages.call.detail.duration') }}
@@ -113,11 +112,10 @@
         </h3>
         <UTimeline
           :items="timeline"
-          size="xs"
+          size="sm"
           :default-value="-1"
           :ui="{
             indicator: 'bg-elevated text-muted ring ring-default',
-            separator: 'bg-default',
             date: 'text-dimmed text-xs',
             title: 'text-highlighted font-normal text-sm'
           }"
@@ -175,6 +173,7 @@ import type { RecordingAvailability } from '~/types/call'
 
 const { call, open, close } = useCallDetail()
 const { t } = useI18n()
+const route = useRoute()
 
 const loadingRecording = ref(false)
 const recordingAvailability = ref<RecordingAvailability>({ state: 'not_ready' })
@@ -221,4 +220,13 @@ watch(call, () => {
   recordingAvailability.value = { state: 'not_ready' }
   loadRecording()
 })
+
+watch(() => route.path, close)
+
+function onKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && open.value) close()
+}
+
+onMounted(() => window.addEventListener('keydown', onKeydown))
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 </script>
