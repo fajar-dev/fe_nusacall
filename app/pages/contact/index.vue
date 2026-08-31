@@ -106,10 +106,6 @@ const columns: TableColumn<Contact>[] = [
     header: sortHeader(() => t('pages.contact.columnPhoneNumber'), 'phoneNumber')
   },
   {
-    accessorKey: 'timeZone',
-    header: sortHeader(() => t('pages.contact.columnTimeZone'), 'timeZone')
-  },
-  {
     accessorKey: 'branch',
     header: sortHeader(() => t('pages.contact.columnBranch'), 'branch'),
     cell: ({ row }) => row.original.branch?.name || '—'
