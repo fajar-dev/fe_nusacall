@@ -13,7 +13,6 @@
         "main": "Main Menu",
         "feedback": "Feedback",
         "user": "Agents",
-        "call": "Calls",
         "contact": "Contacts",
         "report": "Report",
         "whatsapp": "WhatsApp"
@@ -176,16 +175,11 @@
       }
     },
     "call": {
-      "title": "Calls",
-      "description": "Full call history and outcomes",
-      "searchPlaceholder": "Search by number, name...",
-      "filterStatus": "Status",
+      "columnTime": "Time",
+      "columnDirection": "Dir",
       "directionAll": "All directions",
       "directionInbound": "Inbound",
       "directionOutbound": "Outbound",
-      "columnTime": "Time",
-      "columnDirection": "Dir",
-      "columnContact": "Contact",
       "columnAccount": "Account",
       "columnAgent": "Agent",
       "columnDuration": "Duration",

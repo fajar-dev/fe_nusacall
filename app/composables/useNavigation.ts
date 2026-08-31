@@ -43,12 +43,6 @@ export const useNavigation = () => {
           icon: 'i-lucide-notebook-text'
         },
         {
-          id: 'call',
-          label: t('components.sidebar.nav.call'),
-          to: '/call',
-          icon: 'i-lucide-phone-call'
-        },
-        {
           id: 'user',
           label: t('components.sidebar.nav.user'),
           to: '/user',

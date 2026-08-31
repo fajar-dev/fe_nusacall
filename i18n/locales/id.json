@@ -13,7 +13,6 @@
         "main": "Menu Utama",
         "feedback": "Feedback",
         "user": "Agent",
-        "call": "Panggilan",
         "contact": "Kontak",
         "report": "Laporan",
         "whatsapp": "WhatsApp"
@@ -176,16 +175,11 @@
       }
     },
     "call": {
-      "title": "Panggilan",
-      "description": "Riwayat dan hasil seluruh panggilan",
-      "searchPlaceholder": "Cari nomor, nama...",
-      "filterStatus": "Status",
+      "columnTime": "Waktu",
+      "columnDirection": "Arah",
       "directionAll": "Semua arah",
       "directionInbound": "Masuk",
       "directionOutbound": "Keluar",
-      "columnTime": "Waktu",
-      "columnDirection": "Arah",
-      "columnContact": "Kontak",
       "columnAccount": "Akun",
       "columnAgent": "Agent",
       "columnDuration": "Durasi",
