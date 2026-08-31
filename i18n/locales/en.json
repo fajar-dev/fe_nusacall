@@ -235,7 +235,6 @@
         "iconDefault": "Default",
         "iconDisabled": "Hide everywhere",
         "color": "Call board color",
-        "answerTimeout": "Answer timeout (seconds)",
         "callHours": "Operating hours",
         "cancel": "Cancel",
         "save": "Save",

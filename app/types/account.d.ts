@@ -22,12 +22,10 @@ export interface Account {
   phoneNumberId: string
   displayPhoneNumber: string
   label: string
-  isTestNumber: boolean
   callingEnabled: boolean
   callIconVisibility: CallIconVisibility
   color: string
   callHours: CallHours | null
-  answerTimeoutSeconds: number
   lastSyncedAt: string | null
 }
 

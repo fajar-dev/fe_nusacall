@@ -25,16 +25,6 @@
               <USwitch v-model="form.callingEnabled" />
             </div>
           </UFormField>
-
-          <UFormField :label="$t('pages.account.updateModal.answerTimeout')">
-            <UInput
-              v-model.number="form.answerTimeoutSeconds"
-              type="number"
-              :min="5"
-              :max="25"
-              class="w-full"
-            />
-          </UFormField>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -117,7 +107,6 @@ watch(() => props.account, (acc) => {
     callingEnabled: acc.callingEnabled,
     callIconVisibility: acc.callIconVisibility,
     color: acc.color,
-    answerTimeoutSeconds: acc.answerTimeoutSeconds,
     callHours: acc.callHours
   }
 }, { immediate: true })

@@ -10,7 +10,6 @@ export interface UpdateAccountPayload {
   callingEnabled?: boolean
   callIconVisibility?: CallIconVisibility
   color?: string
-  answerTimeoutSeconds?: number
   callHours?: CallHours | null
 }
 
