@@ -25,17 +25,24 @@
       </div>
     </header>
 
-    <div class="flex items-start justify-between gap-4">
-      <div class="flex flex-col gap-1">
-        <h2 class="text-xl md:text-2xl font-bold text-highlighted tracking-tight">
+    <div class="flex items-end justify-between gap-4">
+      <div class="flex flex-col gap-1 min-w-0">
+        <h2 class="text-xl md:text-2xl font-bold text-highlighted tracking-tight truncate">
           {{ title }}
         </h2>
         <p
           v-if="description"
-          class="text-sm md:text-sm text-muted"
+          class="text-sm md:text-sm text-muted truncate"
         >
           {{ description }}
         </p>
+      </div>
+
+      <div
+        v-if="$slots.actions"
+        class="flex items-center gap-3 shrink-0"
+      >
+        <slot name="actions" />
       </div>
     </div>
 
@@ -46,13 +53,6 @@
       <nav class="flex gap-6 -mb-px">
         <slot name="tabs" />
       </nav>
-    </div>
-
-    <div
-      v-if="$slots.actions"
-      class="flex justify-end items-center gap-3 pt-1"
-    >
-      <slot name="actions" />
     </div>
   </div>
 </template>

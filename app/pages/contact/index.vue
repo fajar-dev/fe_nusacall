@@ -116,7 +116,7 @@ const columns: TableColumn<Contact>[] = [
     cell: ({ row }) =>
       h(UButton, {
         color: 'neutral',
-        variant: 'ghost',
+        variant: 'outline',
         icon: 'i-lucide-pencil',
         size: 'sm',
         onClick: () => openEdit(row.original)

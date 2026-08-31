@@ -5,7 +5,7 @@
     :description="contact?.name || contact?.phoneNumber || ''"
   >
     <template #body>
-      <div class="space-y-4">
+      <div class="space-y-4 mb-5">
         <div class="space-y-2">
           <p class="text-xs font-semibold text-muted uppercase tracking-wider">
             {{ $t('components.contactCall.account') }}

@@ -184,7 +184,7 @@ const columns: TableColumn<Call>[] = [
     cell: ({ row }) =>
       h(UButton, {
         color: 'neutral',
-        variant: 'ghost',
+        variant: 'outline',
         icon: 'i-lucide-eye',
         size: 'sm',
         onClick: () => openDetail(row.original)
