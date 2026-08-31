@@ -27,6 +27,20 @@
           </UFormField>
         </div>
 
+        <UFormField
+          :label="$t('pages.account.updateModal.permissionTemplate')"
+          :description="$t('pages.account.updateModal.permissionTemplateHint')"
+        >
+          <USelectMenu
+            v-model="selectedTemplate"
+            :items="templateOptions"
+            value-key="value"
+            :loading="loadingTemplates"
+            :placeholder="$t('pages.account.updateModal.permissionTemplateNone')"
+            class="w-full"
+          />
+        </UFormField>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <UFormField :label="$t('pages.account.updateModal.iconVisibility')">
             <USelect
@@ -82,7 +96,7 @@
 
 <script setup lang="ts">
 import { accountService, type UpdateAccountPayload } from '~/services/account-service'
-import type { Account } from '~/types/account'
+import type { Account, MessageTemplate } from '~/types/account'
 
 const props = defineProps<{ account: Account | null }>()
 const emit = defineEmits<{ updated: [Account] }>()
@@ -95,6 +109,37 @@ const form = ref<UpdateAccountPayload | null>(null)
 const saving = ref(false)
 const callHoursFormRef = ref<{ isValid: boolean } | null>(null)
 
+const templates = ref<MessageTemplate[]>([])
+const loadingTemplates = ref(false)
+
+/** Nama saja tidak cukup mengidentifikasi template karena satu nama bisa punya banyak bahasa. */
+const templateOptions = computed(() => templates.value.map(template => ({
+  label: `${template.name} (${template.language})`,
+  value: `${template.name}|${template.language}`
+})))
+
+const selectedTemplate = computed({
+  get: () => form.value?.permissionTemplateName
+    ? `${form.value.permissionTemplateName}|${form.value.permissionTemplateLanguage ?? ''}`
+    : undefined,
+  set: (value?: string) => {
+    if (!form.value) return
+    const [name, language] = (value ?? '').split('|')
+    form.value.permissionTemplateName = name || null
+    form.value.permissionTemplateLanguage = language || null
+  }
+})
+
+async function fetchTemplates(id: number) {
+  loadingTemplates.value = true
+  try {
+    const response = await accountService.getTemplates(id)
+    templates.value = response.success ? response.data : []
+  } finally {
+    loadingTemplates.value = false
+  }
+}
+
 const iconVisibilityOptions = computed(() => [
   { label: t('pages.account.updateModal.iconDefault'), value: 'DEFAULT' },
   { label: t('pages.account.updateModal.iconDisabled'), value: 'DISABLE_ALL' }
@@ -106,9 +151,12 @@ watch(() => props.account, (acc) => {
     label: acc.label,
     callingEnabled: acc.callingEnabled,
     callIconVisibility: acc.callIconVisibility,
+    permissionTemplateName: acc.permissionTemplateName,
+    permissionTemplateLanguage: acc.permissionTemplateLanguage,
     color: acc.color,
     callHours: acc.callHours
   }
+  fetchTemplates(acc.id)
 }, { immediate: true })
 
 async function save() {

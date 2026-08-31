@@ -237,7 +237,10 @@
         "callHours": "Operating hours",
         "cancel": "Cancel",
         "save": "Save",
-        "savedSuccess": "Account updated successfully"
+        "savedSuccess": "Account updated successfully",
+        "permissionTemplate": "Call permission template",
+        "permissionTemplateHint": "Sent to the customer when requesting permission to call. Only approved templates appear here.",
+        "permissionTemplateNone": "Not selected"
       },
       "callHours": {
         "enable": "Restrict to operating hours",

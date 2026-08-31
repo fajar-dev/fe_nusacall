@@ -2,13 +2,15 @@ import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
 import { buildPagedQuery } from '~/utils/query'
 import type { ApiResponse } from '../types/api'
-import type { Account, CallHours, HealthStatus } from '../types/account'
+import type { Account, CallHours, HealthStatus, MessageTemplate } from '../types/account'
 import type { CallIconVisibility } from '~/enums/call-icon-visibility'
 
 export interface UpdateAccountPayload {
   label?: string
   callingEnabled?: boolean
   callIconVisibility?: CallIconVisibility
+  permissionTemplateName?: string | null
+  permissionTemplateLanguage?: string | null
   color?: string
   callHours?: CallHours | null
 }
@@ -36,6 +38,15 @@ class AccountService {
   async sync(id: number): Promise<ApiResponse<Account>> {
     try {
       const response = await apiService.client.post<ApiResponse<Account>>(`/account/${id}/sync`, null)
+      return response.data
+    } catch (error) {
+      return handleServiceError(error)
+    }
+  }
+
+  async getTemplates(id: number): Promise<ApiResponse<MessageTemplate[]>> {
+    try {
+      const response = await apiService.client.get<ApiResponse<MessageTemplate[]>>(`/account/${id}/templates`)
       return response.data
     } catch (error) {
       return handleServiceError(error)

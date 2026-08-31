@@ -24,6 +24,8 @@ export interface Account {
   label: string
   callingEnabled: boolean
   callIconVisibility: CallIconVisibility
+  permissionTemplateName: string | null
+  permissionTemplateLanguage: string | null
   color: string
   callHours: CallHours | null
   lastSyncedAt: string | null
@@ -35,4 +37,10 @@ export interface HealthStatus {
     can_send_message?: string
     entities?: Array<{ entity_type: string, id: string, can_send_message: string, errors?: Array<{ error_code: number, error_description: string }> }>
   }
+}
+
+export interface MessageTemplate {
+  name: string
+  language: string
+  category: string | null
 }
