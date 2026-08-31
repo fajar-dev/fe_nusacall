@@ -37,11 +37,6 @@
         </div>
       </template>
     </DataTable>
-
-    <CallDetailModal
-      v-model:open="detailOpen"
-      :call="selectedCall"
-    />
   </div>
 </template>
 
@@ -70,9 +65,6 @@ const meta = reactive({ total: 0, from: 0, to: 0 })
 
 const statusFilter = ref<CallStatus[]>([])
 const directionFilter = ref<'all' | 'inbound' | 'outbound'>('all')
-
-const detailOpen = ref(false)
-const selectedCall = ref<Call | null>(null)
 
 async function fetchCalls() {
   isLoading.value = true
@@ -103,10 +95,7 @@ const { search, perPage, page, sortBy, order, sortHeader, resetToFirstPage } = u
 
 watch([statusFilter, directionFilter], resetToFirstPage)
 
-function openDetail(call: Call) {
-  selectedCall.value = call
-  detailOpen.value = true
-}
+const { show: openDetail } = useCallDetail()
 
 const statusOptions = CALL_STATUSES.map(value => ({ label: t(`pages.call.status.${value}`), value }))
 

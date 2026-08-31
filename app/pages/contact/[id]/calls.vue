@@ -13,11 +13,6 @@
       :search-placeholder="$t('pages.contactDetail.searchPlaceholder')"
       table-class="min-w-[760px]"
     />
-
-    <CallDetailModal
-      v-model:open="detailOpen"
-      :call="selectedCall"
-    />
   </div>
 </template>
 
@@ -43,13 +38,8 @@ const contactId = Number(route.params.id)
 const calls = ref<Call[]>([])
 const loading = ref(false)
 const meta = reactive({ total: 0, from: 0, to: 0 })
-const detailOpen = ref(false)
-const selectedCall = ref<Call | null>(null)
 
-function openDetail(call: Call) {
-  selectedCall.value = call
-  detailOpen.value = true
-}
+const { show: openDetail } = useCallDetail()
 
 async function fetchCalls() {
   loading.value = true

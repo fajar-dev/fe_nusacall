@@ -40,11 +40,13 @@
 
     <CallBoardPanel />
 
-    <div class="flex-1 flex flex-col h-full overflow-hidden">
+    <div class="flex-1 flex flex-col h-full overflow-hidden min-w-0">
       <main class="flex-1 overflow-y-auto p-4 lg:px-6">
         <slot />
       </main>
     </div>
+
+    <CallDetailPanel />
 
     <SoftphoneCallWidget />
   </div>
