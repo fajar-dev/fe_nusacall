@@ -1,7 +1,7 @@
 <template>
   <aside
     v-if="open"
-    class="h-full w-full sm:w-96 shrink-0 border-l border-default bg-default flex flex-col"
+    class="h-full w-full sm:w-96 shrink-0 border-l border-default bg-default flex flex-col shadow-md"
   >
     <div class="px-4 pt-5 pb-3 flex items-center justify-between shrink-0">
       <h2 class="text-lg font-bold text-highlighted tracking-tight">
@@ -21,21 +21,13 @@
       v-if="call"
       class="flex-1 overflow-y-auto px-4 pb-6 space-y-5"
     >
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <UIcon
-            name="i-lucide-phone-call"
-            class="size-4 text-muted"
-          />
-          <span class="text-xs text-muted tabular-nums">#{{ call.id }}</span>
-        </div>
-        <UBadge
-          :color="statusColor"
-          variant="subtle"
-        >
-          {{ $t(`pages.call.status.${call.status}`) }}
-        </UBadge>
-      </div>
+      <UBadge
+        color="neutral"
+        variant="subtle"
+        class="tabular-nums"
+      >
+        #{{ call.id }}
+      </UBadge>
 
       <dl class="grid grid-cols-2 gap-3 p-3.5 rounded-lg border border-default bg-muted/20 text-sm">
         <div class="min-w-0">
@@ -67,8 +59,25 @@
           <dt class="text-xs text-muted mb-0.5">
             {{ $t('pages.call.detail.agent') }}
           </dt>
-          <dd class="font-medium text-highlighted truncate">
-            {{ call.user?.name || '—' }}
+          <dd
+            v-if="call.user"
+            class="flex items-center gap-2 min-w-0"
+          >
+            <UAvatar
+              :src="call.user.photo ?? undefined"
+              :alt="call.user.name"
+              size="xs"
+            />
+            <span class="min-w-0">
+              <span class="block font-medium text-highlighted truncate">{{ call.user.name }}</span>
+              <span class="block text-xs text-muted truncate">{{ call.user.email }}</span>
+            </span>
+          </dd>
+          <dd
+            v-else
+            class="font-medium text-highlighted"
+          >
+            —
           </dd>
         </div>
         <div class="min-w-0">
@@ -142,26 +151,13 @@
 <script setup lang="ts">
 import { callService } from '~/services/call-service'
 import { formatClockTime, formatDuration, formatPhoneNumber } from '~/utils/format'
-import type { CallStatus, RecordingAvailability } from '~/types/call'
+import type { RecordingAvailability } from '~/types/call'
 
 const { call, open, close } = useCallDetail()
 const { t } = useI18n()
 
 const loadingRecording = ref(false)
 const recordingAvailability = ref<RecordingAvailability>({ state: 'not_ready' })
-
-const statusColorMap: Record<CallStatus, 'success' | 'primary' | 'info' | 'warning' | 'neutral' | 'error'> = {
-  completed: 'success',
-  active: 'primary',
-  ringing: 'info',
-  connecting: 'info',
-  pending: 'neutral',
-  missed: 'warning',
-  rejected: 'neutral',
-  failed: 'error',
-  abandoned: 'error'
-}
-const statusColor = computed(() => call.value ? statusColorMap[call.value.status] : 'neutral')
 
 const timeline = computed(() => {
   if (!call.value) return []
