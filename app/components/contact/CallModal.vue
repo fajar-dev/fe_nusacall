@@ -42,7 +42,7 @@
               />
               <span class="min-w-0 flex-1">
                 <span class="block text-sm font-medium text-highlighted truncate">{{ account.label }}</span>
-                <span class="block text-xs text-muted truncate">{{ account.displayPhoneNumber }}</span>
+                <span class="block text-xs text-muted truncate">{{ formatPhoneNumber(account.displayPhoneNumber) }}</span>
               </span>
               <UIcon
                 v-if="selectedPhoneNumberId === account.phoneNumberId"

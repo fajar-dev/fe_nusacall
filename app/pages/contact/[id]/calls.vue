@@ -101,7 +101,7 @@ const columns: TableColumn<Call>[] = [
       if (!account) return '—'
       return h('div', { class: 'flex flex-col' }, [
         h('span', { class: 'font-medium text-highlighted' }, account.label),
-        h('span', { class: 'text-xs text-muted' }, account.displayPhoneNumber)
+        h('span', { class: 'text-xs text-muted' }, formatPhoneNumber(account.displayPhoneNumber))
       ])
     }
   },

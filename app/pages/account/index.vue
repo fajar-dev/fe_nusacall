@@ -53,7 +53,7 @@
             </template>
 
             <template #number-cell="{ row }">
-              {{ row.original.displayPhoneNumber }}
+              {{ formatPhoneNumber(row.original.displayPhoneNumber) }}
             </template>
 
             <template #color-cell="{ row }">

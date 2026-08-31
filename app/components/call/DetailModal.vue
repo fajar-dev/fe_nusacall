@@ -49,7 +49,7 @@
                 v-if="call.account"
                 class="text-xs text-muted"
               >
-                {{ call.account.displayPhoneNumber }}
+                {{ formatPhoneNumber(call.account.displayPhoneNumber) }}
               </p>
             </div>
             <div>
