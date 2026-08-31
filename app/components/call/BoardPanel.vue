@@ -97,10 +97,10 @@
           />
           <div class="min-w-0 flex-1">
             <p class="text-base font-medium text-highlighted truncate leading-snug">
-              {{ call.contact?.name || call.contact?.phoneNumber }}
+              {{ call.contact?.name || formatPhoneNumber(call.contact?.phoneNumber) }}
             </p>
             <p class="text-sm text-muted truncate leading-normal">
-              {{ call.contact?.phoneNumber }}
+              {{ formatPhoneNumber(call.contact?.phoneNumber) }}
             </p>
             <p
               v-if="call.user"
@@ -166,7 +166,7 @@ import { resolveComponent } from 'vue'
 import type { Call } from '~/types/call'
 import type { BoardTab } from '~/composables/useCallBoard'
 import { callIcon, callIconColor } from '~/utils/call'
-import { formatCallDate, formatDuration } from '~/utils/format'
+import { formatCallDate, formatDuration, formatPhoneNumber } from '~/utils/format'
 
 const NuxtLink = resolveComponent('NuxtLink')
 

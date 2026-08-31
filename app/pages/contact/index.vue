@@ -99,11 +99,12 @@ const columns: TableColumn<Contact>[] = [
     cell: ({ row }) => h(NuxtLink, {
       to: `/contact/${row.original.id}`,
       class: 'font-medium text-primary hover:underline'
-    }, () => row.original.name || row.original.phoneNumber)
+    }, () => row.original.name || formatPhoneNumber(row.original.phoneNumber))
   },
   {
     accessorKey: 'phoneNumber',
-    header: sortHeader(() => t('pages.contact.columnPhoneNumber'), 'phoneNumber')
+    header: sortHeader(() => t('pages.contact.columnPhoneNumber'), 'phoneNumber'),
+    cell: ({ row }) => formatPhoneNumber(row.original.phoneNumber)
   },
   {
     accessorKey: 'branch',

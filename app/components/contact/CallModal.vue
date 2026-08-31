@@ -2,7 +2,7 @@
   <UModal
     v-model:open="open"
     :title="$t('components.contactCall.title')"
-    :description="contact?.name || contact?.phoneNumber || ''"
+    :description="contact?.name || formatPhoneNumber(contact?.phoneNumber)"
   >
     <template #body>
       <div class="space-y-4 mb-5">

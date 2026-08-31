@@ -138,8 +138,8 @@ const columns: TableColumn<Call>[] = [
     cell: ({ row }) => {
       const contact = row.original.contact
       return h('div', { class: 'flex flex-col' }, [
-        h('span', { class: 'font-medium text-highlighted' }, contact?.name || contact?.phoneNumber || '—'),
-        h('span', { class: 'text-xs text-muted' }, contact?.phoneNumber || '')
+        h('span', { class: 'font-medium text-highlighted' }, contact?.name || formatPhoneNumber(contact?.phoneNumber) || '—'),
+        h('span', { class: 'text-xs text-muted' }, formatPhoneNumber(contact?.phoneNumber))
       ])
     }
   },

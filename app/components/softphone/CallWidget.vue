@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDuration } from '~/utils/format'
+import { formatDuration, formatPhoneNumber } from '~/utils/format'
 import { callIcon, callIconColor } from '~/utils/call'
 
 const { state, activeWacid, answeredAt, setMuted, hangup, init } = useSoftphone()
@@ -102,13 +102,13 @@ const activeCall = computed(() => {
 
 const contactName = computed(() => {
   if (activeCall.value?.contact?.name) return activeCall.value.contact.name
-  if (activeCall.value?.contact?.phoneNumber) return activeCall.value.contact.phoneNumber
+  if (activeCall.value?.contact?.phoneNumber) return formatPhoneNumber(activeCall.value.contact.phoneNumber)
   return null
 })
 
 const contactPhone = computed(() => {
   if (activeCall.value?.contact?.name && activeCall.value?.contact?.phoneNumber) {
-    return activeCall.value.contact.phoneNumber
+    return formatPhoneNumber(activeCall.value.contact.phoneNumber)
   }
   return null
 })

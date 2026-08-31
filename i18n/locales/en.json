@@ -157,7 +157,7 @@
         "name": "Contact Name",
         "namePlaceholder": "Contact Name",
         "phoneNumber": "Phone Number",
-        "phoneNumberPlaceholder": "e.g. 08123456789 or +62 812-3456-789",
+        "phoneNumberPlaceholder": "81234567890",
         "timeZone": "Time Zone",
         "timeZonePlaceholder": "Select timezone...",
         "branch": "Branch",

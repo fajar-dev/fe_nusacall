@@ -100,9 +100,22 @@ const form = reactive<{ name: string, phoneNumber: string, timeZone: Timezone }>
   timeZone: 'UTC'
 })
 
+const COUNTRY_CODE = '62'
+
+/** Isian hanya memuat bagian setelah kode negara, karena +62 sudah tertulis tetap di depannya. */
+function toLocalPart(phoneNumber?: string | null): string {
+  const digits = (phoneNumber ?? '').replace(/\D/g, '')
+  return digits.startsWith(COUNTRY_CODE) ? digits.slice(COUNTRY_CODE.length) : digits
+}
+
+function toInternational(localPart: string): string {
+  const digits = localPart.replace(/\D/g, '').replace(/^0+/, '')
+  return digits ? COUNTRY_CODE + digits : ''
+}
+
 const timezoneItems = [...TIMEZONES]
 const isEdit = computed(() => props.contact !== null)
-const canSave = computed(() => form.phoneNumber.trim().length >= 6)
+const canSave = computed(() => toInternational(form.phoneNumber).length >= 8)
 
 const branchItems = computed(() => [
   { label: t('pages.contact.form.branchNone'), value: null },
@@ -119,7 +132,7 @@ watch(open, (isOpen) => {
   if (!branches.value.length) fetchBranches()
 
   form.name = props.contact?.name ?? ''
-  form.phoneNumber = props.contact?.phoneNumber ?? ''
+  form.phoneNumber = toLocalPart(props.contact?.phoneNumber)
   form.timeZone = props.contact?.timeZone ?? 'UTC'
   selectedBranch.value = props.contact?.branch?.id ?? null
 }, { immediate: true })
@@ -128,7 +141,7 @@ async function save() {
   saving.value = true
   try {
     const payload = {
-      phoneNumber: form.phoneNumber.trim(),
+      phoneNumber: toInternational(form.phoneNumber),
       name: form.name.trim() || null,
       timeZone: form.timeZone,
       branchId: selectedBranch.value

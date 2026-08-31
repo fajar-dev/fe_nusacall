@@ -32,10 +32,10 @@
                 {{ $t('pages.call.detail.contact') }}
               </p>
               <p class="font-medium text-highlighted">
-                {{ call.contact?.name || call.contact?.phoneNumber }}
+                {{ call.contact?.name || formatPhoneNumber(call.contact?.phoneNumber) }}
               </p>
               <p class="text-xs text-dimmed">
-                {{ call.contact?.phoneNumber }}
+                {{ formatPhoneNumber(call.contact?.phoneNumber) }}
               </p>
             </div>
             <div>
@@ -152,7 +152,7 @@
 
 <script setup lang="ts">
 import { callService } from '~/services/call-service'
-import { formatClockTime, formatDuration } from '~/utils/format'
+import { formatClockTime, formatDuration, formatPhoneNumber } from '~/utils/format'
 import type { Call, CallStatus, RecordingAvailability } from '~/types/call'
 
 const props = defineProps<{ call: Call | null }>()

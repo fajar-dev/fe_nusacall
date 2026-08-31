@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-6">
     <AppHeader
-      :title="contact?.name || contact?.phoneNumber || '—'"
-      :description="contact?.phoneNumber"
+      :title="contact?.name || formatPhoneNumber(contact?.phoneNumber) || '—'"
+      :description="formatPhoneNumber(contact?.phoneNumber)"
     >
       <template #actions>
         <UButton
@@ -99,7 +99,7 @@ const isActive = (to: string) => route.path === to
 
 const fields = computed(() => [
   { label: t('pages.contact.columnName'), value: contact.value?.name || '—' },
-  { label: t('pages.contact.columnPhoneNumber'), value: contact.value?.phoneNumber || '—' },
+  { label: t('pages.contact.columnPhoneNumber'), value: formatPhoneNumber(contact.value?.phoneNumber) || '—' },
   { label: t('pages.contact.columnTimeZone'), value: contact.value?.timeZone || '—' },
   { label: t('pages.contact.columnBranch'), value: contact.value?.branch?.name || '—' }
 ])
