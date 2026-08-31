@@ -6,16 +6,52 @@
   >
     <template #body>
       <div class="space-y-4">
-        <UFormField :label="$t('components.contactCall.account')">
-          <USelectMenu
-            v-model="selectedPhoneNumberId"
-            :items="accountOptions"
-            value-key="value"
-            :loading="loadingAccounts"
-            :placeholder="$t('components.contactCall.accountPlaceholder')"
-            class="w-full"
-          />
-        </UFormField>
+        <div class="space-y-2">
+          <p class="text-xs font-semibold text-muted uppercase tracking-wider">
+            {{ $t('components.contactCall.account') }}
+          </p>
+
+          <div
+            v-if="loadingAccounts"
+            class="space-y-2"
+          >
+            <USkeleton
+              v-for="n in 2"
+              :key="n"
+              class="h-14 rounded-lg"
+            />
+          </div>
+
+          <div
+            v-else
+            class="space-y-2 max-h-64 overflow-y-auto"
+          >
+            <button
+              v-for="account in callableAccounts"
+              :key="account.phoneNumberId"
+              type="button"
+              class="w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-colors"
+              :class="selectedPhoneNumberId === account.phoneNumberId
+                ? 'border-primary bg-primary/5'
+                : 'border-default hover:bg-elevated'"
+              @click="selectedPhoneNumberId = account.phoneNumberId"
+            >
+              <span
+                class="size-2.5 rounded-full shrink-0"
+                :style="{ backgroundColor: account.color }"
+              />
+              <span class="min-w-0 flex-1">
+                <span class="block text-sm font-medium text-highlighted truncate">{{ account.label }}</span>
+                <span class="block text-xs text-muted truncate">{{ account.displayPhoneNumber }}</span>
+              </span>
+              <UIcon
+                v-if="selectedPhoneNumberId === account.phoneNumberId"
+                name="i-lucide-check"
+                class="size-4 text-primary shrink-0"
+              />
+            </button>
+          </div>
+        </div>
 
         <div
           v-if="selectedPhoneNumberId"
@@ -71,7 +107,7 @@
         </div>
 
         <p
-          v-if="!loadingAccounts && !accountOptions.length"
+          v-if="!loadingAccounts && !callableAccounts.length"
           class="text-sm text-muted"
         >
           {{ $t('components.contactCall.noAccount') }}
@@ -104,11 +140,7 @@ const calling = ref(false)
 const requesting = ref(false)
 const justRequested = ref(false)
 
-const accountOptions = computed(() =>
-  accounts.value
-    .filter(account => account.callingEnabled)
-    .map(account => ({ label: `${account.label} · ${account.displayPhoneNumber}`, value: account.phoneNumberId }))
-)
+const callableAccounts = computed(() => accounts.value.filter(account => account.callingEnabled))
 
 const hasPermission = computed(() => {
   if (!permission.value) return false
@@ -132,8 +164,8 @@ async function fetchAccounts() {
     const response = await accountService.getAll()
     if (response.success) {
       accounts.value = response.data
-      if (accountOptions.value.length === 1) {
-        selectedPhoneNumberId.value = accountOptions.value[0]!.value
+      if (callableAccounts.value.length === 1) {
+        selectedPhoneNumberId.value = callableAccounts.value[0]!.phoneNumberId
       }
     }
   } finally {

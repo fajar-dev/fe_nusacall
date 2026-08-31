@@ -10,7 +10,7 @@
           color="primary"
           :disabled="!contact"
           :label="$t('components.callOutbound.call')"
-          @click="callOpen = true"
+          @click="() => { callOpen = true }"
         />
       </template>
     </AppHeader>

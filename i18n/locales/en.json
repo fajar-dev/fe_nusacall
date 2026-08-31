@@ -78,7 +78,6 @@
     "contactCall": {
       "title": "Start a call",
       "account": "Call from",
-      "accountPlaceholder": "Choose an account",
       "allowed": "Permission granted",
       "noAccount": "No account has calling enabled"
     },

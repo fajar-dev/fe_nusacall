@@ -78,7 +78,6 @@
     "contactCall": {
       "title": "Mulai panggilan",
       "account": "Menelepon dari",
-      "accountPlaceholder": "Pilih akun",
       "allowed": "Sudah diberi izin",
       "noAccount": "Belum ada akun yang mengaktifkan panggilan"
     },
