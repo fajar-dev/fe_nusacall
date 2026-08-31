@@ -12,7 +12,16 @@
       :to="meta.to"
       :search-placeholder="$t('pages.contactDetail.searchPlaceholder')"
       table-class="min-w-[760px]"
-    />
+    >
+      <template #filters>
+        <USelectMenu
+          v-model="directionFilter"
+          :items="directionOptions"
+          value-key="value"
+          class="w-36"
+        />
+      </template>
+    </DataTable>
   </div>
 </template>
 
@@ -35,6 +44,14 @@ const UButton = resolveComponent('UButton')
 
 const contactId = Number(route.params.id)
 
+const directionFilter = ref('all')
+
+const directionOptions = [
+  { label: t('pages.call.directionAll'), value: 'all' },
+  { label: t('pages.call.directionInbound'), value: 'inbound' },
+  { label: t('pages.call.directionOutbound'), value: 'outbound' }
+]
+
 const calls = ref<Call[]>([])
 const loading = ref(false)
 const meta = reactive({ total: 0, from: 0, to: 0 })
@@ -49,6 +66,7 @@ async function fetchCalls() {
       limit: perPage.value,
       q: search.value,
       contactId,
+      direction: directionFilter.value === 'all' ? undefined : directionFilter.value,
       sortBy: sortBy.value || undefined,
       order: order.value
     })
@@ -65,7 +83,9 @@ async function fetchCalls() {
   }
 }
 
-const { search, perPage, page, sortBy, order, sortHeader } = useTableQuery(fetchCalls)
+const { search, perPage, page, sortBy, order, sortHeader, resetToFirstPage } = useTableQuery(fetchCalls)
+
+watch(directionFilter, resetToFirstPage)
 
 const columns: TableColumn<Call>[] = [
   {
