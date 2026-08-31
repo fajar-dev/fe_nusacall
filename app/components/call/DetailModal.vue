@@ -71,61 +71,6 @@
           </div>
         </div>
 
-        <template v-if="call.phoneNumberId && call.contact">
-          <USeparator />
-          <div class="flex items-center justify-between gap-3 p-3 rounded-lg border border-default bg-elevated">
-            <div class="flex items-center gap-2">
-              <UIcon
-                name="i-lucide-shield-check"
-                class="size-4 text-muted"
-              />
-              <USkeleton
-                v-if="loadingPermission"
-                class="h-4 w-28"
-              />
-              <span
-                v-else-if="hasPermission"
-                class="text-xs text-toned"
-              >
-                {{ quotaText || $t('components.callOutbound.call') }}
-              </span>
-              <UBadge
-                v-else
-                color="neutral"
-                variant="subtle"
-                size="xs"
-              >
-                {{ $t('components.callOutbound.noPermission') }}
-              </UBadge>
-            </div>
-
-            <div class="flex items-center gap-2">
-              <UButton
-                v-if="hasPermission"
-                icon="i-lucide-phone-outgoing"
-                size="xs"
-                color="primary"
-                :loading="calling"
-                :disabled="softphoneState !== 'idle'"
-                @click="handleCallOutbound"
-              >
-                {{ $t('components.callOutbound.call') }}
-              </UButton>
-              <UButton
-                v-else-if="!loadingPermission"
-                icon="i-lucide-send"
-                size="xs"
-                variant="subtle"
-                :loading="requesting"
-                :disabled="justRequested"
-                @click="requestPermission"
-              >
-                {{ justRequested ? $t('components.callOutbound.requested') : $t('components.callOutbound.requestPermission') }}
-              </UButton>
-            </div>
-          </div>
-        </template>
-
         <div>
           <h4 class="text-xs font-semibold text-muted uppercase tracking-wider mb-2.5">
             {{ $t('pages.call.detail.timeline') }}
@@ -208,22 +153,12 @@
 <script setup lang="ts">
 import { callService } from '~/services/call-service'
 import { formatClockTime, formatDuration } from '~/utils/format'
-import { permissionService } from '~/services/permission-service'
 import type { Call, CallStatus, RecordingAvailability } from '~/types/call'
-import type { PermissionCheckResult } from '~/types/permission'
 
 const props = defineProps<{ call: Call | null }>()
 const open = defineModel<boolean>('open', { default: false })
 
 const { t } = useI18n()
-const toast = useToast()
-const { state: softphoneState, callOutbound } = useSoftphone()
-
-const loadingPermission = ref(false)
-const calling = ref(false)
-const requesting = ref(false)
-const justRequested = ref(false)
-const permission = ref<PermissionCheckResult | null>(null)
 
 const loadingRecording = ref(false)
 const recordingAvailability = ref<RecordingAvailability>({ state: 'not_ready' })
@@ -251,65 +186,6 @@ const timeline = computed(() => {
   ].filter(e => e.time !== '—')
 })
 
-const hasPermission = computed(() => {
-  if (!permission.value) return false
-  if (permission.value.status === 'permanent') return true
-  if (permission.value.status === 'temporary') {
-    return !permission.value.expiresAt || new Date(permission.value.expiresAt) > new Date()
-  }
-  return false
-})
-
-const quotaText = computed(() => {
-  const action = permission.value?.quota?.find(a => a.action_name === 'start_call')
-  const limit = action?.limits?.[0]
-  if (!limit) return null
-  return t('components.callOutbound.quota', { used: limit.current_usage, max: limit.max_allowed })
-})
-
-async function loadPermission() {
-  if (!props.call?.phoneNumberId || !props.call?.contact) return
-  loadingPermission.value = true
-  justRequested.value = false
-  try {
-    const response = await permissionService.check(props.call.phoneNumberId, props.call.contact.id)
-    permission.value = response.data
-  } catch {
-    permission.value = null
-  } finally {
-    loadingPermission.value = false
-  }
-}
-
-async function requestPermission() {
-  if (!props.call?.phoneNumberId || !props.call?.contact) return
-  requesting.value = true
-  try {
-    await permissionService.request(props.call.phoneNumberId, props.call.contact.id)
-    toast.add({
-      title: t('components.callOutbound.requestSentTitle'),
-      description: t('components.callOutbound.requestSentDescription'),
-      icon: 'i-lucide-send',
-      color: 'success'
-    })
-    justRequested.value = true
-  } catch {
-    return
-  } finally {
-    requesting.value = false
-  }
-}
-
-async function handleCallOutbound() {
-  if (!props.call?.phoneNumberId || !props.call?.contact) return
-  calling.value = true
-  try {
-    await callOutbound(props.call.phoneNumberId, props.call.contact.id)
-  } finally {
-    calling.value = false
-  }
-}
-
 async function loadRecording() {
   if (!props.call?.recordingEnabled) return
   loadingRecording.value = true
@@ -324,9 +200,6 @@ async function loadRecording() {
 
 function loadDetailData() {
   if (!open.value || !props.call) return
-  if (props.call.phoneNumberId && props.call.contact) {
-    loadPermission()
-  }
   if (props.call.recordingEnabled) {
     loadRecording()
   }

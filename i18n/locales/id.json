@@ -75,6 +75,13 @@
       "requestSentDescription": "Pelanggan akan menerima pesan WhatsApp meminta izin panggilan.",
       "quota": "{used}/{max} panggilan hari ini"
     },
+    "contactCall": {
+      "title": "Mulai panggilan",
+      "account": "Menelepon dari",
+      "accountPlaceholder": "Pilih akun",
+      "allowed": "Sudah diberi izin",
+      "noAccount": "Belum ada akun yang mengaktifkan panggilan"
+    },
     "callBoard": {
       "title": "Panggilan",
       "queue": "Antrian",

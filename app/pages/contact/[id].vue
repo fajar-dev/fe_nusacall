@@ -3,7 +3,17 @@
     <AppHeader
       :title="contact?.name || contact?.phoneNumber || '—'"
       :description="contact?.phoneNumber"
-    />
+    >
+      <template #actions>
+        <UButton
+          icon="i-lucide-phone-outgoing"
+          color="primary"
+          :disabled="!contact"
+          :label="$t('components.callOutbound.call')"
+          @click="callOpen = true"
+        />
+      </template>
+    </AppHeader>
 
     <UCard>
       <div
@@ -56,6 +66,11 @@
 
       <NuxtPage />
     </div>
+
+    <ContactCallModal
+      v-model:open="callOpen"
+      :contact="contact"
+    />
   </div>
 </template>
 
@@ -74,6 +89,7 @@ const contactId = Number(route.params.id)
 
 const contact = ref<Contact | null>(null)
 const loading = ref(true)
+const callOpen = ref(false)
 
 const tabs = computed(() => [
   { label: t('pages.contactDetail.tabs.calls'), to: `/contact/${contactId}/calls`, icon: 'i-lucide-phone' }
