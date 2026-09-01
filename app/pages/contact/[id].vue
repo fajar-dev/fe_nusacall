@@ -101,7 +101,7 @@ const fields = computed(() => [
   { label: t('pages.contact.columnName'), value: contact.value?.name || '—' },
   { label: t('pages.contact.columnPhoneNumber'), value: formatPhoneNumber(contact.value?.phoneNumber) || '—' },
   { label: t('pages.contact.columnTimeZone'), value: contact.value?.timeZone || '—' },
-  { label: t('pages.contact.columnBranch'), value: contact.value?.branch?.name || '—' }
+  { label: t('pages.contact.columnBranch'), value: contact.value?.branches.map(b => b.name).join(', ') || '—' }
 ])
 
 onMounted(async () => {

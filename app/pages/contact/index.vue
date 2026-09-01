@@ -47,6 +47,7 @@ definePageMeta({
 })
 
 const UButton = resolveComponent('UButton')
+const UBadge = resolveComponent('UBadge')
 const NuxtLink = resolveComponent('NuxtLink')
 const { t } = useI18n()
 
@@ -107,9 +108,13 @@ const columns: TableColumn<Contact>[] = [
     cell: ({ row }) => formatPhoneNumber(row.original.phoneNumber)
   },
   {
-    accessorKey: 'branch',
-    header: sortHeader(() => t('pages.contact.columnBranch'), 'branch'),
-    cell: ({ row }) => row.original.branch?.name || '—'
+    accessorKey: 'branches',
+    header: () => t('pages.contact.columnBranch'),
+    cell: ({ row }) => row.original.branches.length
+      ? h('div', { class: 'flex flex-wrap gap-1' }, row.original.branches.map(branch =>
+          h(UBadge, { key: branch.id, color: 'neutral', variant: 'subtle', size: 'sm' }, () => branch.name)
+        ))
+      : '—'
   },
   {
     id: 'actions',

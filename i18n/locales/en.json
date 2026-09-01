@@ -160,7 +160,6 @@
         "timeZonePlaceholder": "Select timezone...",
         "branch": "Branch",
         "branchPlaceholder": "Select branch...",
-        "branchNone": "No branch",
         "cancel": "Cancel",
         "save": "Save",
         "created": "Contact created successfully",

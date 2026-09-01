@@ -19,6 +19,7 @@ export interface CallHours {
 export interface Account {
   id: number
   appId: string | null
+  businessAccountId: string
   phoneNumberId: string
   displayPhoneNumber: string
   label: string

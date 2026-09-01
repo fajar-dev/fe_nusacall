@@ -43,9 +43,10 @@
 
         <UFormField :label="$t('pages.contact.form.branch')">
           <USelectMenu
-            v-model="selectedBranch"
+            v-model="selectedBranches"
             :items="branchItems"
             value-key="value"
+            multiple
             :placeholder="$t('pages.contact.form.branchPlaceholder')"
             class="w-full"
           />
@@ -92,7 +93,7 @@ const toast = useToast()
 
 const saving = ref(false)
 const branches = ref<BranchListItem[]>([])
-const selectedBranch = ref<number | null>(null)
+const selectedBranches = ref<number[]>([])
 
 const form = reactive<{ name: string, phoneNumber: string, timeZone: Timezone }>({
   name: '',
@@ -116,10 +117,9 @@ const timezoneItems = [...TIMEZONES]
 const isEdit = computed(() => props.contact !== null)
 const canSave = computed(() => toInternational(form.phoneNumber).length >= 8)
 
-const branchItems = computed(() => [
-  { label: t('pages.contact.form.branchNone'), value: null },
-  ...branches.value.map(branch => ({ label: branch.name, value: branch.id }))
-])
+const branchItems = computed(() =>
+  branches.value.map(branch => ({ label: branch.name, value: branch.id }))
+)
 
 async function fetchBranches() {
   const response = await branchService.getList()
@@ -133,7 +133,7 @@ watch(open, (isOpen) => {
   form.name = props.contact?.name ?? ''
   form.phoneNumber = toLocalPart(props.contact?.phoneNumber)
   form.timeZone = props.contact?.timeZone ?? 'UTC'
-  selectedBranch.value = props.contact?.branch?.id ?? null
+  selectedBranches.value = props.contact?.branches.map(branch => branch.id) ?? []
 }, { immediate: true })
 
 async function save() {
@@ -143,7 +143,7 @@ async function save() {
       phoneNumber: toInternational(form.phoneNumber),
       name: form.name.trim() || null,
       timeZone: form.timeZone,
-      branchId: selectedBranch.value
+      branchIds: selectedBranches.value
     }
 
     const response = props.contact

@@ -5,11 +5,11 @@ export interface Contact {
   phoneNumber: string
   name: string | null
   timeZone: Timezone
-  branch: {
+  branches: {
     id: number
     name: string
     code: string
-  } | null
+  }[]
   createdAt: string
   updatedAt: string
 }
@@ -18,5 +18,5 @@ export interface ContactPayload {
   phoneNumber?: string
   name?: string | null
   timeZone?: Timezone
-  branchId?: number | null
+  branchIds?: number[]
 }
