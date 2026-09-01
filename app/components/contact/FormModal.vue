@@ -102,7 +102,6 @@ const form = reactive<{ name: string, phoneNumber: string, timeZone: Timezone }>
 
 const COUNTRY_CODE = '62'
 
-/** Isian hanya memuat bagian setelah kode negara, karena +62 sudah tertulis tetap di depannya. */
 function toLocalPart(phoneNumber?: string | null): string {
   const digits = (phoneNumber ?? '').replace(/\D/g, '')
   return digits.startsWith(COUNTRY_CODE) ? digits.slice(COUNTRY_CODE.length) : digits

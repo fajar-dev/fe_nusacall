@@ -112,7 +112,6 @@ const callHoursFormRef = ref<{ isValid: boolean } | null>(null)
 const templates = ref<MessageTemplate[]>([])
 const loadingTemplates = ref(false)
 
-/** Nama saja tidak cukup mengidentifikasi template karena satu nama bisa punya banyak bahasa. */
 const templateOptions = computed(() => templates.value.map(template => ({
   label: `${template.name} (${template.language})`,
   value: `${template.name}|${template.language}`

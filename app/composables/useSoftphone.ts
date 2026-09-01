@@ -26,7 +26,6 @@ export function useSoftphone() {
     unsubscribers.push(signaling.on(type, handler))
   }
 
-  /** Sesi sebelumnya dilepas agar pengguna berikutnya tidak mewarisi koneksi dan handler lama. */
   function teardown() {
     while (unsubscribers.length) unsubscribers.pop()!()
     signaling.disconnect()
@@ -110,9 +109,6 @@ export function useSoftphone() {
       ringingWacids.delete(call.wacid)
       dismissIncomingToast(call.wacid)
       if (ringingWacids.size === 0) audio.stopRinging()
-
-      // Jaring pengaman bila call_ended tidak sampai: papan panggilan selalu
-      // menyiarkan status terakhir, jadi widget ikut ditutup dari sini.
       if (call.wacid === activeWacid.value && call.status && TERMINAL_CALL_STATUSES.includes(call.status)) {
         teardownActiveCall()
       }

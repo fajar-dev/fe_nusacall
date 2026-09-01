@@ -1,7 +1,3 @@
-/**
- * Menambahkan tanda plus untuk ditampilkan. Backend menyimpan nomor tanpa plus
- * mengikuti format Meta, jadi tanda ini hanya dipakai di antarmuka.
- */
 export function formatPhoneNumber(value?: string | null): string {
   const digits = (value ?? '').replace(/\D/g, '')
   return digits ? `+${digits}` : ''
