@@ -238,8 +238,8 @@
         "cancel": "Cancel",
         "save": "Save",
         "savedSuccess": "Account updated successfully",
-        "permissionTemplate": "Call permission template",
-        "permissionTemplateHint": "Sent to the customer when requesting permission to call. Only approved templates appear here.",
+        "permissionTemplate": "Permission template",
+        "permissionTemplateHint": "Sent when requesting call permission",
         "permissionTemplateNone": "Not selected"
       },
       "callHours": {

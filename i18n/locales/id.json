@@ -238,8 +238,8 @@
         "cancel": "Batal",
         "save": "Simpan",
         "savedSuccess": "Akun berhasil diperbarui",
-        "permissionTemplate": "Template permintaan izin",
-        "permissionTemplateHint": "Dikirim ke pelanggan saat meminta izin menelepon. Hanya template yang sudah disetujui Meta yang muncul di sini.",
+        "permissionTemplate": "Template izin",
+        "permissionTemplateHint": "Dikirim saat meminta izin menelepon",
         "permissionTemplateNone": "Belum dipilih"
       },
       "callHours": {
