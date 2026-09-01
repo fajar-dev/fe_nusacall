@@ -225,6 +225,7 @@
       "columnName": "Name",
       "columnNumber": "Number",
       "columnColor": "Color Identification",
+      "columnActions": "Actions",
       "columnStatus": "Status",
       "updateModal": {
         "title": "Edit Account",

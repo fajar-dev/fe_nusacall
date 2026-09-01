@@ -225,6 +225,7 @@
       "columnName": "Nama",
       "columnNumber": "Nomor",
       "columnColor": "Identifikasi Warna",
+      "columnActions": "Aksi",
       "columnStatus": "Status",
       "updateModal": {
         "title": "Ubah Akun",

@@ -68,24 +68,26 @@
             </template>
 
             <template #actions-cell="{ row }">
-              <div class="flex items-center justify-end gap-3">
+              <div class="flex items-center gap-1">
                 <UButton
+                  icon="i-lucide-pencil"
                   size="sm"
                   color="neutral"
-                  variant="link"
+                  variant="outline"
+                  :title="$t('pages.account.edit')"
+                  :aria-label="$t('pages.account.edit')"
                   @click="openEdit(row.original)"
-                >
-                  {{ $t('pages.account.edit') }}
-                </UButton>
+                />
                 <UButton
+                  icon="i-lucide-refresh-cw"
                   size="sm"
-                  color="primary"
-                  variant="link"
+                  color="neutral"
+                  variant="outline"
                   :loading="syncingId === row.original.id"
+                  :title="$t('pages.account.sync')"
+                  :aria-label="$t('pages.account.sync')"
                   @click="doSync(row.original)"
-                >
-                  {{ $t('pages.account.sync') }}
-                </UButton>
+                />
               </div>
             </template>
           </UTable>
@@ -153,7 +155,7 @@ const columns = computed<TableColumn<Account>[]>(() => [
   },
   {
     id: 'actions',
-    header: () => ''
+    header: () => t('pages.account.columnActions')
   }
 ])
 
