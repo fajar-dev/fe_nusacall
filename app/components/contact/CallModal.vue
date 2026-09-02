@@ -54,7 +54,23 @@
         </div>
 
         <div
-          v-if="selectedPhoneNumberId"
+          v-if="selectedPhoneNumberId && !selectedIsOfficial"
+          class="flex items-center justify-end gap-3 p-3 rounded-lg border border-default bg-elevated"
+        >
+          <UButton
+            icon="i-lucide-phone-outgoing"
+            size="xs"
+            color="primary"
+            :loading="calling"
+            :disabled="softphoneState !== 'idle'"
+            @click="startCall"
+          >
+            {{ $t('components.callOutbound.call') }}
+          </UButton>
+        </div>
+
+        <div
+          v-else-if="selectedPhoneNumberId"
           class="flex items-center justify-between gap-3 p-3 rounded-lg border border-default bg-elevated"
         >
           <div class="flex items-center gap-2 min-w-0">
@@ -142,6 +158,11 @@ const justRequested = ref(false)
 
 const callableAccounts = computed(() => accounts.value.filter(account => account.callingEnabled))
 
+const selectedIsOfficial = computed(() => {
+  const account = accounts.value.find(a => a.phoneNumberId === selectedPhoneNumberId.value)
+  return account?.isOfficial !== false
+})
+
 const hasPermission = computed(() => {
   if (!permission.value) return false
   if (permission.value.status === 'permanent') return true
@@ -175,6 +196,9 @@ async function fetchAccounts() {
 
 async function loadPermission() {
   if (!selectedPhoneNumberId.value || !props.contact) return
+  // Akun unofficial tidak pernah benar-benar minta izin ke Meta -- backend
+  // langsung membolehkan telepon keluar, jadi tidak perlu dicek sama sekali.
+  if (!selectedIsOfficial.value) return
   loadingPermission.value = true
   justRequested.value = false
   try {

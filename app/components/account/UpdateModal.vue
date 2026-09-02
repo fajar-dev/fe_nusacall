@@ -30,14 +30,6 @@
           </UFormField>
         </div>
 
-        <UAlert
-          v-if="!isOfficial"
-          color="neutral"
-          variant="subtle"
-          icon="i-lucide-info"
-          :description="$t('pages.account.updateModal.unofficialHint')"
-        />
-
         <UFormField
           v-if="isOfficial"
           :label="$t('pages.account.updateModal.permissionTemplate')"

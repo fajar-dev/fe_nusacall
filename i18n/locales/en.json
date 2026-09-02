@@ -240,8 +240,7 @@
         "savedSuccess": "Account updated successfully",
         "permissionTemplate": "Permission template",
         "permissionTemplateHint": "Sent when requesting call permission",
-        "permissionTemplateNone": "Not selected",
-        "unofficialHint": "This account isn't registered with Meta — only the label and call board color can be changed. Calling enabled, icon visibility, permission templates, and operating hours don't apply; outbound calls go through without requesting permission."
+        "permissionTemplateNone": "Not selected"
       },
       "callHours": {
         "enable": "Restrict to operating hours",

@@ -79,6 +79,7 @@
                   @click="openEdit(row.original)"
                 />
                 <UButton
+                  v-if="row.original.isOfficial"
                   icon="i-lucide-refresh-cw"
                   size="sm"
                   color="neutral"

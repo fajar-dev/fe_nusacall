@@ -240,8 +240,7 @@
         "savedSuccess": "Akun berhasil diperbarui",
         "permissionTemplate": "Template izin",
         "permissionTemplateHint": "Dikirim saat meminta izin menelepon",
-        "permissionTemplateNone": "Belum dipilih",
-        "unofficialHint": "Akun ini tidak terdaftar di Meta — cuma label dan warna papan panggilan yang bisa diatur. Panggilan aktif, visibilitas ikon, template izin, dan jam operasional tidak berlaku; panggilan keluar langsung bisa tanpa perlu izin."
+        "permissionTemplateNone": "Belum dipilih"
       },
       "callHours": {
         "enable": "Batasi ke jam operasional",
