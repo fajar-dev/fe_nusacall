@@ -96,8 +96,16 @@
             :class="callIconColor(call)"
           />
           <div class="min-w-0 flex-1">
-            <p class="text-base font-medium text-highlighted truncate leading-snug">
-              {{ call.contact?.name || formatPhoneNumber(call.contact?.phoneNumber) }}
+            <p class="text-base font-medium text-highlighted truncate leading-snug flex items-center gap-1.5">
+              <span class="truncate">{{ call.contact?.name || formatPhoneNumber(call.contact?.phoneNumber) }}</span>
+              <UBadge
+                v-if="call.account && !call.account.isOfficial"
+                :label="$t('components.callBoard.unofficial')"
+                color="neutral"
+                variant="subtle"
+                size="sm"
+                class="shrink-0"
+              />
             </p>
             <p class="text-sm text-muted truncate leading-normal">
               {{ formatPhoneNumber(call.contact?.phoneNumber) }}

@@ -23,6 +23,7 @@ export interface Account {
   phoneNumberId: string
   displayPhoneNumber: string
   label: string
+  isOfficial: boolean
   callingEnabled: boolean
   callIconVisibility: CallIconVisibility
   permissionTemplateName: string | null

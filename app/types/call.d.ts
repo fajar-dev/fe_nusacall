@@ -11,6 +11,7 @@ export interface Call {
     phoneNumberId: string
     label: string
     displayPhoneNumber: string
+    isOfficial: boolean
   } | null
   contact: Contact | null
   user: UserSummary | null

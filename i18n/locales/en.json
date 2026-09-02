@@ -89,7 +89,8 @@
       "empty": "Nothing here right now",
       "searchPlaceholder": "Search name or number...",
       "yesterday": "Yesterday",
-      "reject": "Reject"
+      "reject": "Reject",
+      "unofficial": "Unofficial"
     }
   },
   "pages": {
@@ -240,7 +241,8 @@
         "savedSuccess": "Account updated successfully",
         "permissionTemplate": "Permission template",
         "permissionTemplateHint": "Sent when requesting call permission",
-        "permissionTemplateNone": "Not selected"
+        "permissionTemplateNone": "Not selected",
+        "unofficialHint": "This account isn't registered with Meta — permission templates and operating hours don't apply, outbound calls go through without requesting permission."
       },
       "callHours": {
         "enable": "Restrict to operating hours",
@@ -258,7 +260,8 @@
           "SUNDAY": "Sunday"
         }
       },
-      "columnAppId": "App ID"
+      "columnAppId": "App ID",
+      "unofficialBadge": "Unofficial"
     }
   }
 }

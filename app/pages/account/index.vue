@@ -22,8 +22,15 @@
         class="space-y-5"
       >
         <div>
-          <h2 class="font-semibold text-highlighted">
+          <h2 class="font-semibold text-highlighted flex items-center gap-2">
             {{ acc.label }}
+            <UBadge
+              v-if="!acc.isOfficial"
+              :label="$t('pages.account.unofficialBadge')"
+              color="neutral"
+              variant="subtle"
+              size="sm"
+            />
           </h2>
           <p class="text-muted text-sm">
             {{ $t('pages.account.accountInfo', { id: acc.businessAccountId }) }}

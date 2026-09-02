@@ -89,7 +89,8 @@
       "empty": "Belum ada apa-apa di sini",
       "searchPlaceholder": "Cari nama atau nomor...",
       "yesterday": "Kemarin",
-      "reject": "Tolak"
+      "reject": "Tolak",
+      "unofficial": "Tidak resmi"
     }
   },
   "pages": {
@@ -240,7 +241,8 @@
         "savedSuccess": "Akun berhasil diperbarui",
         "permissionTemplate": "Template izin",
         "permissionTemplateHint": "Dikirim saat meminta izin menelepon",
-        "permissionTemplateNone": "Belum dipilih"
+        "permissionTemplateNone": "Belum dipilih",
+        "unofficialHint": "Akun ini tidak terdaftar di Meta — template izin dan jam operasional tidak berlaku, panggilan keluar langsung bisa tanpa izin."
       },
       "callHours": {
         "enable": "Batasi ke jam operasional",
@@ -258,7 +260,8 @@
           "SUNDAY": "Minggu"
         }
       },
-      "columnAppId": "App ID"
+      "columnAppId": "App ID",
+      "unofficialBadge": "Tidak resmi"
     }
   }
 }

@@ -27,7 +27,16 @@
           </UFormField>
         </div>
 
+        <UAlert
+          v-if="!isOfficial"
+          color="neutral"
+          variant="subtle"
+          icon="i-lucide-info"
+          :description="$t('pages.account.updateModal.unofficialHint')"
+        />
+
         <UFormField
+          v-if="isOfficial"
           :label="$t('pages.account.updateModal.permissionTemplate')"
           :description="$t('pages.account.updateModal.permissionTemplateHint')"
         >
@@ -62,7 +71,10 @@
           </UFormField>
         </div>
 
-        <UFormField :label="$t('pages.account.updateModal.callHours')">
+        <UFormField
+          v-if="isOfficial"
+          :label="$t('pages.account.updateModal.callHours')"
+        >
           <div class="rounded-lg border border-default p-4 bg-muted/20">
             <AccountCallHoursForm
               ref="callHoursFormRef"
@@ -108,6 +120,8 @@ const toast = useToast()
 const form = ref<UpdateAccountPayload | null>(null)
 const saving = ref(false)
 const callHoursFormRef = ref<{ isValid: boolean } | null>(null)
+
+const isOfficial = computed(() => props.account?.isOfficial !== false)
 
 const templates = ref<MessageTemplate[]>([])
 const loadingTemplates = ref(false)
@@ -155,7 +169,8 @@ watch(() => props.account, (acc) => {
     color: acc.color,
     callHours: acc.callHours
   }
-  fetchTemplates(acc.id)
+  // Akun unofficial tidak punya template di Meta sama sekali untuk diambil.
+  if (acc.isOfficial !== false) fetchTemplates(acc.id)
 }, { immediate: true })
 
 async function save() {
