@@ -26,7 +26,7 @@
             {{ acc.label }}
           </h2>
           <p class="text-muted text-sm">
-            {{ $t('pages.account.accountInfo', { id: acc.phoneNumberId || acc.id }) }}
+            {{ $t('pages.account.accountInfo', { id: acc.businessAccountId }) }}
           </p>
         </div>
 
@@ -127,11 +127,6 @@ const columns = computed<TableColumn<Account>[]>(() => [
     accessorKey: 'phoneNumberId',
     id: 'id',
     header: () => t('pages.account.columnId')
-  },
-  {
-    accessorKey: 'appId',
-    id: 'appId',
-    header: () => t('pages.account.columnAppId')
   },
   {
     accessorKey: 'label',
