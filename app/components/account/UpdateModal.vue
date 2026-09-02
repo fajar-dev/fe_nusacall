@@ -19,7 +19,10 @@
           />
         </UFormField>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div
+          v-if="isOfficial"
+          class="grid grid-cols-1 sm:grid-cols-2 gap-4"
+        >
           <UFormField :label="$t('pages.account.updateModal.callingEnabled')">
             <div class="flex items-center pt-1.5">
               <USwitch v-model="form.callingEnabled" />
@@ -51,7 +54,10 @@
         </UFormField>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <UFormField :label="$t('pages.account.updateModal.iconVisibility')">
+          <UFormField
+            v-if="isOfficial"
+            :label="$t('pages.account.updateModal.iconVisibility')"
+          >
             <USelect
               v-model="form.callIconVisibility"
               :items="iconVisibilityOptions"

@@ -89,8 +89,7 @@
       "empty": "Nothing here right now",
       "searchPlaceholder": "Search name or number...",
       "yesterday": "Yesterday",
-      "reject": "Reject",
-      "unofficial": "Unofficial"
+      "reject": "Reject"
     }
   },
   "pages": {
@@ -242,7 +241,7 @@
         "permissionTemplate": "Permission template",
         "permissionTemplateHint": "Sent when requesting call permission",
         "permissionTemplateNone": "Not selected",
-        "unofficialHint": "This account isn't registered with Meta — permission templates and operating hours don't apply, outbound calls go through without requesting permission."
+        "unofficialHint": "This account isn't registered with Meta — only the label and call board color can be changed. Calling enabled, icon visibility, permission templates, and operating hours don't apply; outbound calls go through without requesting permission."
       },
       "callHours": {
         "enable": "Restrict to operating hours",
@@ -260,8 +259,7 @@
           "SUNDAY": "Sunday"
         }
       },
-      "columnAppId": "App ID",
-      "unofficialBadge": "Unofficial"
+      "columnAppId": "App ID"
     }
   }
 }
