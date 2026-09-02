@@ -53,10 +53,10 @@ class CallService {
     }
   }
 
-  async placeOutboundCall(phoneNumberId: string, contactId: number, offerSdp: string): Promise<ApiResponse<{ wacid: string, answerSdp: string }>> {
+  async placeOutboundCall(phoneNumberId: string, contactId: number): Promise<ApiResponse<{ wacid: string }>> {
     try {
-      const response = await apiService.client.post<ApiResponse<{ wacid: string, answerSdp: string }>>(
-        '/call/outbound', { phoneNumberId, contactId, offerSdp }
+      const response = await apiService.client.post<ApiResponse<{ wacid: string }>>(
+        '/call/outbound', { phoneNumberId, contactId }
       )
       return response.data
     } catch (error) {

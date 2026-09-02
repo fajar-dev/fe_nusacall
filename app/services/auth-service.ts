@@ -1,7 +1,7 @@
 import { apiService } from './api-service'
 import { handleServiceError } from '../composables/error-helper'
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, SIGN_IN_PATH, USER_KEY } from '~/constants/storage'
-import type { AuthResponse, NusaworkQrCode, NusaworkQrStatus, User } from '../types/auth'
+import type { AuthResponse, NusaworkQrCode, NusaworkQrStatus, SipCredentials, User } from '../types/auth'
 import type { ApiResponse } from '../types/api'
 
 class AuthService {
@@ -142,6 +142,11 @@ class AuthService {
   async nusaworkLogin(panelToken: string): Promise<AuthResponse> {
     const response = await apiService.client.post<AuthResponse>('/auth/qrcode/login', { panelToken })
     this.setSession(response.data)
+    return response.data
+  }
+
+  async getSipCredentials(): Promise<ApiResponse<SipCredentials>> {
+    const response = await apiService.client.get<ApiResponse<SipCredentials>>('/auth/sip')
     return response.data
   }
 }

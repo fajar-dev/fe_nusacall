@@ -42,3 +42,10 @@ export interface NusaworkQrStatus {
   profile?: NusaworkProfile
   message?: string
 }
+
+export interface SipCredentials {
+  username: string
+  password: string
+  wsUrl: string
+  domain: string
+}

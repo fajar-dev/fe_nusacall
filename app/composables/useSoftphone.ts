@@ -12,7 +12,7 @@ export function useSoftphone() {
   const micDenied = useState<boolean>('softphone-mic-denied', () => false)
 
   const signaling = useSignaling()
-  const webrtc = useWebRTC()
+  const sip = useSipPhone()
   const audio = useCallAudio()
   const toast = useToast()
   const { t } = useI18n()
@@ -29,6 +29,7 @@ export function useSoftphone() {
   function teardown() {
     while (unsubscribers.length) unsubscribers.pop()!()
     signaling.disconnect()
+    void sip.unregister()
     audio.stopRinging()
     for (const wacid of [...incomingToasts.keys()]) dismissIncomingToast(wacid)
     ringingWacids.clear()
@@ -59,11 +60,31 @@ export function useSoftphone() {
 
     signaling.connect(authState.token)
 
+    sip.onCallEstablished(() => {
+      state.value = 'active'
+      answeredAt.value = Date.now()
+    })
+    sip.onCallTerminated(() => {
+      if (activeWacid.value) teardownActiveCall()
+    })
+
     listen('connected', async () => {
       if (state.value === 'disconnected') state.value = 'idle'
       const granted = await audio.requestMicPermission()
       micDenied.value = !granted
       if (granted) await audio.requestNotificationPermission()
+
+      try {
+        await sip.register()
+      } catch (err) {
+        console.error('Failed to register the softphone with Asterisk', err)
+        toast.add({
+          title: t('components.softphone.answerFailedTitle'),
+          description: t('components.softphone.answerFailedDescription'),
+          color: 'error',
+          icon: 'i-lucide-phone-off'
+        })
+      }
     })
 
     listen('incoming_call', (packet) => {
@@ -118,11 +139,6 @@ export function useSoftphone() {
       lastTakenBy.value = (packet.data?.byEmail as string) ?? null
     })
 
-    listen('webrtc_answer', async (packet) => {
-      if (packet.wacid !== activeWacid.value) return
-      await webrtc.applyAnswer(packet.data?.sdp as string)
-    })
-
     listen('call_state', (packet) => {
       if (packet.wacid !== activeWacid.value) return
       if (packet.data?.status === 'active') {
@@ -137,6 +153,10 @@ export function useSoftphone() {
     })
   }
 
+  /**
+   * Backend yang memutuskan pemenangnya lalu memanggil softphone ini lewat Asterisk;
+   * INVITE-nya dijawab otomatis oleh useSipPhone. Di sini cukup menyatakan niat.
+   */
   async function answerCall(wacid: string): Promise<boolean> {
     if (state.value !== 'idle') return false
 
@@ -146,9 +166,8 @@ export function useSoftphone() {
     activeWacid.value = wacid
 
     try {
-      const offerSdp = await webrtc.start()
       if (!signaling.connected.value) throw new Error('Signaling socket is not connected')
-      signaling.send({ type: 'answer_call', wacid, data: { sdp: offerSdp } })
+      signaling.send({ type: 'answer_call', wacid })
       return true
     } catch (err) {
       console.error('Failed to answer call', err)
@@ -158,7 +177,6 @@ export function useSoftphone() {
         color: 'error',
         icon: 'i-lucide-phone-off'
       })
-      webrtc.close()
       activeWacid.value = null
       state.value = 'idle'
       return false
@@ -177,14 +195,11 @@ export function useSoftphone() {
     state.value = 'connecting'
 
     try {
-      const offerSdp = await webrtc.start()
-      const { data } = await callService.placeOutboundCall(phoneNumberId, contactId, offerSdp)
+      const { data } = await callService.placeOutboundCall(phoneNumberId, contactId)
       activeWacid.value = data.wacid
-      await webrtc.applyAnswer(data.answerSdp)
       return true
     } catch (err) {
       console.error('Failed to place outbound call', err)
-      webrtc.close()
       activeWacid.value = null
       state.value = 'idle'
       return false
@@ -198,14 +213,14 @@ export function useSoftphone() {
   }
 
   function teardownActiveCall() {
-    webrtc.close()
+    sip.hangup()
     activeWacid.value = null
     answeredAt.value = null
     state.value = 'idle'
   }
 
   function setMuted(muted: boolean) {
-    webrtc.setMuted(muted)
+    sip.setMuted(muted)
   }
 
   return {
