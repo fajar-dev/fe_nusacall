@@ -21,6 +21,17 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 - Custom design system (green primary, Geist font)
 - Dokumentasi lengkap di `docs/`
 
+## [0.2.2] — 2026-09-04
+
+### Fixed
+
+- **WhatsApp & Social Preview (Open Graph)**: Perbaiki preview popup/card saat link di-share di WhatsApp, Telegram, dan social media crawler.
+  - Tambahkan konfigurasi static `app.head` di `nuxt.config.ts` agar meta tags Open Graph (`og:title`, `og:description`, `og:image`, `og:url`, `og:type`) di-render pada static HTML untuk bot/crawler tanpa bergantung pada eksekusi client-side JavaScript.
+  - Sediakan asset banner resmi `og-image.jpg` (1200x630, <300KB) yang kompatibel dengan spesifikasi WhatsApp link preview.
+  - Perbarui `app.vue` dan `runtimeConfig.public.siteUrl` untuk konsistensi meta SEO di runtime dan SPA navigation.
+
+---
+
 ## [0.2.1] — 2026-08-27
 
 ### Changed
